@@ -10,7 +10,7 @@
 
 #include "JuceHeader.h"
 #include "MainComponent.h"
-#include "juce_StandaloneFilterWindow.h"
+#include "StandaloneFilterWindow.h"
 
 class StandaloneApplication  : public JUCEApplication
 {

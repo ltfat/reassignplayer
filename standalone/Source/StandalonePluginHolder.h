@@ -61,42 +61,71 @@ public:
     void askUserToLoadState (const String& fileSuffix = String());
 
     //==============================================================================
+    // 
     void startPlaying();
     void stopPlaying();
     void reloadPluginState();
+    void savePluginState();
+    // 
     void saveAudioDeviceState();
     void reloadAudioDeviceState();
-
-    //==============================================================================
-    /** Shows an audio properties dialog box modally. */
     void showAudioSettingsDialog();
 
-    //==============================================================================
-    void savePluginState();
+    bool setFile(File& file);
 
-    //==============================================================================
-    //
-
+    // Graph manipulation routines
     void inputIsMicOnly();
     void inputIsFileOnly();
 
+    // For holding properties
     OptionalScopedPointer<PropertySet> settings;
-    ScopedPointer<AudioProcessor> processor;
+
+    // These has to be accesible from the main application
+    AudioProcessor* const getPluginProcessor() const { return pluginProcessor; }
+    AudioProcessorEditor* const getPluginEditor() const { return pluginProcessor->getActiveEditor(); }
+    AudioDeviceManager& getDeviceManager() { return deviceManager; }
+private:
+    double sampleRate;
+    int samplesPerBlock;
+    // Produces AudioFormatReader
+    AudioFormatManager formatManager;
+    // this is killed together with formatReaderSource
+    // reader has the following public attributes:
+    // .sampleRate
+    // .lengthInSamples
+    // .numChannels
+    AudioFormatReader* reader;
+    // This is wrapped in AudioProcessorSource
+    // Preloads samples
+    AudioTransportSource transportSource;
+    // This is wrapped in AudioTransportSource
+    ScopedPointer<AudioFormatReaderSource> formatReaderSource;
+
+    //     
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
+
+    // Processor of the wrapped plugin
+    // It is added to a graph which take controll over it
+    AudioProcessor* pluginProcessor;
+    // Processor wrapper for a AudioSource
+    // Added to graph which takes controll
+    AudioSourceProcessor* sourceProcessor;
+
+    // Graph of processors, acts as AudioProcessor and it is
+    // also used in AudioProcessorPlayer
     ScopedPointer<AudioProcessorGraph> processorGraph;
+
+
+    //----------------------
+    // Pointers to some nodes in the graph
     AudioProcessorGraph::Node* inNode;
     AudioProcessorGraph::Node* pluginNode;
-
-private:
-    AudioTransportSource transportSource;
-    ScopedPointer<AudioSourceProcessor> sourceProcessor;
-    ScopedPointer<AudioFormatReaderSource> formatReaderSource;
-    AudioFormatManager formatManager;
+    // background thread
     TimeSliceThread thread;
-    File openedFile;
+    ScopedPointer<File> openedFile;
     
-    void loadFileIntoTransport(const File& file);
+    bool loadFileIntoTransport();
 
     void setupAudioDevices();
 

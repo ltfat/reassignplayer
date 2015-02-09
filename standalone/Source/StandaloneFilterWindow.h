@@ -38,7 +38,9 @@
     that the other plugin wrappers use.
 */
 class StandaloneFilterWindow    : public DocumentWindow,
-                                  public ButtonListener   // (can't use Button::Listener due to VC2005 bug)
+                                  public ButtonListener,   // (can't use Button::Listener due to VC2005 bug)
+                                  public LabelListener,
+                                  public MenuBarModel
 {
 public:
     //==============================================================================
@@ -55,8 +57,8 @@ public:
     ~StandaloneFilterWindow();
 
     //==============================================================================
-    AudioProcessor* getAudioProcessor() const noexcept      { return pluginHolder->processor; }
-    AudioDeviceManager& getDeviceManager() const noexcept   { return pluginHolder->deviceManager; }
+    AudioProcessor* getAudioProcessor() const noexcept    { return pluginHolder->getPluginProcessor(); }
+    AudioDeviceManager& getDeviceManager() const noexcept { return pluginHolder->getDeviceManager(); }
     //==============================================================================
 
     void createEditorComp();
@@ -70,16 +72,64 @@ public:
     void closeButtonPressed() override;
 
     void buttonClicked (Button* b) override;
+    void labelTextChanged (Label* l) override;
 
+    //==============================================================================
+    // MenuBarModel related
+    
+    enum MENUITEMS { OPTIONS = 0 };
+    void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
+    PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
+    StringArray getMenuBarNames() override;
+    
+
+    
     void resized() override;
 
-    ScopedPointer<StandalonePluginHolder> pluginHolder;
-
 private:
+    ScopedPointer<StandalonePluginHolder> pluginHolder;
     //==============================================================================
+
+    // Graphic components
     TextButton optionsButton;
     TextButton micfileButton;
+    TextButton fileChooserButton;
+    Label fileLabel;
 
+    ScopedPointer<MenuBarModel> menuBarModel;
+    ScopedPointer<MenuBarComponent> menuBarComponent;
+    // Toolbar
+    Toolbar toolbar;
+    ScopedPointer<ToolbarItemFactory> tbfac;
+
+    class FilterWindowToolbarItemFactory: public ToolbarItemFactory
+    {
+    public:
+        FilterWindowToolbarItemFactory(ButtonListener* listener_);
+        ~FilterWindowToolbarItemFactory();
+
+        void getAllToolbarItemIds(Array<int> &ids) override;
+        void getDefaultItemSet(Array<int> &ids) override;
+        ToolbarItemComponent* createItem(int itemId) override;
+
+    private:
+        ButtonListener* listener;
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterWindowToolbarItemFactory)
+    };
+
+    class GenericToolbarItemComponent: public ToolbarItemComponent
+    {
+    public:
+        GenericToolbarItemComponent (int itemId,const String &labelText, bool isBeingUsedAsAButton);
+
+        void paintButtonArea (Graphics &g, int width, int height,
+                              bool isMouseOver, bool isMouseDown);
+        void contentAreaChanged (const Rectangle<int> &newBounds);
+        bool getToolbarItemSizes (int toolbarThickness, bool isToolbarVertical,
+                                  int &preferredSize, int &minSize, int &maxSize);
+    private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GenericToolbarItemComponent)
+    };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };

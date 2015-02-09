@@ -16,22 +16,60 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
    : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton),
-     optionsButton ("options"),
-     micfileButton ("MIC")
+     //optionsButton ("options"),
+     micfileButton ("MIC"),
+     fileChooserButton ("Open file...")
 {
-   setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
+   menuBarComponent = new MenuBarComponent(this);
 
-   Component::addAndMakeVisible (optionsButton);
+   //tbfac = new FilterWindowToolbarItemFactory(this);
+   // Create the wrapped AudioProcessorEditor
+   pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings);
+   createEditorComp();
+   AudioProcessorEditor* e = pluginHolder->getPluginEditor();
+   if (nullptr == e )
+   {
+      std::cout << "This is a GUI-less plugin" << std::endl;
+   }
+   int oldWidth = e->getWidth();
+   int oldHeight = e->getHeight();
+   setSize(e->getWidth(), e->getHeight());
+
+   // Window dimensions
+   setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
+   setTitleBarHeight(20);
+   setSize(oldWidth, oldHeight + 5 * getTitleBarHeight());
+   setResizable(true, true);
+   
+   // Label
+   fileLabel.setText(String("No file loaded"), dontSendNotification);
+   fileLabel.setColour(Label::textColourId, Colours::red);
+   fileLabel.setColour(Label::backgroundColourId, backgroundColour);
+
+
+   // Init toolbar
+   toolbar.setStyle(Toolbar::textOnly);
+   //toolbar.addDefaultItems(*tbfac);
+   Component::addAndMakeVisible(toolbar);
+
+
+   Component::addAndMakeVisible(menuBarComponent);
+   Component::addAndMakeVisible(e, true);
+   Component::addAndMakeVisible (fileLabel);
+   //Component::addAndMakeVisible (optionsButton);
+   Component::addAndMakeVisible (fileChooserButton);
    Component::addAndMakeVisible (micfileButton);
+
    micfileButton.addListener(this);
-   optionsButton.addListener (this);
-   optionsButton.setTriggeredOnMouseDown (true);
+   fileLabel.addListener(this);
+   fileChooserButton.addListener(this);
+   //optionsButton.addListener (this);
+   //optionsButton.setTriggeredOnMouseDown (true);
+   fileChooserButton.setTriggeredOnMouseDown (true);
    micfileButton.setTriggeredOnMouseDown (true);
    micfileButton.setClickingTogglesState(true);
 
-   pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings);
 
-   createEditorComp();
 
    if (PropertySet* props = pluginHolder->settings)
    {
@@ -47,6 +85,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    {
       centreWithSize (getWidth(), getHeight());
    }
+
 }
 
 StandaloneFilterWindow::~StandaloneFilterWindow()
@@ -67,17 +106,19 @@ StandaloneFilterWindow::~StandaloneFilterWindow()
 
 void StandaloneFilterWindow::createEditorComp()
 {
-   setContentOwned (getAudioProcessor()->createEditorIfNeeded(), true);
+   pluginHolder->getPluginProcessor()->createEditorIfNeeded();
 }
 
 void StandaloneFilterWindow::deleteEditorComp()
 {
-   if (AudioProcessorEditor* ed = dynamic_cast<AudioProcessorEditor*> (getContentComponent()))
+   AudioProcessorEditor* e = pluginHolder->getPluginEditor();
+   if (nullptr != e)
    {
-      pluginHolder->processor->editorBeingDeleted (ed);
-      clearContentComponent();
+      pluginHolder->getPluginProcessor()->editorBeingDeleted(e);
+      delete e;
    }
 }
+
 
 /** Deletes and re-creates the plugin, resetting it to its default state. */
 void StandaloneFilterWindow::resetToDefaultState()
@@ -102,17 +143,180 @@ void StandaloneFilterWindow::closeButtonPressed()
 
 void StandaloneFilterWindow::buttonClicked (Button* b)
 {
-   if (b == &optionsButton)
+   if (b == &micfileButton)
    {
-      PopupMenu m;
-      m.addItem (1, TRANS("Audio Settings..."));
-      m.addSeparator();
-      m.addItem (2, TRANS("Save current state..."));
-      m.addItem (3, TRANS("Load a saved state..."));
-      m.addSeparator();
-      m.addItem (4, TRANS("Reset to default state"));
+      if (b->getToggleState())
+      {
+         pluginHolder->inputIsMicOnly();
+         std::wcout << "Input should be a mic now" << std::endl;
+      }
+      else
+      {
+         pluginHolder->inputIsFileOnly();
+         std::wcout << "Input should be a file now" << std::endl;
+      }
+   }
 
-      switch (m.showAt (&optionsButton))
+   if (b == &fileChooserButton)
+   {
+      FileChooser chooser ("Select a Wave file to play...",
+                           File::nonexistent,
+                           "*.wav;*.mp3");
+
+      if (chooser.browseForFileToOpen())
+      {
+         File file (chooser.getResult());
+         pluginHolder->setFile(file);
+         String s = String(L"Loaded: ") + file.getFullPathName();
+         fileLabel.setText(s, sendNotification);
+         setName(file.getFileName());
+      }
+   }
+
+   for (int ii = 0; ii < toolbar.getNumItems(); ii++)
+   {
+      if (b == toolbar.getItemComponent(ii))
+      {
+         switch (toolbar.getItemId(ii))
+         {
+
+         case 1:
+            std::cout << "OK button pressed" << std::endl;
+            break;
+
+         }
+      }
+   }
+
+}
+
+void StandaloneFilterWindow::labelTextChanged(Label *l)
+{
+   if (l == &fileLabel)
+   {
+      std::cout << l->getText(false) << std::endl;
+   }
+
+}
+
+void StandaloneFilterWindow::resized()
+{
+   DocumentWindow::resized();
+   //optionsButton.setBounds (8, 6, proportionOfWidth(0.1f), getTitleBarHeight() - 8);
+   micfileButton.setBounds (getWidth() - 64, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
+   fileChooserButton.setBounds (getWidth() - 128, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
+   fileLabel.setBounds(0, getHeight() - getTitleBarHeight(), getWidth() - 20, getTitleBarHeight());
+
+   menuBarComponent->setBounds(0, getTitleBarHeight(), getWidth(), getTitleBarHeight());
+
+   AudioProcessorEditor* e = pluginHolder->getPluginEditor();
+   if (e != nullptr)
+      e->setBounds(0, 2 * getTitleBarHeight(), getWidth(),
+                   getHeight() - 5 * getTitleBarHeight());
+
+   toolbar.setBounds(0, getHeight() - 3 * getTitleBarHeight(), getWidth(), 2 * getTitleBarHeight());
+}
+
+
+//==============================================================================
+// Toolbar items factory
+
+StandaloneFilterWindow::FilterWindowToolbarItemFactory
+::FilterWindowToolbarItemFactory(ButtonListener* listener_)
+   : listener(listener_)
+{
+
+}
+
+StandaloneFilterWindow::FilterWindowToolbarItemFactory
+::~FilterWindowToolbarItemFactory()
+{
+
+}
+
+ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
+::createItem(int itemId)
+{
+   // ToolbarItemComponent* b =  new GenericToolbarItemComponent(itemId, String("OK button"),true);
+   ToolbarButton* b = new ToolbarButton(itemId, String("OK button"), nullptr, nullptr);
+   b->addListener(listener);
+   return b;
+}
+
+void StandaloneFilterWindow::FilterWindowToolbarItemFactory
+::getDefaultItemSet(Array<int> &ids)
+{
+   ids.add(1);
+}
+
+void StandaloneFilterWindow::FilterWindowToolbarItemFactory
+::getAllToolbarItemIds(Array<int> &ids)
+{
+   ids.add(1);
+}
+
+
+
+//=============================================================================
+// ToolbarItemComponent
+
+StandaloneFilterWindow::GenericToolbarItemComponent
+::GenericToolbarItemComponent (int itemId, const String &labelText, bool isBeingUsedAsAButton):
+   ToolbarItemComponent(itemId, labelText, isBeingUsedAsAButton)  {}
+
+void StandaloneFilterWindow::GenericToolbarItemComponent
+::paintButtonArea (Graphics &g, int width, int height, bool isMouseOver, bool isMouseDown) {}
+
+void StandaloneFilterWindow::GenericToolbarItemComponent
+::contentAreaChanged (const Rectangle<int> &newBounds) {}
+
+bool StandaloneFilterWindow::GenericToolbarItemComponent
+::getToolbarItemSizes (int toolbarThickness, bool isToolbarVertical,
+                       int &preferredSize, int &minSize, int &maxSize)
+{
+   preferredSize = 1;
+   minSize = 1;
+   maxSize = 1;
+}
+
+//============================================================================
+// MenuBarModel related
+
+StringArray StandaloneFilterWindow
+::getMenuBarNames()
+{
+   const char * const nameBarNames[] =  {"Options", nullptr};
+   return StringArray(nameBarNames);
+}
+
+PopupMenu StandaloneFilterWindow
+::getMenuForIndex(int topLevelMenuIndex, const String& /*menuName */)
+{
+
+   PopupMenu pm;
+   switch (topLevelMenuIndex)
+   {
+   case OPTIONS:
+      pm.addItem (1, TRANS("Audio Settings..."));
+      pm.addSeparator();
+      pm.addItem (2, TRANS("Save current state..."));
+      pm.addItem (3, TRANS("Load a saved state..."));
+      pm.addSeparator();
+      pm.addItem (4, TRANS("Reset to default state"));
+      break;
+   default:
+      break;
+   }
+   return pm;
+}
+
+void StandaloneFilterWindow
+::menuItemSelected (int menuItemID, int topLevelMenuIndex)
+{
+   switch (topLevelMenuIndex)
+   {
+   case OPTIONS:
+      switch (menuItemID)
       {
       case 1:
          pluginHolder->showAudioSettingsDialog();
@@ -129,26 +333,9 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
       default:
          break;
       }
+      break;
+   default:
+      break;
    }
-   if (b == &micfileButton)
-   {
-      if(b->getToggleState())
-      {
-         pluginHolder->inputIsMicOnly();
-         std::wcout << "Input should be a mic now" << std::endl;
-      }
-      else
-      {
-         pluginHolder->inputIsFileOnly();
-         std::wcout << "Input should be a file now" << std::endl;
-      }
-   }
-
 }
 
-void StandaloneFilterWindow::resized()
-{
-   DocumentWindow::resized();
-   optionsButton.setBounds (8, 6, 60, getTitleBarHeight() - 8);
-   micfileButton.setBounds (78, 6, 60, getTitleBarHeight() - 8);
-}

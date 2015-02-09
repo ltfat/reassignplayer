@@ -41,32 +41,38 @@ extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 
 
 StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
-                                                bool takeOwnershipOfSettings)
-   : thread("File preload"),
-     settings (settingsToUse, takeOwnershipOfSettings)
+      bool takeOwnershipOfSettings)
+   : settings (settingsToUse, takeOwnershipOfSettings),
+     thread("File preload"),
+     openedFile(nullptr),
+     sampleRate(44100),
+     samplesPerBlock(512)
 {
+   // Initialization
    createPlugin();
    setupAudioDevices();
    reloadPluginState();
    thread.startThread();
-
-
    formatManager.registerBasicFormats();
-   loadFileIntoTransport(File::getCurrentWorkingDirectory().getChildFile("build/serj.wav"));
-   sourceProcessor = new AudioSourceProcessor(&transportSource, false);
-   sourceProcessor->prepareToPlay(44100, 512);
 
+   // 
+   sourceProcessor = new AudioSourceProcessor(&transportSource, false);
+   sourceProcessor->prepareToPlay(sampleRate, samplesPerBlock);
+
+   // Setup the graph
    processorGraph = new AudioProcessorGraph();
-   processorGraph->setPlayConfigDetails(2, 2, 44100, 512);
-   // It is a class attribute so it could be suspened
+   processorGraph->setPlayConfigDetails(2, 2, sampleRate, samplesPerBlock);
+
+   // Input and output node of the graph
    AudioProcessorGraph::AudioGraphIOProcessor* in =
       new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode);
    AudioProcessorGraph::AudioGraphIOProcessor* out =
       new AudioProcessorGraph::AudioGraphIOProcessor(AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode);
 
+   // Add nodes to graph, keep inNode and pluginNode as atributes
    inNode = processorGraph->addNode(in);
    AudioProcessorGraph::Node* sourceNode = processorGraph->addNode(sourceProcessor);
-   pluginNode = processorGraph->addNode(processor);
+   pluginNode = processorGraph->addNode(pluginProcessor);
    AudioProcessorGraph::Node* outNode = processorGraph->addNode(out);
 
    // Connect everything to everything
@@ -76,11 +82,11 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
       processorGraph->addConnection(inNode->nodeId, ii, pluginNode->nodeId, ii);
       processorGraph->addConnection(pluginNode->nodeId, ii, outNode->nodeId, ii);
    }
-  
-   // Cut the connection between inNode and pluginNode 
+
+   // Cut the connection between inNode and pluginNode
    inputIsFileOnly();
 
-   processorGraph->prepareToPlay(44100, 512);
+   processorGraph->prepareToPlay(sampleRate, samplesPerBlock);
    startPlaying();
 }
 
@@ -95,22 +101,32 @@ StandalonePluginHolder::~StandalonePluginHolder()
 void StandalonePluginHolder::createPlugin()
 {
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-   processor = createPluginFilter();
-   jassert (processor != nullptr); // Your createPluginFilter() function must return a valid object!
+   pluginProcessor = createPluginFilter();
+   jassert (pluginProcessor != nullptr); // Your createPluginFilter() function must return a valid object!
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 
-   processor->setPlayConfigDetails (JucePlugin_MaxNumInputChannels,
-                                    JucePlugin_MaxNumOutputChannels,
-                                    44100, 512);
+   pluginProcessor->setPlayConfigDetails (JucePlugin_MaxNumInputChannels,
+                                          JucePlugin_MaxNumOutputChannels,
+                                          sampleRate, samplesPerBlock);
 }
 
 void StandalonePluginHolder::deletePlugin()
 {
    stopPlaying();
-   processor = nullptr;
+   AudioProcessorEditor* e = pluginProcessor->getActiveEditor();
+   if(nullptr!=e) delete e;
+   pluginProcessor = nullptr;
 }
 
+bool StandalonePluginHolder::setFile(File& file)
+{
+   openedFile = new File(file);
+   if (! loadFileIntoTransport())
+      return false;
 
+   inputIsFileOnly();
+   return true;
+}
 
 
 //==============================================================================
@@ -143,7 +159,7 @@ void StandalonePluginHolder::askUserToSaveState (const String& fileSuffix)
       setLastFile (fc);
 
       MemoryBlock data;
-      processor->getStateInformation (data);
+      pluginProcessor->getStateInformation (data);
 
       if (! fc.getResult().replaceWithData (data.getData(), data.getSize()))
          AlertWindow::showMessageBox (AlertWindow::WarningIcon,
@@ -164,7 +180,7 @@ void StandalonePluginHolder::askUserToLoadState (const String& fileSuffix)
       MemoryBlock data;
 
       if (fc.getResult().loadFileAsData (data))
-         processor->setStateInformation (data.getData(), (int) data.getSize());
+         pluginProcessor->setStateInformation (data.getData(), (int) data.getSize());
       else
          AlertWindow::showMessageBox (AlertWindow::WarningIcon,
                                       TRANS("Error whilst loading"),
@@ -189,10 +205,10 @@ void StandalonePluginHolder::showAudioSettingsDialog()
 {
    DialogWindow::LaunchOptions o;
    o.content.setOwned (new AudioDeviceSelectorComponent (deviceManager,
-                       processor->getNumInputChannels(),
-                       processor->getNumInputChannels(),
-                       processor->getNumOutputChannels(),
-                       processor->getNumOutputChannels(),
+                       pluginProcessor->getNumInputChannels(),
+                       pluginProcessor->getNumInputChannels(),
+                       pluginProcessor->getNumOutputChannels(),
+                       pluginProcessor->getNumOutputChannels(),
                        true, false,
                        true, false));
    o.content->setSize (500, 450);
@@ -208,8 +224,10 @@ void StandalonePluginHolder::showAudioSettingsDialog()
 
 void StandalonePluginHolder::saveAudioDeviceState()
 {
+   std::cout << "saveAudioDeviceState called " << std::endl;
    if (settings != nullptr)
    {
+      std::cout << "And it is not null!!! " << std::endl;
       ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
       settings->setValue ("audioSetup", xml);
    }
@@ -222,8 +240,8 @@ void StandalonePluginHolder::reloadAudioDeviceState()
    if (settings != nullptr)
       savedState = settings->getXmlValue ("audioSetup");
 
-   deviceManager.initialise (processor->getNumInputChannels(),
-                             processor->getNumOutputChannels(),
+   deviceManager.initialise (pluginProcessor->getNumInputChannels(),
+                             pluginProcessor->getNumOutputChannels(),
                              savedState,
                              true);
 }
@@ -231,10 +249,11 @@ void StandalonePluginHolder::reloadAudioDeviceState()
 //==============================================================================
 void StandalonePluginHolder::savePluginState()
 {
-   if (settings != nullptr && processor != nullptr)
+   std::cout << "savePluginState called " << std::endl;
+   if (settings != nullptr && pluginProcessor != nullptr)
    {
       MemoryBlock data;
-      processor->getStateInformation (data);
+      pluginProcessor->getStateInformation (data);
 
       settings->setValue ("filterState", data.toBase64Encoding());
    }
@@ -247,34 +266,42 @@ void StandalonePluginHolder::reloadPluginState()
       MemoryBlock data;
 
       if (data.fromBase64Encoding (settings->getValue ("filterState")) && data.getSize() > 0)
-         processor->setStateInformation (data.getData(), (int) data.getSize());
+         pluginProcessor->setStateInformation (data.getData(), (int) data.getSize());
    }
 }
 
 //==============================================================================
 
 
-void StandalonePluginHolder::loadFileIntoTransport(const File& file)
+
+bool StandalonePluginHolder::loadFileIntoTransport()
 {
    transportSource.stop();
    transportSource.setSource(nullptr);
    formatReaderSource = nullptr;
 
-   AudioFormatReader* reader = formatManager.createReaderFor(file);
+   if (openedFile != nullptr)
+   {
+      // The old reader is killed together with formatReaderSource on the previous line
+      reader = formatManager.createReaderFor(*openedFile);
 
-   if (reader != nullptr)
-   {
-      formatReaderSource = new AudioFormatReaderSource(reader, true);
-      formatReaderSource->setLooping(true);
-      transportSource.setSource(formatReaderSource, 32768, &thread);/*
-                                      &thread,
-                                      reader->sampleRate);*/
-      openedFile = file;
+      if (reader != nullptr)
+      {
+         formatReaderSource = new AudioFormatReaderSource(reader, true);
+         formatReaderSource->setLooping(true);
+         // We want the file to be read at the common sample-rate
+         // Read up to samplesToPreload in advance
+         int samplesToPreload = 10*reader->bitsPerSample/8*samplesPerBlock;
+         transportSource.setSource(formatReaderSource, samplesToPreload, &thread, sampleRate);
+         return true;
+      }
+      else
+      {
+         openedFile = nullptr;
+         return false;
+      }
    }
-   else
-   {
-      std::wcout << file.getFileName().toWideCharPointer() << " does not exist." << std::endl;
-   }
+   return false;
 
 }
 
@@ -297,35 +324,34 @@ void StandalonePluginHolder::shutDownAudioDevices()
 
 void StandalonePluginHolder::inputIsMicOnly()
 {
-   if(! processorGraph->isConnected(inNode->nodeId,pluginNode->nodeId))
+   if (! processorGraph->isConnected(inNode->nodeId, pluginNode->nodeId))
    {
-      connectNodes(inNode->nodeId,pluginNode->nodeId);
+      connectNodes(inNode->nodeId, pluginNode->nodeId);
    }
 
-   if(transportSource.isPlaying())
+   if (transportSource.isPlaying())
    {
       transportSource.stop();
    }
 
 }
-
 void StandalonePluginHolder::inputIsFileOnly()
 {
    // Just disconnect the node
-   if( processorGraph->isConnected(inNode->nodeId,pluginNode->nodeId))
+   if ( processorGraph->isConnected(inNode->nodeId, pluginNode->nodeId))
    {
       processorGraph->disconnectNode(inNode->nodeId);
    }
 
-   if(! transportSource.isPlaying())
+   if (! transportSource.isPlaying())
    {
       transportSource.start();
    }
 }
 
-void StandalonePluginHolder::connectNodes(uint32 node1,uint32 node2)
+void StandalonePluginHolder::connectNodes(uint32 node1, uint32 node2)
 {
-   processorGraph->addConnection(node1,0, node2,0);
-   processorGraph->addConnection(node1,1, node2,1);
+   processorGraph->addConnection(node1, 0, node2, 0);
+   processorGraph->addConnection(node1, 1, node2, 1);
 }
 

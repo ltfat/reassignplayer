@@ -66,6 +66,9 @@ void PluginEditor::paint (Graphics& g)
 
     g.fillAll (Colours::white);
 
+    g.setColour (Colour (0xff752aa5));
+    g.fillRect (proportionOfWidth (0.0000f), proportionOfHeight (0.8638f), proportionOfWidth (1.0064f), proportionOfHeight (0.1502f));
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -75,7 +78,7 @@ void PluginEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    Thisisatextbutton->setBounds (216, 32, 150, 24);
+    Thisisatextbutton->setBounds (proportionOfWidth (0.3753f), proportionOfHeight (0.0264f), proportionOfWidth (0.1706f), proportionOfHeight (0.0264f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -115,10 +118,13 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="AudioProcessorEditor(p)&#10;processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="600" initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ffffffff">
+    <RECT pos="0% 86.385% 100.64% 15.023%" fill="solid: ff752aa5" hasStroke="0"/>
+  </BACKGROUND>
   <TEXTBUTTON name="new button" id="78d14871da59dd0a" memberName="Thisisatextbutton"
-              virtualName="" explicitFocusOrder="0" pos="216 32 150 24" buttonText="new button"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="37.527% 2.582% 17.058% 2.582%"
+              buttonText="new button" connectedEdges="0" needsCallback="1"
+              radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

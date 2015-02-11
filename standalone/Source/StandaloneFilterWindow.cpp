@@ -38,7 +38,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    // Window dimensions
    setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
    setTitleBarHeight(20);
-   setSize(oldWidth, oldHeight + 5 * getTitleBarHeight());
+   setSize(oldWidth+12, oldHeight + 5 * getTitleBarHeight());
    setResizable(true, true);
    
    // Label
@@ -211,7 +211,7 @@ void StandaloneFilterWindow::resized()
 
    AudioProcessorEditor* e = pluginHolder->getPluginEditor();
    if (e != nullptr)
-      e->setBounds(0, 2 * getTitleBarHeight(), getWidth(),
+      e->setBounds(4, 2 * getTitleBarHeight(), getWidth()-8,
                    getHeight() - 5 * getTitleBarHeight());
 
    toolbar.setBounds(0, getHeight() - 3 * getTitleBarHeight(), getWidth(), 2 * getTitleBarHeight());

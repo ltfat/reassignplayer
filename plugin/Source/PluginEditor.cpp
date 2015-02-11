@@ -31,8 +31,8 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
     : AudioProcessorEditor(p),
       processor(p)
 {
-    addAndMakeVisible (Thisisatextbutton = new TextButton ("new button"));
-    Thisisatextbutton->addListener (this);
+    addAndMakeVisible (spectrogram = new Spectrogram());
+    spectrogram->setName ("spectrogram");
 
 
     //[UserPreSize]
@@ -51,7 +51,7 @@ PluginEditor::~PluginEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    Thisisatextbutton = nullptr;
+    spectrogram = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -66,9 +66,6 @@ void PluginEditor::paint (Graphics& g)
 
     g.fillAll (Colours::white);
 
-    g.setColour (Colour (0xff752aa5));
-    g.fillRect (proportionOfWidth (0.0000f), proportionOfHeight (0.8638f), proportionOfWidth (1.0064f), proportionOfHeight (0.1502f));
-
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -78,29 +75,20 @@ void PluginEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    Thisisatextbutton->setBounds (proportionOfWidth (0.3753f), proportionOfHeight (0.0264f), proportionOfWidth (0.1706f), proportionOfHeight (0.0264f));
+    spectrogram->setBounds (0, 0, proportionOfWidth (1.0000f), proportionOfHeight (1.0000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
-}
-
-void PluginEditor::buttonClicked (Button* buttonThatWasClicked)
-{
-    //[UserbuttonClicked_Pre]
-    //[/UserbuttonClicked_Pre]
-
-    if (buttonThatWasClicked == Thisisatextbutton)
-    {
-        //[UserButtonCode_Thisisatextbutton] -- add your button handler code here..
-        //[/UserButtonCode_Thisisatextbutton]
-    }
-
-    //[UserbuttonClicked_Post]
-    //[/UserbuttonClicked_Post]
 }
 
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void PluginEditor::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
+{
+  // HeapBlock<float> tmp = HeapBlock<float>();
+
+   //spectrogram->appendStrip(tmp,0,0);
+}
 //[/MiscUserCode]
 
 
@@ -114,17 +102,14 @@ void PluginEditor::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PluginEditor" componentName=""
-                 parentClasses="public AudioProcessorEditor" constructorParams="PluginAudioProcessor&amp; p"
-                 variableInitialisers="AudioProcessorEditor(p)&#10;processor(p)"
+                 parentClasses="public AudioProcessorEditor, public MouseListener"
+                 constructorParams="PluginAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(p)&#10;processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="600" initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff">
-    <RECT pos="0% 86.385% 100.64% 15.023%" fill="solid: ff752aa5" hasStroke="0"/>
-  </BACKGROUND>
-  <TEXTBUTTON name="new button" id="78d14871da59dd0a" memberName="Thisisatextbutton"
-              virtualName="" explicitFocusOrder="0" pos="37.527% 2.582% 17.058% 2.582%"
-              buttonText="new button" connectedEdges="0" needsCallback="1"
-              radioGroupId="0"/>
+  <BACKGROUND backgroundColour="ffffffff"/>
+  <GENERICCOMPONENT name="spectrogram" id="7c4cfc3cd1d13dfb" memberName="spectrogram"
+                    virtualName="" explicitFocusOrder="0" pos="0 0 100% 100%" class="Spectrogram"
+                    params=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

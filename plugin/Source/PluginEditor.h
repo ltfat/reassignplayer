@@ -32,6 +32,7 @@
 #endif
 
 #include "PluginProcessor.h"
+#include "Spectrogram.h"
 //[/Headers]
 
 
@@ -45,7 +46,7 @@
                                                                     //[/Comments]
 */
 class PluginEditor  : public AudioProcessorEditor,
-                      public ButtonListener
+                      public MouseListener
 {
 public:
     //==============================================================================
@@ -54,11 +55,11 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel);
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -68,7 +69,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<TextButton> Thisisatextbutton;
+    ScopedPointer<Spectrogram> spectrogram;
 
 
     //==============================================================================

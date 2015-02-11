@@ -31,7 +31,7 @@ class PluginAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    PluginAudioProcessor();
+    PluginAudioProcessor(int bufferLen_ = 2048);
     ~PluginAudioProcessor();
 
     //==============================================================================
@@ -76,6 +76,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    int bufferLen;
+    ScopedPointer<AudioSampleBuffer> asbuf;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };

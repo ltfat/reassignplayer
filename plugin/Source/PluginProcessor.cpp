@@ -13,8 +13,10 @@
 
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor()
+PluginAudioProcessor::PluginAudioProcessor(int bufferLen_)
+   :bufferLen(bufferLen_)
 {
+   asbuf = new AudioSampleBuffer(1,bufferLen);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -110,7 +112,7 @@ int PluginAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void PluginAudioProcessor::setCurrentProgram (int index)
+void PluginAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
@@ -119,15 +121,14 @@ const String PluginAudioProcessor::getProgramName (int index)
     return String();
 }
 
-void PluginAudioProcessor::changeProgramName (int index, const String& newName)
+void PluginAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
 {
 }
 
 //==============================================================================
 void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+
 }
 
 void PluginAudioProcessor::releaseResources()
@@ -139,17 +140,14 @@ void PluginAudioProcessor::releaseResources()
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // I've added this to avoid people getting screaming feedback
-    // when they first compile the plugin, but obviously you don't need to
-    // this code if your algorithm already fills all the output channels.
+    // channels that didn't contain input data,
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
     int L = buffer.getNumSamples();
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
+
+
+
     for (int channel = 0; channel < getNumInputChannels(); ++channel)
     {
         float* dst = buffer.getWritePointer (channel);

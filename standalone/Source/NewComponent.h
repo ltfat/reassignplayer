@@ -17,22 +17,11 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_F1B68972952BE4__
-#define __JUCE_HEADER_F1B68972952BE4__
+#ifndef __JUCE_HEADER_369DD91DB9C1C992__
+#define __JUCE_HEADER_369DD91DB9C1C992__
 
 //[Headers]     -- You can add your own extra header files here --
-#ifdef STANDALONE
-#define JUCE_DONT_DECLARE_PROJECTINFO 1
-#endif
-
-#include "../../plugin/JuceLibraryCode/JuceHeader.h"
-
-#ifdef STANDALONE
-#undef JUCE_DONT_DECLARE_PROJECTINFO
-#endif
-
-#include "PluginProcessor.h"
-#include "Spectrogram.h"
+#include "JuceHeader.h"
 //[/Headers]
 
 
@@ -45,38 +34,41 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PluginEditor  : public AudioProcessorEditor,
-                      public MouseListener
+class NewComponent  : public Component
 {
 public:
     //==============================================================================
-    PluginEditor (PluginAudioProcessor& p);
-    ~PluginEditor();
+    NewComponent ();
+    ~NewComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel);
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
 
+    // Binary resources:
+    static const char* microphone52_active_svg;
+    static const int microphone52_active_svgSize;
+    static const char* icons_png;
+    static const int icons_pngSize;
+    static const char* icons_off_png;
+    static const int icons_off_pngSize;
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    PluginAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Spectrogram> spectrogram;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewComponent)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_F1B68972952BE4__
+#endif   // __JUCE_HEADER_369DD91DB9C1C992__

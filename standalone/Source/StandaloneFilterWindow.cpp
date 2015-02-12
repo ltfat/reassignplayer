@@ -22,7 +22,6 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 {
    menuBarComponent = new MenuBarComponent(this);
 
-   //tbfac = new FilterWindowToolbarItemFactory(this);
    // Create the wrapped AudioProcessorEditor
    pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings);
    createEditorComp();
@@ -48,8 +47,10 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
 
    // Init toolbar
-   toolbar.setStyle(Toolbar::textOnly);
+   //toolbar.setStyle(Toolbar::textOnly);
    //toolbar.addDefaultItems(*tbfac);
+   tbfac = new FilterWindowToolbarItemFactory(this);
+   toolbar.addItem(*tbfac,1);
    Component::addAndMakeVisible(toolbar);
 
 
@@ -57,7 +58,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    Component::addAndMakeVisible(e, true);
    Component::addAndMakeVisible (fileLabel);
    //Component::addAndMakeVisible (optionsButton);
-   Component::addAndMakeVisible (fileChooserButton);
+   //Component::addAndMakeVisible (fileChooserButton);
    Component::addAndMakeVisible (micfileButton);
 
    micfileButton.addListener(this);
@@ -65,12 +66,11 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    fileChooserButton.addListener(this);
    //optionsButton.addListener (this);
    //optionsButton.setTriggeredOnMouseDown (true);
-   fileChooserButton.setTriggeredOnMouseDown (true);
+   //fileChooserButton.setTriggeredOnMouseDown (true);
    micfileButton.setTriggeredOnMouseDown (true);
    micfileButton.setClickingTogglesState(true);
-
-
-
+   
+                       
    if (PropertySet* props = pluginHolder->settings)
    {
       const int x = props->getIntValue ("windowX", -100);
@@ -102,7 +102,6 @@ StandaloneFilterWindow::~StandaloneFilterWindow()
 }
 
 //==============================================================================
-
 
 void StandaloneFilterWindow::createEditorComp()
 {
@@ -157,7 +156,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
       }
    }
 
-   if (b == &fileChooserButton)
+/*   if (b == &fileChooserButton)
    {
       FileChooser chooser ("Select a Wave file to play...",
                            File::nonexistent,
@@ -172,6 +171,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
          setName(file.getFileName());
       }
    }
+*/
 
    for (int ii = 0; ii < toolbar.getNumItems(); ii++)
    {
@@ -225,7 +225,7 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::FilterWindowToolbarItemFactory(ButtonListener* listener_)
    : listener(listener_)
 {
-
+    
 }
 
 StandaloneFilterWindow::FilterWindowToolbarItemFactory
@@ -236,9 +236,15 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 
 ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::createItem(int itemId)
-{
-   // ToolbarItemComponent* b =  new GenericToolbarItemComponent(itemId, String("OK button"),true);
-   ToolbarButton* b = new ToolbarButton(itemId, String("OK button"), nullptr, nullptr);
+{  int NumBytes;
+   const char* iconData = BinaryData::getNamedResource("mic_png",NumBytes);
+   Drawable* iconOff = Drawable::createFromImageData(iconData,NumBytes);
+   iconData = BinaryData::getNamedResource("micOn_png",NumBytes);
+   Drawable* iconOn = Drawable::createFromImageData(iconData,NumBytes);
+   
+  //ToolbarItemComponent* b =  new GenericToolbarItemComponent(itemId, String("OK button"),true);
+   ToolbarButton* b = new ToolbarButton(itemId, String("OK button"), //nullptr, nullptr);
+   iconOff,iconOn);
    b->addListener(listener);
    return b;
 }
@@ -285,7 +291,7 @@ bool StandaloneFilterWindow::GenericToolbarItemComponent
 StringArray StandaloneFilterWindow
 ::getMenuBarNames()
 {
-   const char * const nameBarNames[] =  {"Options", nullptr};
+   const char * const nameBarNames[] =  {"Open File","Options", nullptr};
    return StringArray(nameBarNames);
 }
 
@@ -296,6 +302,13 @@ PopupMenu StandaloneFilterWindow
    PopupMenu pm;
    switch (topLevelMenuIndex)
    {
+   case FILE:
+      pm.addItem (1, TRANS("Load Audio file..."));
+      pm.addSeparator();
+      pm.addItem (2, TRANS("Save Image..."));
+      pm.addSeparator();
+      pm.addItem (3, TRANS("Exit"));
+      break; 
    case OPTIONS:
       pm.addItem (1, TRANS("Audio Settings..."));
       pm.addSeparator();
@@ -315,6 +328,34 @@ void StandaloneFilterWindow
 {
    switch (topLevelMenuIndex)
    {
+   case FILE:
+      switch (menuItemID)
+      {
+      case 1:
+         {
+         FileChooser chooser ("Select a Wave file to play...",
+                              File::nonexistent,
+                              "*.wav;*.mp3");
+
+         if (chooser.browseForFileToOpen())
+            {
+               File file (chooser.getResult());
+               pluginHolder->setFile(file);
+               String s = String(L"Loaded: ") + file.getFullPathName();
+               fileLabel.setText(s, sendNotification);
+               setName(file.getFileName());
+             }      
+         }
+         break;
+      case 2:
+         break;
+      case 3:
+         JUCEApplicationBase::quit();
+         break;
+      default:
+         break;
+      }
+      break;
    case OPTIONS:
       switch (menuItemID)
       {
@@ -338,4 +379,3 @@ void StandaloneFilterWindow
       break;
    }
 }
-

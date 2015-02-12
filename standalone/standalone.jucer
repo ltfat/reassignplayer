@@ -2,9 +2,46 @@
 
 <JUCERPROJECT id="HMi56V" name="standalone" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.standalone" includeBinaryInAppConfig="1"
-              jucerVersion="3.1.1" defines="STANDALONE">
+              jucerVersion="3.1.0" defines="STANDALONE">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
+      <FILE id="lc9ueE" name="audfile.png" compile="0" resource="1" file="pics/audfile.png"/>
+      <FILE id="YftBpA" name="audfileOn.png" compile="0" resource="1" file="pics/audfileOn.png"/>
+      <FILE id="fEEX14" name="back.png" compile="0" resource="1" file="pics/back.png"/>
+      <FILE id="HPtpAx" name="backOn.png" compile="0" resource="1" file="pics/backOn.png"/>
+      <FILE id="tdrsFW" name="forward.png" compile="0" resource="1" file="pics/forward.png"/>
+      <FILE id="OjNNPK" name="forwardOn.png" compile="0" resource="1" file="pics/forwardOn.png"/>
+      <FILE id="YAFCCp" name="incback.png" compile="0" resource="1" file="pics/incback.png"/>
+      <FILE id="fPNZ3D" name="incbackOn.png" compile="0" resource="1" file="pics/incbackOn.png"/>
+      <FILE id="g0AfL6" name="incforward.png" compile="0" resource="1" file="pics/incforward.png"/>
+      <FILE id="Qdgfor" name="incforwardOn.png" compile="0" resource="1"
+            file="pics/incforwardOn.png"/>
+      <FILE id="fFwe1o" name="mic.png" compile="0" resource="1" file="pics/mic.png"/>
+      <FILE id="tVDc3Q" name="micOn.png" compile="0" resource="1" file="pics/micOn.png"/>
+      <FILE id="G9uJQY" name="pause.png" compile="0" resource="1" file="pics/pause.png"/>
+      <FILE id="NTpq36" name="pauseOn.png" compile="0" resource="1" file="pics/pauseOn.png"/>
+      <FILE id="uXu5R6" name="play.png" compile="0" resource="1" file="pics/play.png"/>
+      <FILE id="grnWB7" name="playOn.png" compile="0" resource="1" file="pics/playOn.png"/>
+      <FILE id="gE3DeX" name="save.png" compile="0" resource="1" file="pics/save.png"/>
+      <FILE id="ksfJiQ" name="saveOn.png" compile="0" resource="1" file="pics/saveOn.png"/>
+      <FILE id="C61AI2" name="AudioSourceProcessor.cpp" compile="1" resource="0"
+            file="Source/AudioSourceProcessor.cpp"/>
+      <FILE id="QUqLWT" name="AudioSourceProcessor.h" compile="0" resource="0"
+            file="Source/AudioSourceProcessor.h"/>
+      <FILE id="ox0vjv" name="StandaloneFilterWindow.cpp" compile="1" resource="0"
+            file="Source/StandaloneFilterWindow.cpp"/>
+      <FILE id="JAjTOH" name="StandaloneFilterWindow.h" compile="0" resource="0"
+            file="Source/StandaloneFilterWindow.h"/>
+      <FILE id="EJzoFA" name="StandalonePluginHolder.cpp" compile="1" resource="0"
+            file="Source/StandalonePluginHolder.cpp"/>
+      <FILE id="saRGHH" name="StandalonePluginHolder.h" compile="0" resource="0"
+            file="Source/StandalonePluginHolder.h"/>
+      <FILE id="NYOIVQ" name="generateColormaps.m" compile="1" resource="0"
+            file="../plugin/Source/generateColormaps.m"/>
+      <FILE id="P54EHM" name="ltfatColormaps.h" compile="0" resource="0"
+            file="../plugin/Source/ltfatColormaps.h"/>
+      <FILE id="mYDYOc" name="Spectrogram.cpp" compile="1" resource="0" file="../plugin/Source/Spectrogram.cpp"/>
+      <FILE id="Nkh8eH" name="Spectrogram.h" compile="0" resource="0" file="../plugin/Source/Spectrogram.h"/>
       <FILE id="i5Q2QI" name="PluginEditor.cpp" compile="1" resource="0"
             file="../plugin/Source/PluginEditor.cpp"/>
       <FILE id="xfcczb" name="PluginEditor.h" compile="0" resource="0" file="../plugin/Source/PluginEditor.h"/>
@@ -12,12 +49,7 @@
             file="../plugin/Source/PluginProcessor.cpp"/>
       <FILE id="OHkvaD" name="PluginProcessor.h" compile="0" resource="0"
             file="../plugin/Source/PluginProcessor.h"/>
-      <FILE id="Qnd2g2" name="juce_StandaloneFilterWindow.h" compile="0"
-            resource="0" file="Source/juce_StandaloneFilterWindow.h"/>
       <FILE id="pIxXbm" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="rZNnbp" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-      <FILE id="cURhgj" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -29,20 +61,20 @@
                        targetName="standalone"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_events" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_graphics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_data_structures" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_gui_basics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_gui_extra" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_cryptography" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_video" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_opengl" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_basics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_devices" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_formats" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_processors" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_utils" path="/home/nholighaus/juce/modules/"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>

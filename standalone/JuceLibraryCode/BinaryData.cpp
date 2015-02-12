@@ -7,8 +7,998 @@
 namespace BinaryData
 {
 
-//================== audfile.png ==================
+//================== audfile.svg ==================
 static const unsigned char temp_binary_data_0[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M440 1320 l0 -1000 875 0 875 0 0 718 0 717 -283 283 -282 282 -593\n"
+"0 -592 0 0 -1000z m1282 533 l218 -218 0 -532 0 -533 -625 0 -625 0 0 750 0\n"
+"750 407 0 408 0 217 -217z\"/>\n"
+"<path d=\"M1243 1938 l-53 -10 0 -438 0 -439 -32 10 c-18 5 -64 9 -103 9 -175\n"
+"0 -290 -132 -226 -258 23 -45 43 -63 98 -91 128 -64 324 -16 373 92 18 39 20\n"
+"68 20 404 l0 362 38 -6 c144 -21 283 -162 318 -323 l12 -55 1 73 c2 140 -47\n"
+"309 -119 411 -59 83 -159 151 -225 151 -24 0 -25 2 -25 60 0 42 -4 60 -12 59\n"
+"-7 -1 -37 -6 -65 -11z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* audfile_svg = (const char*) temp_binary_data_0;
+
+//================== audfileOn.svg ==================
+static const unsigned char temp_binary_data_1[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg2\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"audfileOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs14\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview12\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg2\" />\n"
+"  <metadata\n"
+"     id=\"metadata4\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g6\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M440 1320 l0 -1000 875 0 875 0 0 713 0 712 -288 288 -287 287 -588 0 -587 0 0 -1000z m1287 538 l213 -213 0 -537 0 -538 -625 0 -625 0 0 750 0 750 412 0 413 0 212 -212z\"\n"
+"       id=\"path8\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M1233 1928 l-43 -9 0 -438 0 -438 -52 13 c-66 18 -81 17 -153 -1 -186 -49 -224 -229 -67 -318 61 -34 160 -47 227 -28 59 15 120 59 144 101 20 36 21 51 21 404 l0 366 35 0 c105 0 237 -98 301 -223 l36 -72 -6 65 c-23 246 -160 444 -329 475 l-37 7 0"
+" 54 c0 60 0 60 -77 42z\"\n"
+"       id=\"path10\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* audfileOn_svg = (const char*) temp_binary_data_1;
+
+//================== back.svg ==================
+static const unsigned char temp_binary_data_2[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M1400 1645 l-335 -195 -3 159 c-2 159 -3 160 -29 180 -21 17 -40 21\n"
+"-100 21 -65 0 -77 -3 -98 -25 l-25 -24 0 -441 0 -441 25 -24 c21 -22 33 -25\n"
+"98 -25 60 0 79 4 101 21 l26 20 0 160 c0 87 2 159 5 159 2 0 151 -86 331 -191\n"
+"180 -104 339 -193 354 -196 20 -4 34 1 49 16 21 21 21 26 21 505 l0 485 -22\n"
+"15 c-12 9 -32 16 -43 16 -11 0 -171 -88 -355 -195z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* back_svg = (const char*) temp_binary_data_2;
+
+//================== backOn.svg ==================
+static const unsigned char temp_binary_data_3[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3914\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"backOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3924\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3922\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3914\" />\n"
+"  <metadata\n"
+"     id=\"metadata3916\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3918\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M1407 1640 c-180 -105 -334 -193 -342 -196 -13 -5 -15 16 -15 158 0 201 2 198 -117 198 -65 0 -83 -3 -96 -18 -15 -17 -17 -64 -17 -465 l0 -446 22 -15 c16 -11 46 -16 99 -16 110 0 109 -1 109 198 0 95 4 162 9 162 6 0 160 -88 344 -195 183 -107 342"
+" -195 353 -195 11 0 29 6 40 14 18 14 19 32 22 483 1 363 -1 474 -11 493 -27 53 -48 45 -400 -160z\"\n"
+"       id=\"path3920\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* backOn_svg = (const char*) temp_binary_data_3;
+
+//================== forward.svg ==================
+static const unsigned char temp_binary_data_4[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M843 1825 l-23 -16 0 -488 c0 -460 1 -489 18 -504 39 -36 31 -39 525\n"
+"255 109 65 200 118 202 118 3 0 5 -79 5 -175 0 -218 -1 -215 123 -215 59 0 89\n"
+"5 105 16 l22 15 0 474 0 474 -22 15 c-16 11 -46 16 -103 16 -72 0 -84 -3 -103\n"
+"-23 -21 -22 -22 -33 -22 -180 0 -86 -2 -157 -5 -157 -3 0 -150 86 -327 191\n"
+"-177 104 -333 192 -347 195 -15 3 -36 -2 -48 -11z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* forward_svg = (const char*) temp_binary_data_4;
+
+//================== forwardOn.svg ==================
+static const unsigned char temp_binary_data_5[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3926\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"forwardOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3936\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3934\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3926\" />\n"
+"  <metadata\n"
+"     id=\"metadata3928\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3930\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M829 1813 c-20 -23 -25 -935 -6 -973 29 -57 56 -45 565 262 90 54 165 98 168 98 2 0 4 -79 4 -175 0 -218 -2 -215 132 -215 81 0 89 2 103 24 14 20 15 81 13 481 -3 533 9 485 -124 485 -77 0 -84 -2 -103 -26 -19 -24 -21 -40 -21 -180 0 -85 -2 -154 -"
+"4 -154 -2 0 -152 88 -334 195 -187 111 -341 195 -355 195 -14 0 -31 -7 -38 -17z\"\n"
+"       id=\"path3932\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* forwardOn_svg = (const char*) temp_binary_data_5;
+
+//================== incback.svg ==================
+static const unsigned char temp_binary_data_6[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M1215 1744 c-88 -53 -259 -155 -380 -226 -121 -71 -230 -139 -242\n"
+"-151 -29 -26 -29 -68 0 -94 12 -11 132 -85 267 -164 135 -78 293 -173 353\n"
+"-211 168 -106 182 -111 211 -82 13 13 16 42 16 160 0 110 3 144 13 144 19 0\n"
+"235 -122 385 -217 73 -47 147 -90 164 -97 27 -10 32 -8 49 13 19 23 19 42 17\n"
+"513 -3 529 -2 516 -56 503 -13 -3 -71 -35 -130 -72 -130 -80 -393 -229 -421\n"
+"-238 -21 -6 -21 -3 -21 139 0 152 -7 176 -48 176 -9 0 -89 -43 -177 -96z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* incback_svg = (const char*) temp_binary_data_6;
+
+//================== incbackOn.svg ==================
+static const unsigned char temp_binary_data_7[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3938\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"incbackOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3948\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3946\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3938\" />\n"
+"  <metadata\n"
+"     id=\"metadata3940\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3942\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M1254 1759 c-65 -40 -236 -141 -379 -226 -143 -85 -268 -162 -277 -170 -29 -26 -23 -69 15 -96 17 -13 135 -84 260 -156 125 -73 277 -163 338 -201 133 -85 162 -100 189 -100 32 0 40 38 40 186 l0 135 23 -6 c37 -11 233 -123 389 -222 147 -93 173 -1"
+"04 196 -81 17 17 17 979 0 996 -21 21 -38 14 -167 -65 -135 -83 -421 -243 -433 -243 -5 0 -8 58 -8 129 0 146 -10 191 -44 191 -12 0 -76 -32 -142 -71z\"\n"
+"       id=\"path3944\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* incbackOn_svg = (const char*) temp_binary_data_7;
+
+//================== incforward.svg ==================
+static const unsigned char temp_binary_data_8[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M567 1822 c-15 -17 -17 -66 -17 -505 l0 -487 25 -16 c16 -10 34 -14\n"
+"51 -10 24 6 228 123 452 259 l92 57 0 -136 c0 -130 1 -136 25 -159 13 -14 34\n"
+"-25 47 -25 27 0 101 42 713 397 199 116 196 132 -40 272 -366 215 -631 363\n"
+"-662 368 -25 4 -37 0 -57 -20 -25 -25 -26 -29 -26 -161 l0 -135 -77 48 c-222\n"
+"136 -462 271 -485 271 -14 0 -32 -8 -41 -18z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* incforward_svg = (const char*) temp_binary_data_8;
+
+//================== incforwardOn.svg ==================
+static const unsigned char temp_binary_data_9[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3950\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"incforwardOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3960\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3958\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3950\" />\n"
+"  <metadata\n"
+"     id=\"metadata3952\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3954\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M559 1813 c-11 -13 -14 -104 -14 -495 0 -463 1 -480 19 -494 11 -8 29 -14 39 -14 20 0 263 138 453 257 56 35 104 63 108 63 3 0 6 -63 6 -140 0 -127 2 -142 20 -160 11 -11 31 -20 43 -20 21 0 234 118 676 375 165 97 186 118 161 162 -14 24 -257 171"
+" -652 394 -235 133 -248 128 -248 -90 0 -79 -3 -141 -7 -139 -5 2 -107 62 -228 134 -308 184 -309 184 -337 184 -14 0 -32 -7 -39 -17z\"\n"
+"       id=\"path3956\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* incforwardOn_svg = (const char*) temp_binary_data_9;
+
+//================== mic.svg ==================
+static const unsigned char temp_binary_data_10[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M1569 2274 l-46 -26 17 -71 c40 -172 166 -339 335 -444 82 -52 251\n"
+"-111 267 -95 20 20 48 131 48 190 0 183 -108 347 -286 433 -78 38 -84 39 -185\n"
+"39 -93 0 -109 -3 -150 -26z\"/>\n"
+"<path d=\"M1400 2103 c-18 -36 -25 -71 -28 -139 -4 -83 -2 -96 27 -165 63 -151\n"
+"192 -267 333 -302 40 -9 91 -17 113 -17 51 1 152 25 171 40 22 19 17 35 -12\n"
+"38 -34 3 -182 73 -236 113 -58 41 -136 115 -178 169 -34 43 -110 166 -110 179\n"
+"0 9 -46 120 -52 127 -3 2 -16 -17 -28 -43z\"/>\n"
+"<path d=\"M1169 1589 c-68 -83 -134 -163 -146 -177 -12 -15 -50 -61 -85 -103\n"
+"-35 -41 -79 -95 -98 -119 -19 -24 -71 -87 -115 -140 -153 -183 -157 -189 -163\n"
+"-236 -3 -30 -11 -48 -23 -55 -10 -5 -37 -36 -59 -69 -37 -54 -40 -64 -40 -125\n"
+"0 -76 14 -109 64 -153 44 -38 100 -54 187 -55 120 0 211 45 384 192 50 42 95\n"
+"79 100 83 6 4 24 19 41 32 16 14 57 37 90 52 50 23 72 27 144 27 73 0 97 -4\n"
+"170 -34 47 -19 112 -52 145 -74 57 -38 180 -153 237 -223 62 -76 167 -3 111\n"
+"78 -57 84 -201 217 -307 284 -33 21 -100 54 -150 72 -84 32 -99 35 -207 35\n"
+"-112 1 -118 0 -193 -35 -83 -38 -112 -58 -251 -177 -175 -148 -251 -182 -370\n"
+"-165 -77 12 -84 59 -20 133 31 36 40 41 64 37 52 -11 39 -20 706 531 61 50\n"
+"140 115 178 145 37 29 67 57 67 61 0 3 -26 19 -57 35 -75 35 -209 169 -243\n"
+"241 -14 29 -28 53 -31 53 -3 0 -62 -68 -130 -151z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* mic_svg = (const char*) temp_binary_data_10;
+
+//================== micOn.svg ==================
+static const unsigned char temp_binary_data_11[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3962\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"micOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3976\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"840\"\n"
+"     inkscape:window-height=\"480\"\n"
+"     id=\"namedview3974\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"0\"\n"
+"     inkscape:current-layer=\"svg3962\" />\n"
+"  <metadata\n"
+"     id=\"metadata3964\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3966\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M1602 2271 c-29 -10 -57 -22 -62 -27 -14 -14 50 -192 90 -254 78 -121 170 -207 290 -270 67 -34 171 -70 206 -70 6 0 20 19 30 42 15 33 19 66 19 143 0 95 -2 104 -38 179 -100 211 -338 325 -535 257z\"\n"
+"       id=\"path3968\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M1405 2088 c-26 -65 -30 -162 -11 -238 34 -134 129 -246 265 -313 82 -41 87 -42 180 -41 73 0 106 5 140 20 l44 20 -49 18 c-250 93 -438 279 -525 517 -12 32 -23 59 -24 59 -2 0 -10 -19 -20 -42z\"\n"
+"       id=\"path3970\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M1249 1672 c-25 -31 -183 -224 -352 -429 -169 -205 -312 -384 -317 -398 -6 -15 -10 -36 -10 -49 0 -12 -16 -37 -36 -57 -20 -18 -47 -56 -62 -84 -51 -99 -26 -200 65 -256 34 -21 50 -24 148 -24 l110 0 80 42 c46 25 125 81 185 133 214 185 302 224 44"
+"8 201 149 -22 293 -110 439 -266 95 -101 122 -114 156 -77 29 32 20 59 -46 135 -274 314 -612 413 -869 255 -29 -18 -111 -81 -183 -141 -181 -152 -285 -197 -380 -165 -79 26 -82 85 -9 161 29 30 40 35 67 30 24 -3 42 2 73 24 86 58 853 696 848 705 -3 4 -22 17"
+" -43 27 -92 47 -202 161 -247 257 -9 19 -17 34 -18 33 0 0 -22 -26 -47 -57z\"\n"
+"       id=\"path3972\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* micOn_svg = (const char*) temp_binary_data_11;
+
+//================== pause.svg ==================
+static const unsigned char temp_binary_data_12[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M883 1875 c-18 -8 -42 -29 -53 -47 -20 -32 -20 -46 -18 -516 l3 -484\n"
+"37 -34 38 -34 114 0 115 0 35 34 36 33 0 488 c0 540 1 528 -66 560 -42 20\n"
+"-196 20 -241 0z\"/>\n"
+"<path d=\"M1514 1880 c-11 -4 -33 -22 -47 -40 l-27 -32 0 -488 0 -489 35 -36\n"
+"36 -35 113 0 c100 0 116 2 140 21 57 45 56 38 56 546 0 452 -1 469 -20 501\n"
+"-11 18 -36 40 -55 48 -38 15 -195 19 -231 4z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* pause_svg = (const char*) temp_binary_data_12;
+
+//================== pauseOn.svg ==================
+static const unsigned char temp_binary_data_13[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3978\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"pauseOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3990\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3988\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3978\" />\n"
+"  <metadata\n"
+"     id=\"metadata3980\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3982\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M878 1855 c-58 -33 -58 -31 -58 -548 0 -471 0 -474 22 -502 31 -40 77 -55 165 -55 94 0 140 19 165 70 16 32 18 77 18 488 0 483 -1 494 -50 537 -19 17 -38 20 -129 23 -80 1 -113 -2 -133 -13z\"\n"
+"       id=\"path3984\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M1495 1848 c-54 -43 -55 -49 -55 -540 0 -411 2 -456 18 -488 25 -51 71 -70 165 -70 88 0 134 15 165 55 22 28 22 31 22 502 0 520 0 517 -60 548 -20 10 -59 15 -128 15 -87 0 -103 -3 -127 -22z\"\n"
+"       id=\"path3986\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* pauseOn_svg = (const char*) temp_binary_data_13;
+
+//================== play.svg ==================
+static const unsigned char temp_binary_data_14[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M881 1821 c-21 -21 -21 -26 -21 -501 0 -467 1 -481 20 -500 11 -11\n"
+"32 -20 48 -20 24 0 337 174 740 412 108 64 124 85 106 135 -9 25 -216 151\n"
+"-648 395 -177 100 -213 111 -245 79z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* play_svg = (const char*) temp_binary_data_14;
+
+//================== playOn.svg ==================
+static const unsigned char temp_binary_data_15[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3992\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"playOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs4002\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview4000\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3992\" />\n"
+"  <metadata\n"
+"     id=\"metadata3994\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g3996\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M884 1822 c-32 -21 -34 -53 -34 -502 0 -449 2 -481 34 -502 35 -24 60 -11 803 420 34 19 66 47 73 60 23 51 12 59 -554 383 -244 140 -292 161 -322 141z\"\n"
+"       id=\"path3998\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* playOn_svg = (const char*) temp_binary_data_15;
+
+//================== save.svg ==================
+static const unsigned char temp_binary_data_16[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M320 1320 l0 -1000 1000 0 1000 0 0 878 0 877 -123 123 -122 122\n"
+"-128 0 -127 0 0 -310 0 -310 -500 0 -500 0 0 310 0 310 -250 0 -250 0 0 -1000z\n"
+"m1620 -500 l0 -370 -685 0 -685 0 0 370 0 370 685 0 685 0 0 -370z m250 -190\n"
+"l0 -60 -60 0 -60 0 0 60 0 60 60 0 60 0 0 -60z\"/>\n"
+"<path d=\"M820 885 l0 -65 315 0 315 0 0 65 0 65 -315 0 -315 0 0 -65z\"/>\n"
+"<path d=\"M820 635 l0 -65 440 0 440 0 0 65 0 65 -440 0 -440 0 0 -65z\"/>\n"
+"<path d=\"M1440 2010 l0 -190 130 0 130 0 0 190 0 190 -130 0 -130 0 0 -190z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* save_svg = (const char*) temp_binary_data_16;
+
+//================== saveOn.svg ==================
+static const unsigned char temp_binary_data_17[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg4004\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"saveOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs4020\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview4018\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg4004\" />\n"
+"  <metadata\n"
+"     id=\"metadata4006\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g4008\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M320 1320 l0 -1000 1000 0 1000 0 0 873 0 872 -128 128 -127 127 -123 0 -122 0 0 -315 0 -315 -500 0 -500 0 0 315 0 315 -250 0 -250 0 0 -1000z m1630 -500 l0 -380 -690 0 -690 0 0 380 0 380 690 0 690 0 0 -380z m250 -185 l0 -65 -65 0 -65 0 0 65 "
+"0 65 65 0 65 0 0 -65z\"\n"
+"       id=\"path4010\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M820 880 l0 -60 310 0 310 0 0 60 0 60 -310 0 -310 0 0 -60z\"\n"
+"       id=\"path4012\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M820 630 l0 -60 435 0 435 0 0 60 0 60 -435 0 -435 0 0 -60z\"\n"
+"       id=\"path4014\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"    <path\n"
+"       d=\"M1450 2005 l0 -185 120 0 120 0 0 185 0 185 -120 0 -120 0 0 -185z\"\n"
+"       id=\"path4016\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* saveOn_svg = (const char*) temp_binary_data_17;
+
+//================== stop.svg ==================
+static const unsigned char temp_binary_data_18[] =
+"<?xml version=\"1.0\" standalone=\"no\"?>\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
+" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n"
+" width=\"264.000000pt\" height=\"264.000000pt\" viewBox=\"0 0 264.000000 264.000000\"\n"
+" preserveAspectRatio=\"xMidYMid meet\">\n"
+"<metadata>\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"</metadata>\n"
+"<g transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"fill=\"#000000\" stroke=\"none\">\n"
+"<path d=\"M883 1875 c-18 -8 -42 -29 -53 -47 -20 -32 -20 -46 -18 -516 l3 -484\n"
+"37 -34 38 -34 424 0 c414 0 424 0 450 21 57 45 56 38 56 546 0 452 -1 469 -20\n"
+"501 -37 61 -47 62 -487 62 -319 -1 -404 -4 -430 -15z\"/>\n"
+"</g>\n"
+"</svg>\n";
+
+const char* stop_svg = (const char*) temp_binary_data_18;
+
+//================== stopOn.svg ==================
+static const unsigned char temp_binary_data_19[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg4022\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"stopOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs4032\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview4030\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"0.71515152\"\n"
+"     inkscape:cx=\"-141.92797\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg4022\" />\n"
+"  <metadata\n"
+"     id=\"metadata4024\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <g\n"
+"     transform=\"translate(0.000000,264.000000) scale(0.100000,-0.100000)\"\n"
+"     fill=\"#000000\"\n"
+"     stroke=\"none\"\n"
+"     id=\"g4026\"\n"
+"     style=\"fill:#ae3030;fill-opacity:1\">\n"
+"    <path\n"
+"       d=\"M883 1875 c-18 -8 -42 -29 -53 -47 -20 -32 -20 -46 -18 -516 l3 -484 37 -34 38 -34 425 0 425 0 38 34 37 34 3 484 c2 471 2 484 -18 516 -37 61 -47 62 -487 62 -319 -1 -404 -4 -430 -15z\"\n"
+"       id=\"path4028\"\n"
+"       style=\"fill:#ae3030;fill-opacity:1\" />\n"
+"  </g>\n"
+"</svg>\n";
+
+const char* stopOn_svg = (const char*) temp_binary_data_19;
+
+//================== stop.png ==================
+static const unsigned char temp_binary_data_20[] =
+{ 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,15,46,5,111,155,
+82,28,0,0,2,137,73,68,65,84,120,156,237,215,177,109,195,48,16,64,81,43,93,102,48,180,71,122,175,157,109,4,207,225,20,169,127,71,138,142,242,222,4,135,3,241,113,188,221,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,1,182,213,3,252,39,251,126,127,173,158,225,175,59,142,167,55,123,34,203,158,76,20,230,17,139,249,44,120,18,97,56,143,80,204,99,177,19,136,195,249,68,98,14,75,29,76,28,214,17,137,
+241,44,116,32,113,88,79,36,198,250,88,61,0,240,190,212,118,16,215,195,251,112,69,140,227,130,0,146,64,12,224,122,120,47,251,126,255,94,61,195,85,8,4,87,244,88,61,192,85,8,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,
+1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,
+72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,
+4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,105,91,61,192,85,236,251,253,181,122,6,126,29,199,211,187,30,196,5,1,36,129,224,82,62,183,237,
+107,245,12,87,226,20,27,200,55,99,61,223,139,177,44,115,48,145,88,71,28,198,179,208,9,68,226,124,226,48,135,165,78,34,18,231,17,135,121,44,118,34,145,152,79,28,230,178,220,19,8,197,120,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,92,193,15,143,49,59,192,62,185,203,69,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
+
+const char* stop_png = (const char*) temp_binary_data_20;
+
+//================== stopOn.png ==================
+static const unsigned char temp_binary_data_21[] =
+{ 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,15,46,48,57,40,150,
+63,0,0,2,115,73,68,65,84,120,156,237,215,193,113,194,64,16,69,65,112,68,138,133,64,137,69,25,225,131,207,239,54,171,5,220,29,193,214,47,213,171,209,237,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,184,239,126,192,127,242,60,142,215,238,55,124,186,199,121,250,102,47,100,236,197,68,97,29,177,88,207,192,139,8,195,117,132,98,29,195,46,32,14,215,19,137,53,140,58,76,28,246,17,137,121,6,29,36,
+14,251,137,196,172,159,221,15,0,222,151,218,14,113,61,188,15,87,196,28,23,4,144,148,118,128,235,225,253,184,34,102,184,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,
+128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,
+73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,
+64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,2,1,164,251,238,7,124,139,231,113,188,118,191,129,63,143,243,244,93,15,113,65,0,73,32,128,228,20,27,228,55,99,63,191,23,179,140,57,76,36,246,
+17,135,121,6,93,64,36,174,39,14,107,24,117,17,145,184,142,56,172,99,216,133,68,98,61,113,88,203,184,23,16,138,121,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,124,131,95,143,73,60,212,20,38,116,84,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
+
+const char* stopOn_png = (const char*) temp_binary_data_21;
+
+//================== audfile.png ==================
+static const unsigned char temp_binary_data_22[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,54,48,185,117,
 176,63,0,0,5,117,73,68,65,84,120,156,237,221,77,110,27,71,16,128,81,42,240,45,152,9,96,47,114,133,28,192,62,182,179,247,41,226,197,128,103,240,146,89,216,10,242,227,114,40,178,187,171,106,244,30,224,165,169,194,72,253,169,123,40,146,167,19,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,121,202,30,224,165,182,237,124,205,158,129,57,246,253,210,238,231,241,232,126,202,30,0,158,137,127,61,2,65,41,34,81,139,64,80,142,72,212,33,16,148,36,18,53,8,4,101,137,68,62,129,160,52,145,200,
@@ -30,10 +1020,10 @@ static const unsigned char temp_binary_data_0[] =
 198,123,54,64,69,118,16,64,72,32,128,144,64,0,33,129,0,66,2,1,132,4,2,8,9,4,16,18,8,32,36,16,64,72,32,128,144,64,0,33,129,0,66,2,1,132,4,2,8,9,4,16,18,8,32,36,16,64,72,32,128,144,64,0,33,129,0,66,2,1,132,4,2,8,9,4,16,18,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,195,159,113,84,210,189,46,229,217,42,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* audfile_png = (const char*) temp_binary_data_0;
+const char* audfile_png = (const char*) temp_binary_data_22;
 
 //================== audfileOn.png ==================
-static const unsigned char temp_binary_data_1[] =
+static const unsigned char temp_binary_data_23[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,58,12,58,175,
 131,180,0,0,12,188,73,68,65,84,120,156,237,221,127,108,220,119,125,199,241,215,251,123,118,139,29,214,36,19,173,74,17,99,221,58,40,164,246,221,197,203,162,110,140,57,109,74,171,10,66,124,73,13,226,199,164,78,252,193,54,137,209,9,141,73,176,78,157,138,
 4,154,38,138,166,85,98,26,162,8,58,212,168,62,167,77,160,153,104,85,163,110,203,170,212,190,243,185,129,63,104,233,86,52,181,172,205,146,102,208,224,216,247,125,239,143,184,44,97,254,18,255,248,126,239,243,185,243,243,33,69,145,237,243,221,75,86,242,
@@ -82,10 +1072,10 @@ static const unsigned char temp_binary_data_1[] =
 76,4,2,64,38,2,1,32,19,129,0,144,137,64,0,200,68,32,0,100,34,16,0,50,17,8,0,153,8,4,128,76,4,2,64,38,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,192,26,252,47,137,84,12,78,72,192,126,197,0,0,0,
 0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* audfileOn_png = (const char*) temp_binary_data_1;
+const char* audfileOn_png = (const char*) temp_binary_data_23;
 
 //================== back.png ==================
-static const unsigned char temp_binary_data_2[] =
+static const unsigned char temp_binary_data_24[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,51,6,11,184,209,
 227,0,0,3,199,73,68,65,84,120,156,237,217,77,78,220,48,24,128,97,167,234,134,51,140,178,160,167,224,0,189,118,247,229,10,44,64,34,204,25,186,156,46,10,45,29,198,76,126,236,36,182,159,103,89,169,200,124,120,94,125,153,132,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,148,174,219,250,0,48,85,223,31,78,231,255,54,12,71,119,57,3,67,165,24,151,194,112,78,40,210,50,76,118,111,76,24,222,
@@ -101,10 +1091,10 @@ static const unsigned char temp_binary_data_2[] =
 227,60,173,113,17,217,189,169,145,16,216,116,12,146,98,140,9,133,56,164,101,152,20,233,60,22,194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,112,217,111,149,223,34,147,13,47,11,148,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* back_png = (const char*) temp_binary_data_2;
+const char* back_png = (const char*) temp_binary_data_24;
 
 //================== backOn.png ==================
-static const unsigned char temp_binary_data_3[] =
+static const unsigned char temp_binary_data_25[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,55,45,195,104,
 237,167,0,0,8,165,73,68,65,84,120,156,237,221,91,140,156,101,25,192,241,231,221,105,75,10,229,32,162,246,66,69,3,82,161,116,59,211,181,152,122,192,138,38,70,69,219,157,197,6,46,44,209,196,212,67,66,189,176,26,163,16,48,82,19,130,135,86,111,244,134,11,
 189,48,197,110,65,18,227,133,32,74,188,16,179,204,1,234,217,136,98,140,10,10,77,164,69,119,231,123,189,208,26,60,76,233,118,191,233,183,51,243,251,221,110,231,233,147,238,228,159,217,125,118,167,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -138,10 +1128,10 @@ static const unsigned char temp_binary_data_3[] =
 23,61,235,67,57,34,190,23,57,239,106,118,58,63,175,104,189,145,36,16,12,165,217,77,155,46,77,57,95,22,17,71,107,189,222,79,223,217,237,250,233,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,255,227,31,128,189,145,139,165,45,249,195,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* backOn_png = (const char*) temp_binary_data_3;
+const char* backOn_png = (const char*) temp_binary_data_25;
 
 //================== forward.png ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_26[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,53,23,55,82,86,
 151,0,0,3,188,73,68,65,84,120,156,237,221,65,78,27,49,20,128,97,167,234,134,51,164,83,137,46,122,133,178,167,199,134,61,167,104,23,163,156,129,101,186,64,160,148,230,149,153,196,158,25,219,223,183,139,132,70,142,101,126,61,71,17,164,4,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,212,110,183,246,2,90,53,12,251,227,233,235,113,60,216,107,170,227,208,102,246,62,12,103,60,142,227,225,231,
@@ -157,10 +1147,10 @@ static const unsigned char temp_binary_data_4[] =
 254,33,165,116,159,243,153,246,54,47,155,89,64,20,9,135,247,188,28,211,132,189,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,239,
 15,195,192,247,253,95,29,24,96,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* forward_png = (const char*) temp_binary_data_4;
+const char* forward_png = (const char*) temp_binary_data_26;
 
 //================== forwardOn.png ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_27[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,57,15,136,139,
 129,205,0,0,8,161,73,68,65,84,120,156,237,221,107,140,92,101,25,7,240,231,61,123,161,5,180,197,42,70,227,53,193,16,210,184,115,150,21,140,137,154,98,20,136,193,180,219,38,37,49,94,162,209,196,68,40,24,163,160,68,208,47,106,140,23,240,131,81,227,141,138,
 137,86,152,85,139,183,120,225,22,65,169,101,166,75,145,18,47,232,7,47,16,3,5,169,32,221,153,215,15,136,23,194,212,221,238,153,61,59,51,191,223,215,153,243,204,255,211,63,239,59,243,158,51,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -194,10 +1184,10 @@ static const unsigned char temp_binary_data_5[] =
 85,100,227,63,20,68,197,118,109,220,56,57,54,57,121,118,138,120,65,116,187,227,185,40,126,217,89,179,102,207,246,91,110,121,184,238,108,171,209,238,153,153,99,23,22,22,94,30,41,157,146,115,94,179,148,107,83,196,161,92,20,123,21,3,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,111,255,4,239,17,69,134,201,232,41,198,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* forwardOn_png = (const char*) temp_binary_data_5;
+const char* forwardOn_png = (const char*) temp_binary_data_27;
 
 //================== incback.png ==================
-static const unsigned char temp_binary_data_6[] =
+static const unsigned char temp_binary_data_28[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,51,30,24,212,
 73,181,0,0,4,184,73,68,65,84,120,156,237,221,49,146,211,76,24,4,208,49,69,194,25,168,13,184,5,7,224,218,28,128,43,252,193,31,96,246,28,16,64,21,46,179,178,37,217,146,102,190,126,47,35,115,219,234,246,72,187,197,182,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,140,238,116,244,11,160,127,47,47,31,127,94,254,251,124,126,141,186,110,46,243,167,101,143,10,203,50,215,195,112,173,114,89,
@@ -217,10 +1207,10 @@ static const unsigned char temp_binary_data_6[] =
 149,115,95,139,9,202,122,215,101,73,42,72,114,118,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,160,134,95,86,54,192,194,83,47,8,183,0,
 0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* incback_png = (const char*) temp_binary_data_6;
+const char* incback_png = (const char*) temp_binary_data_28;
 
 //================== incbackOn.png ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_29[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,56,2,239,33,204,
 49,0,0,13,47,73,68,65,84,120,156,237,221,109,140,92,213,97,198,241,231,220,89,191,97,130,77,136,72,171,86,73,168,55,182,11,236,204,29,79,214,139,137,65,184,17,129,164,1,123,102,54,219,54,173,28,41,105,186,9,21,50,168,10,152,52,4,40,38,64,130,42,94,28,
 39,69,85,171,146,79,53,246,44,176,137,149,170,72,165,77,83,55,148,245,189,51,241,86,161,77,171,148,168,4,149,22,156,4,178,47,51,115,79,63,120,150,26,215,198,222,221,217,123,102,230,252,127,31,119,103,174,158,125,123,118,230,188,93,9,0,0,0,0,0,0,0,0,0,
@@ -270,10 +1260,10 @@ static const unsigned char temp_binary_data_7[] =
 94,172,86,119,186,73,149,62,10,2,103,244,84,54,123,81,221,152,205,129,49,107,18,99,94,42,71,209,83,174,51,165,165,146,203,173,151,49,131,70,90,157,72,147,229,56,254,142,235,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,243,241,191,84,168,47,172,29,201,5,229,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* incbackOn_png = (const char*) temp_binary_data_7;
+const char* incbackOn_png = (const char*) temp_binary_data_29;
 
 //================== incforward.png ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_30[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,53,0,180,129,
 211,80,0,0,5,1,73,68,65,84,120,156,237,221,77,142,27,55,16,6,80,42,240,198,103,152,200,64,188,200,21,226,3,248,218,179,79,174,144,69,12,164,163,51,100,169,44,60,130,59,182,52,211,255,36,171,222,91,6,48,208,197,102,125,44,182,5,167,20,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,160,119,167,218,15,112,148,243,249,233,122,239,191,15,195,37,197,26,220,171,63,75,237,44,151,98,131,60,10,
@@ -294,10 +1284,10 @@ static const unsigned char temp_binary_data_8[] =
 166,52,74,212,230,200,92,59,235,165,218,24,223,55,75,166,198,184,19,20,161,166,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,238,
 251,15,42,234,233,52,165,9,68,214,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* incforward_png = (const char*) temp_binary_data_8;
+const char* incforward_png = (const char*) temp_binary_data_30;
 
 //================== incforwardOn.png ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_31[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,57,0,24,52,156,
 92,0,0,12,90,73,68,65,84,120,156,237,221,113,144,156,245,93,199,241,207,247,217,187,11,92,83,239,130,182,118,58,84,107,75,141,26,114,251,108,174,113,172,214,14,48,140,180,54,109,146,59,204,76,255,192,25,212,129,233,168,228,12,69,29,116,188,132,78,37,
 210,162,148,41,232,77,97,28,104,199,177,71,111,143,144,12,45,181,224,161,198,72,194,237,221,110,114,37,148,128,80,68,105,193,114,73,45,201,113,183,207,215,63,72,218,166,16,146,220,237,238,111,159,231,121,191,254,189,125,158,124,46,155,124,246,247,252,
@@ -345,10 +1335,10 @@ static const unsigned char temp_binary_data_9[] =
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,218,255,3,240,177,62,45,18,243,232,52,0,0,0,
 0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* incforwardOn_png = (const char*) temp_binary_data_9;
+const char* incforwardOn_png = (const char*) temp_binary_data_31;
 
 //================== mic.png ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_32[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,55,16,155,0,161,
 182,0,0,10,59,73,68,65,84,120,156,237,221,207,142,35,71,29,192,241,242,40,129,67,144,64,28,56,224,237,93,54,55,4,18,226,0,2,110,9,239,64,132,196,133,64,30,130,229,10,188,68,18,132,196,133,151,96,184,129,132,196,35,176,81,48,115,67,72,32,14,72,44,107,
 14,193,90,103,50,179,238,182,171,186,234,87,245,249,156,119,189,221,245,231,235,178,199,227,77,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,200,103,83,251,2,96,154,182,251,204,15,249,110,74,233,157,221,238,198,250,190,144,1,164,
@@ -388,10 +1378,10 @@ static const unsigned char temp_binary_data_10[] =
 176,73,233,173,218,215,112,23,239,53,132,247,65,237,11,168,169,171,133,251,181,215,94,219,252,253,243,159,123,94,251,58,14,132,161,15,115,79,17,61,206,119,119,55,116,80,227,37,71,143,11,132,23,238,91,83,61,207,123,183,55,118,224,191,143,135,243,13,181,
 176,191,52,109,159,252,55,165,159,231,120,44,81,96,4,22,249,145,219,167,13,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,96,5,255,3,163,186,181,106,151,78,175,252,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* mic_png = (const char*) temp_binary_data_10;
+const char* mic_png = (const char*) temp_binary_data_32;
 
 //================== micOn.png ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_33[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,58,38,225,20,
 74,98,0,0,32,0,73,68,65,84,120,156,237,221,121,124,92,101,217,62,240,235,122,206,76,154,116,167,45,8,101,179,148,110,153,165,40,252,94,21,80,80,100,123,17,154,165,5,4,89,148,69,4,17,100,127,217,21,65,22,1,69,69,5,65,5,217,155,165,101,17,100,85,68,95,
 69,176,157,57,73,218,178,239,5,10,148,174,73,102,206,125,255,254,72,234,11,88,218,204,100,102,206,204,228,254,126,62,253,3,154,121,158,59,205,228,154,115,158,243,44,128,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,
@@ -550,10 +1540,10 @@ static const unsigned char temp_binary_data_11[] =
 100,178,78,162,81,104,38,131,186,85,171,100,175,231,159,183,16,48,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,
 49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,198,24,99,140,49,197,246,255,1,98,138,39,106,234,51,155,151,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* micOn_png = (const char*) temp_binary_data_11;
+const char* micOn_png = (const char*) temp_binary_data_33;
 
 //================== pause.png ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_34[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,52,26,80,248,
 27,107,0,0,3,8,73,68,65,84,120,156,237,217,61,142,211,80,24,64,81,135,142,53,12,161,160,96,11,208,195,178,153,30,182,64,131,68,200,26,40,135,146,105,174,52,18,182,159,121,62,103,1,121,63,246,119,19,41,203,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,172,224,50,122,3,103,114,189,62,60,173,245,89,183,219,253,191,121,118,103,61,247,12,92,246,198,214,28,142,114,196,161,57,235,185,103,227,130,55,
@@ -566,10 +1556,10 @@ static const unsigned char temp_binary_data_12[] =
 145,67,114,214,115,207,204,165,110,100,196,176,28,97,72,206,122,238,89,185,216,13,237,53,44,71,28,144,51,159,125,38,46,119,7,91,14,203,145,7,228,172,231,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,120,169,63,45,57,121,41,97,194,21,74,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* pause_png = (const char*) temp_binary_data_12;
+const char* pause_png = (const char*) temp_binary_data_34;
 
 //================== pauseOn.png ==================
-static const unsigned char temp_binary_data_13[] =
+static const unsigned char temp_binary_data_35[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,56,23,130,252,
 40,218,0,0,6,210,73,68,65,84,120,156,237,218,77,140,85,103,29,199,241,255,115,47,51,106,170,82,180,84,177,141,150,152,106,34,97,230,78,6,162,237,170,77,116,33,41,129,2,178,240,221,104,219,164,73,147,46,72,19,227,203,194,216,24,95,170,27,227,107,93,84,
 99,162,8,195,224,162,110,72,29,55,98,73,113,230,146,178,18,131,139,82,68,108,197,69,35,12,51,231,113,81,99,176,157,39,29,240,220,115,102,46,159,207,126,206,239,127,51,225,203,205,157,27,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -596,10 +1586,10 @@ static const unsigned char temp_binary_data_13[] =
 252,13,55,28,217,123,244,232,191,106,61,182,70,251,239,184,227,13,221,139,23,63,148,114,222,25,17,91,227,229,215,253,214,107,120,212,124,188,252,237,200,211,17,241,155,42,98,122,207,220,220,159,106,60,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,96,144,254,13,218,149,86,129,43,3,216,87,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* pauseOn_png = (const char*) temp_binary_data_13;
+const char* pauseOn_png = (const char*) temp_binary_data_35;
 
 //================== play.png ==================
-static const unsigned char temp_binary_data_14[] =
+static const unsigned char temp_binary_data_36[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,52,43,1,38,27,
 81,0,0,3,229,73,68,65,84,120,156,237,220,65,110,212,64,16,64,209,9,98,195,25,6,35,177,225,10,112,121,246,156,2,22,17,103,96,57,44,34,35,2,113,50,227,184,186,171,186,223,91,70,138,100,197,237,239,234,78,38,167,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,80,221,93,239,11,152,197,178,156,47,255,126,237,254,254,167,159,63,169,89,160,193,158,10,195,83,196,130,140,44,202,64,215,198,
@@ -615,10 +1605,10 @@ static const unsigned char temp_binary_data_14[] =
 8,38,136,226,132,129,72,2,81,148,48,208,130,64,20,35,12,180,228,12,162,16,113,160,53,19,68,1,194,64,47,2,145,152,48,208,155,5,24,104,89,206,151,189,223,43,14,100,96,130,72,70,24,200,196,98,12,118,237,20,33,12,100,100,81,54,178,21,10,97,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,210,111,8,121,34,128,226,199,169,61,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* play_png = (const char*) temp_binary_data_14;
+const char* play_png = (const char*) temp_binary_data_36;
 
 //================== playOn.png ==================
-static const unsigned char temp_binary_data_15[] =
+static const unsigned char temp_binary_data_37[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,56,44,51,247,
 193,254,0,0,8,66,73,68,65,84,120,156,237,221,93,140,156,85,25,7,240,231,204,108,37,11,69,64,140,87,38,26,67,130,72,202,206,130,9,54,225,2,9,9,134,160,180,75,105,72,136,94,24,3,55,134,46,82,69,34,81,72,52,41,98,8,144,112,129,49,146,128,241,162,208,45,
 10,34,68,40,241,3,193,196,237,204,238,82,160,130,162,136,70,140,31,229,203,182,217,221,57,94,128,225,195,66,119,187,243,246,204,59,243,251,221,206,188,103,255,87,255,156,243,62,239,188,27,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -651,10 +1641,10 @@ static const unsigned char temp_binary_data_15[] =
 79,149,73,8,239,78,65,28,6,91,79,62,249,125,205,85,171,62,213,136,88,157,115,94,200,41,237,30,217,187,119,246,252,221,187,95,46,157,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,193,246,95,246,220,123,176,3,247,31,26,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* playOn_png = (const char*) temp_binary_data_15;
+const char* playOn_png = (const char*) temp_binary_data_37;
 
 //================== save.png ==================
-static const unsigned char temp_binary_data_16[] =
+static const unsigned char temp_binary_data_38[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,54,25,251,199,
 40,83,0,0,3,112,73,68,65,84,120,156,237,221,193,109,227,64,16,0,65,235,160,44,4,230,31,152,160,56,116,207,123,53,112,182,73,238,46,85,21,193,88,54,154,35,192,3,126,125,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,229,54,122,128,109,
 123,188,71,207,176,135,231,243,53,252,179,228,159,179,254,174,174,254,123,255,51,122,0,88,217,85,30,112,69,32,224,151,174,28,9,129,128,29,92,53,18,2,1,59,185,98,36,4,2,118,116,181,72,8,4,236,236,74,145,16,8,56,192,85,34,33,16,112,144,43,68,66,32,224,
@@ -668,10 +1658,10 @@ static const unsigned char temp_binary_data_16[] =
 64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,110,49,118,226,152,232,243,172,120,91,241,93,54,8,32,9,4,144,4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,32,9,4,144,4,2,72,31,113,139,241,9,255,51,15,71,176,65,0,73,32,128,36,16,64,18,8,32,9,4,144,
 4,2,72,2,1,36,129,0,146,64,0,73,32,128,36,16,64,18,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,248,129,191,5,162,76,48,44,106,39,197,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* save_png = (const char*) temp_binary_data_16;
+const char* save_png = (const char*) temp_binary_data_38;
 
 //================== saveOn.png ==================
-static const unsigned char temp_binary_data_17[] =
+static const unsigned char temp_binary_data_39[] =
 { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,1,8,0,0,1,8,8,6,0,0,0,163,246,106,255,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,13,215,0,0,13,215,1,66,40,155,120,0,0,0,7,116,73,77,69,7,223,2,12,12,57,50,208,227,
 205,220,0,0,4,62,73,68,65,84,120,156,237,221,49,110,219,72,0,133,225,161,225,38,183,161,251,45,92,248,2,81,14,19,119,86,105,31,198,206,21,116,4,234,66,158,45,54,64,2,4,15,88,199,28,205,144,250,190,70,141,0,62,24,198,15,77,49,96,41,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,50,245,30,240,54,207,181,247,134,53,28,150,165,251,223,146,95,46,242,127,85,235,227,225,124,126,105,254,156,142,110,122,15,128,205,154,166,231,215,121,62,246,158,209,146,64,192,39,76,165,60,237,57,18,2,1,
@@ -689,7 +1679,7 @@ static const unsigned char temp_binary_data_17[] =
 238,189,129,193,213,250,79,239,9,35,186,138,64,148,90,191,247,158,0,91,228,136,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,68,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,127,225,95,44,74,127,54,163,2,37,
 7,0,0,0,0,73,69,78,68,174,66,96,130,0,0 };
 
-const char* saveOn_png = (const char*) temp_binary_data_17;
+const char* saveOn_png = (const char*) temp_binary_data_39;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -702,6 +1692,28 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
     switch (hash)
     {
+        case 0xcf218fd1:  numBytes = 1023; return audfile_svg;
+        case 0x715ea750:  numBytes = 2315; return audfileOn_svg;
+        case 0x7e70270c:  numBytes = 873; return back_svg;
+        case 0x87645bcb:  numBytes = 2152; return backOn_svg;
+        case 0x628f95ea:  numBytes = 874; return forward_svg;
+        case 0xe1638b29:  numBytes = 2137; return forwardOn_svg;
+        case 0xde4300ea:  numBytes = 963; return incback_svg;
+        case 0x3de83629:  numBytes = 2205; return incbackOn_svg;
+        case 0x7c87074c:  numBytes = 866; return incforward_svg;
+        case 0x5b442c0b:  numBytes = 2192; return incforwardOn_svg;
+        case 0x3ed4186c:  numBytes = 1767; return mic_svg;
+        case 0xbe91752b:  numBytes = 2933; return micOn_svg;
+        case 0x3175289b:  numBytes = 882; return pause_svg;
+        case 0x8d2f359a:  numBytes = 2276; return pauseOn_svg;
+        case 0x7000bed9:  numBytes = 706; return play_svg;
+        case 0x572e3458:  numBytes = 1964; return playOn_svg;
+        case 0x847ba8a2:  numBytes = 1013; return save_svg;
+        case 0x3895cfe1:  numBytes = 2525; return saveOn_svg;
+        case 0x663b24a7:  numBytes = 728; return stop_svg;
+        case 0xa8665ea6:  numBytes = 1997; return stopOn_svg;
+        case 0x663b186c:  numBytes = 764; return stop_png;
+        case 0xa866526b:  numBytes = 742; return stopOn_png;
         case 0xcf218396:  numBytes = 1512; return audfile_png;
         case 0x715e9b15:  numBytes = 3375; return audfileOn_png;
         case 0x7e701ad1:  numBytes = 1082; return back_png;
@@ -729,6 +1741,28 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
 const char* namedResourceList[] =
 {
+    "audfile_svg",
+    "audfileOn_svg",
+    "back_svg",
+    "backOn_svg",
+    "forward_svg",
+    "forwardOn_svg",
+    "incback_svg",
+    "incbackOn_svg",
+    "incforward_svg",
+    "incforwardOn_svg",
+    "mic_svg",
+    "micOn_svg",
+    "pause_svg",
+    "pauseOn_svg",
+    "play_svg",
+    "playOn_svg",
+    "save_svg",
+    "saveOn_svg",
+    "stop_svg",
+    "stopOn_svg",
+    "stop_png",
+    "stopOn_png",
     "audfile_png",
     "audfileOn_png",
     "back_png",

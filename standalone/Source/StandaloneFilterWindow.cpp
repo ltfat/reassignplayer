@@ -48,9 +48,9 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
    // Init toolbar
    //toolbar.setStyle(Toolbar::textOnly);
-   //toolbar.addDefaultItems(*tbfac);
    tbfac = new FilterWindowToolbarItemFactory(this);
-   toolbar.addItem(*tbfac,1);
+   toolbar.addDefaultItems(*tbfac);
+   //toolbar.addItem(*tbfac,1);
    Component::addAndMakeVisible(toolbar);
 
 
@@ -172,19 +172,41 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
       }
    }
 */
-
+    
    for (int ii = 0; ii < toolbar.getNumItems(); ii++)
    {
       if (b == toolbar.getItemComponent(ii))
       {
-         switch (toolbar.getItemId(ii))
-         {
-
-         case 1:
-            std::cout << "OK button pressed" << std::endl;
+        switch (toolbar.getItemId(ii))
+        {
+        case 1:
+            std::cout << "BACK button pressed" << std::endl;
+            break;        
+        case 2:
+            std::cout << "PLAY button pressed" << std::endl;
+            break;        
+        case 3:
+            std::cout << "PAUSE button pressed" << std::endl;
+            break;        
+        case 4:
+            std::cout << "STOP button pressed" << std::endl;
+            break;        
+        case 5:
+            std::cout << "FORWARD button pressed" << std::endl;
+            break;        
+        case 6:
+            std::cout << "MIC button pressed" << std::endl;
+            break;        
+        case 7:
+            std::cout << "FILE button pressed" << std::endl;
+            break;        
+        case 8:
+            std::cout << "SAVE button pressed" << std::endl;
+            break;        
+        default:
             break;
+        }
 
-         }
       }
    }
 
@@ -234,17 +256,79 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 
 }
 
+enum ToolbarItemIds
+{
+    back = 1,
+    play,
+    pause,
+    stop,
+    forward,
+    micToggle,
+    fileToggle,
+    saveImg
+};
+
+
+
 ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::createItem(int itemId)
 {  int NumBytes;
-   const char* iconData = BinaryData::getNamedResource("mic_png",NumBytes);
-   Drawable* iconOff = Drawable::createFromImageData(iconData,NumBytes);
-   iconData = BinaryData::getNamedResource("micOn_png",NumBytes);
-   Drawable* iconOn = Drawable::createFromImageData(iconData,NumBytes);
+   const char* iconData;
+   String buttonText, binDataOff, binDataOn;
+   Drawable* iconOff;
+   Drawable* iconOn;
+    
+   switch(itemId)
+    {
+    case back:
+        binDataOff = "back_svg";
+        binDataOn = "backOn_svg";
+        buttonText = "back";
+        break;
+    case play:
+        binDataOff = "play_svg";
+        binDataOn = "playOn_svg";
+        buttonText = "play";
+        break;
+    case pause:
+        binDataOff = "pause_svg";
+        binDataOn = "pauseOn_svg";
+        buttonText = "pause";
+        break;
+    case stop:
+        binDataOff = "stop_svg";
+        binDataOn = "stopOn_svg";
+        buttonText = "stop";
+        break;
+    case forward:
+        binDataOff = "forward_svg";
+        binDataOn = "forwardOn_svg";
+        buttonText = "forward";
+        break;
+    case micToggle:
+        binDataOff = "mic_svg";
+        binDataOn = "micOn_svg";
+        buttonText = "toggle MIC";
+        break;
+    case fileToggle:
+        binDataOff = "audfile_svg";
+        binDataOn = "audfileOn_svg";
+        buttonText = "toggle FILE";
+        break;
+    case saveImg:
+        binDataOff = "save_svg";
+        binDataOn = "saveOn_svg";
+        buttonText = "save IMG";
+        break;
+    default:
+        break;
+    }
    
-  //ToolbarItemComponent* b =  new GenericToolbarItemComponent(itemId, String("OK button"),true);
-   ToolbarButton* b = new ToolbarButton(itemId, String("OK button"), //nullptr, nullptr);
-   iconOff,iconOn);
+   iconData = BinaryData::getNamedResource(binDataOff.toRawUTF8(),NumBytes);
+   iconOff = Drawable::createFromImageData(iconData,NumBytes);
+   iconData = BinaryData::getNamedResource(binDataOff.toRawUTF8(),NumBytes);
+   iconOn = Drawable::createFromImageData(iconData,NumBytes);
+   ToolbarButton* b = new ToolbarButton(itemId,buttonText,iconOff,iconOn);
    b->addListener(listener);
    return b;
 }
@@ -252,13 +336,33 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::getDefaultItemSet(Array<int> &ids)
 {
-   ids.add(1);
+   ids.add(back);
+   ids.add(play);
+   ids.add(pause);
+   ids.add(stop);
+   ids.add(forward);
+   ids.add(micToggle);
+   ids.add (separatorBarId);
+   ids.add(fileToggle);
+   ids.add(saveImg);    
 }
 
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::getAllToolbarItemIds(Array<int> &ids)
 {
-   ids.add(1);
+   ids.add(back);
+   ids.add(play);
+   ids.add(pause);
+   ids.add(stop);
+   ids.add(forward);
+   ids.add(micToggle);
+   ids.add(fileToggle);
+   ids.add(saveImg);   
+   
+   // Spacers and Separators
+   ids.add (separatorBarId);
+   ids.add (spacerId);
+   ids.add (flexibleSpacerId);
 }
 
 

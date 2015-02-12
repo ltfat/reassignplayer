@@ -5,25 +5,27 @@
               jucerVersion="3.1.0" defines="STANDALONE">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
-      <FILE id="lc9ueE" name="audfile.png" compile="0" resource="1" file="pics/audfile.png"/>
-      <FILE id="YftBpA" name="audfileOn.png" compile="0" resource="1" file="pics/audfileOn.png"/>
-      <FILE id="fEEX14" name="back.png" compile="0" resource="1" file="pics/back.png"/>
-      <FILE id="HPtpAx" name="backOn.png" compile="0" resource="1" file="pics/backOn.png"/>
-      <FILE id="tdrsFW" name="forward.png" compile="0" resource="1" file="pics/forward.png"/>
-      <FILE id="OjNNPK" name="forwardOn.png" compile="0" resource="1" file="pics/forwardOn.png"/>
-      <FILE id="YAFCCp" name="incback.png" compile="0" resource="1" file="pics/incback.png"/>
-      <FILE id="fPNZ3D" name="incbackOn.png" compile="0" resource="1" file="pics/incbackOn.png"/>
-      <FILE id="g0AfL6" name="incforward.png" compile="0" resource="1" file="pics/incforward.png"/>
-      <FILE id="Qdgfor" name="incforwardOn.png" compile="0" resource="1"
-            file="pics/incforwardOn.png"/>
-      <FILE id="fFwe1o" name="mic.png" compile="0" resource="1" file="pics/mic.png"/>
-      <FILE id="tVDc3Q" name="micOn.png" compile="0" resource="1" file="pics/micOn.png"/>
-      <FILE id="G9uJQY" name="pause.png" compile="0" resource="1" file="pics/pause.png"/>
-      <FILE id="NTpq36" name="pauseOn.png" compile="0" resource="1" file="pics/pauseOn.png"/>
-      <FILE id="uXu5R6" name="play.png" compile="0" resource="1" file="pics/play.png"/>
-      <FILE id="grnWB7" name="playOn.png" compile="0" resource="1" file="pics/playOn.png"/>
-      <FILE id="gE3DeX" name="save.png" compile="0" resource="1" file="pics/save.png"/>
-      <FILE id="ksfJiQ" name="saveOn.png" compile="0" resource="1" file="pics/saveOn.png"/>
+      <FILE id="uEk6PE" name="audfile.svg" compile="0" resource="1" file="pics/audfile.svg"/>
+      <FILE id="nySaA7" name="audfileOn.svg" compile="0" resource="1" file="pics/audfileOn.svg"/>
+      <FILE id="RlEPsq" name="back.svg" compile="0" resource="1" file="pics/back.svg"/>
+      <FILE id="LZDfhZ" name="backOn.svg" compile="0" resource="1" file="pics/backOn.svg"/>
+      <FILE id="mxiH9o" name="forward.svg" compile="0" resource="1" file="pics/forward.svg"/>
+      <FILE id="NqXtBt" name="forwardOn.svg" compile="0" resource="1" file="pics/forwardOn.svg"/>
+      <FILE id="Fc9H3E" name="incback.svg" compile="0" resource="1" file="pics/incback.svg"/>
+      <FILE id="V5PwOi" name="incbackOn.svg" compile="0" resource="1" file="pics/incbackOn.svg"/>
+      <FILE id="Ylygpz" name="incforward.svg" compile="0" resource="1" file="pics/incforward.svg"/>
+      <FILE id="Ze9YNy" name="incforwardOn.svg" compile="0" resource="1"
+            file="pics/incforwardOn.svg"/>
+      <FILE id="cugoc2" name="mic.svg" compile="0" resource="1" file="pics/mic.svg"/>
+      <FILE id="BU9o3D" name="micOn.svg" compile="0" resource="1" file="pics/micOn.svg"/>
+      <FILE id="bpHBqn" name="pause.svg" compile="0" resource="1" file="pics/pause.svg"/>
+      <FILE id="OL1Tja" name="pauseOn.svg" compile="0" resource="1" file="pics/pauseOn.svg"/>
+      <FILE id="vcDuuC" name="play.svg" compile="0" resource="1" file="pics/play.svg"/>
+      <FILE id="PCSbn2" name="playOn.svg" compile="0" resource="1" file="pics/playOn.svg"/>
+      <FILE id="p8ql8Q" name="save.svg" compile="0" resource="1" file="pics/save.svg"/>
+      <FILE id="nAKk9K" name="saveOn.svg" compile="0" resource="1" file="pics/saveOn.svg"/>
+      <FILE id="on7Yl4" name="stop.svg" compile="0" resource="1" file="pics/stop.svg"/>
+      <FILE id="INk5k7" name="stopOn.svg" compile="0" resource="1" file="pics/stopOn.svg"/>
       <FILE id="C61AI2" name="AudioSourceProcessor.cpp" compile="1" resource="0"
             file="Source/AudioSourceProcessor.cpp"/>
       <FILE id="QUqLWT" name="AudioSourceProcessor.h" compile="0" resource="0"

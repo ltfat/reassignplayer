@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="HMi56V" name="standalone" projectType="guiapp" version="1.0.0"
-              bundleIdentifier="com.yourcompany.standalone" includeBinaryInAppConfig="1"
-              jucerVersion="3.1.1" defines="STANDALONE">
-  <MAINGROUP id="nD9bX5" name="standalone">
-    <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
-      <FILE id="i5Q2QI" name="PluginEditor.cpp" compile="1" resource="0"
-            file="../plugin/Source/PluginEditor.cpp"/>
-      <FILE id="xfcczb" name="PluginEditor.h" compile="0" resource="0" file="../plugin/Source/PluginEditor.h"/>
-      <FILE id="RCYD0W" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="../plugin/Source/PluginProcessor.cpp"/>
-      <FILE id="OHkvaD" name="PluginProcessor.h" compile="0" resource="0"
-            file="../plugin/Source/PluginProcessor.h"/>
-      <FILE id="Qnd2g2" name="juce_StandaloneFilterWindow.h" compile="0"
-            resource="0" file="Source/juce_StandaloneFilterWindow.h"/>
-      <FILE id="pIxXbm" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="rZNnbp" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-      <FILE id="cURhgj" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+<JUCERPROJECT id="GXg94c" name="plugin" projectType="audioplug" version="1.0.0"
+              bundleIdentifier="com.yourcompany.plugin" includeBinaryInAppConfig="1"
+              buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
+              pluginName="plugin" pluginDesc="plugin" pluginManufacturer="yourcompany"
+              pluginManufacturerCode="Manu" pluginCode="Gxg9" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
+              pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.plugin"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.1">
+  <MAINGROUP id="vMC3sj" name="plugin">
+    <GROUP id="{F7222CBA-A03D-435F-46B5-6452A7641465}" name="Source">
+      <FILE id="hYTQxV" name="ltfatColormaps.h" compile="0" resource="0"
+            file="Source/ltfatColormaps.h"/>
+      <FILE id="Ag4j97" name="Spectrogram.cpp" compile="1" resource="0" file="Source/Spectrogram.cpp"/>
+      <FILE id="Rptw8N" name="Spectrogram.h" compile="0" resource="0" file="Source/Spectrogram.h"/>
+      <FILE id="x6otii" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="bhszxj" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="giBViW" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Ydfwlm" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="standalone"/>
+                       targetName="plugin"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="standalone"/>
+                       targetName="plugin"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
@@ -42,7 +46,7 @@
         <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
@@ -50,8 +54,8 @@
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
-    <MODULES id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_core" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
@@ -62,5 +66,5 @@
     <MODULES id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_JACK="enabled" JUCE_PLUGINHOST_VST="enabled" JUCE_PLUGINHOST_VST3="enabled"/>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_PLUGINHOST_VST="enabled" JUCE_PLUGINHOST_VST3="enabled"/>
 </JUCERPROJECT>

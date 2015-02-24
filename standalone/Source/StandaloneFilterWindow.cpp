@@ -15,11 +15,14 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       Colour backgroundColour,
       PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
-   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | 
+                     DocumentWindow::maximiseButton | DocumentWindow::closeButton),
      //optionsButton ("options"),
      micfileButton ("MIC"),
      fileChooserButton ("Open file...")
 {
+   //ogl->attachTo(*this);
+   DBG("StandaloneFilterWindow constructor");
    menuBarComponent = new MenuBarComponent(this);
 
    //tbfac = new FilterWindowToolbarItemFactory(this);
@@ -36,7 +39,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    setSize(e->getWidth(), e->getHeight());
 
    // Window dimensions
-   setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
+   setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow:: maximiseButton |DocumentWindow::closeButton, false);
    setTitleBarHeight(20);
    setSize(oldWidth+12, oldHeight + 5 * getTitleBarHeight());
    setResizable(true, true);
@@ -86,6 +89,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       centreWithSize (getWidth(), getHeight());
    }
 
+   DBG("StandaloneFilterWindow constructor end");
 }
 
 StandaloneFilterWindow::~StandaloneFilterWindow()
@@ -106,7 +110,9 @@ StandaloneFilterWindow::~StandaloneFilterWindow()
 
 void StandaloneFilterWindow::createEditorComp()
 {
+   DBG("Before Editor");
    pluginHolder->getPluginProcessor()->createEditorIfNeeded();
+   DBG("After Editor");
 }
 
 void StandaloneFilterWindow::deleteEditorComp()

@@ -17,6 +17,10 @@
 #endif
 
 #include "../../plugin/JuceLibraryCode/JuceHeader.h"
+#include "ltfat.h"
+#include "RingTransformBuffer.h"
+//Because of the memcpy
+#include <cstring>
 
 #ifdef STANDALONE
 #undef JUCE_DONT_DECLARE_PROJECTINFO
@@ -30,56 +34,75 @@
 class PluginAudioProcessor  : public AudioProcessor
 {
 public:
-    //==============================================================================
-    PluginAudioProcessor(int bufferLen_ = 2048);
-    ~PluginAudioProcessor();
+   // We want to limit range of supported buffers as we have filterbanks only for
+   // distinct lengths
+   enum Params
+   {
+      kActChannel = 0,
+      kReassignedSwitch,
+      kNumParams
+   };
 
-    //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
+   enum class suppBufLens
+   {
+      b2048 = 2048, empty
+   };
+   //==============================================================================
+   PluginAudioProcessor(suppBufLens bufferLen_ = suppBufLens::b2048);
+   ~PluginAudioProcessor();
 
-    void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
+   //==============================================================================
+   void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+   void releaseResources() override;
 
-    //==============================================================================
-    AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+   void processBlock (AudioSampleBuffer&, MidiBuffer&) override;
 
-    //==============================================================================
-    const String getName() const override;
+   //==============================================================================
+   AudioProcessorEditor* createEditor() override;
+   bool hasEditor() const override;
 
-    int getNumParameters() override;
-    float getParameter (int index) override;
-    void setParameter (int index, float newValue) override;
+   //==============================================================================
+   const String getName() const override;
 
-    const String getParameterName (int index) override;
-    const String getParameterText (int index) override;
+   int getNumParameters() override;
+   float getParameter (int index) override;
+   void setParameter (int index, float newValue) override;
 
-    const String getInputChannelName (int channelIndex) const override;
-    const String getOutputChannelName (int channelIndex) const override;
-    bool isInputChannelStereoPair (int index) const override;
-    bool isOutputChannelStereoPair (int index) const override;
+   const String getParameterName (int index) override;
+   const String getParameterText (int index) override;
 
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool silenceInProducesSilenceOut() const override;
-    double getTailLengthSeconds() const override;
+   
+   const String getInputChannelName (int channelIndex) const override;
+   const String getOutputChannelName (int channelIndex) const override;
+   bool isInputChannelStereoPair (int index) const override;
+   bool isOutputChannelStereoPair (int index) const override;
 
-    //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
-    void changeProgramName (int index, const String& newName) override;
+   bool acceptsMidi() const override;
+   bool producesMidi() const override;
+   bool silenceInProducesSilenceOut() const override;
+   double getTailLengthSeconds() const override;
 
-    //==============================================================================
-    void getStateInformation (MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+   //==============================================================================
+   int getNumPrograms() override;
+   int getCurrentProgram() override;
+   void setCurrentProgram (int index) override;
+   const String getProgramName (int index) override;
+   void changeProgramName (int index, const String& newName) override;
 
+   //==============================================================================
+   void getStateInformation (MemoryBlock& destData) override;
+   void setStateInformation (const void* data, int sizeInBytes) override;
+
+   //void setBufferLen(PluginAudioProcessor::supportedBufferLengths bLen);
+   RingTransformBuffer* getRingBuffer();
 private:
-    int bufferLen;
-    ScopedPointer<AudioSampleBuffer> asbuf;
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
+   int bufLen;
+   ScopedPointer<RingFFTBuffer> fftBuf;
+   // Parameters
+   int paramActChannel, paramReassignedSwitch;
+
+   //==============================================================================
+   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };
 
 

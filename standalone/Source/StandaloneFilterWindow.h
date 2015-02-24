@@ -38,9 +38,9 @@
     that the other plugin wrappers use.
 */
 class StandaloneFilterWindow    : public DocumentWindow,
-                                  public ButtonListener,   // (can't use Button::Listener due to VC2005 bug)
-                                  public LabelListener,
-                                  public MenuBarModel
+                                  private ButtonListener,   // (can't use Button::Listener due to VC2005 bug)
+                                  private LabelListener,
+                                  private MenuBarModel
 {
 public:
     //==============================================================================
@@ -87,6 +87,7 @@ public:
     void resized() override;
 
 private:
+    ScopedPointer<OpenGLContext> ogl;
     ScopedPointer<StandalonePluginHolder> pluginHolder;
     //==============================================================================
 

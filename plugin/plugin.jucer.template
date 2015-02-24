@@ -11,6 +11,10 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.1">
   <MAINGROUP id="vMC3sj" name="plugin">
     <GROUP id="{F7222CBA-A03D-435F-46B5-6452A7641465}" name="Source">
+      <FILE id="VK4DeV" name="RingTransformBuffer.cpp" compile="1" resource="0"
+            file="Source/RingTransformBuffer.cpp"/>
+      <FILE id="KCNg0S" name="RingTransformBuffer.h" compile="0" resource="0"
+            file="Source/RingTransformBuffer.h"/>
       <FILE id="hYTQxV" name="ltfatColormaps.h" compile="0" resource="0"
             file="Source/ltfatColormaps.h"/>
       <FILE id="Ag4j97" name="Spectrogram.cpp" compile="1" resource="0" file="Source/Spectrogram.cpp"/>

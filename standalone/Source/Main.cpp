@@ -51,7 +51,7 @@ public:
    //==============================================================================
    void initialise (const String& commandLine) override
    {
-      DBG("initialize");
+      DBG("initialize begin");
       // This method is where you should put your application's initialisation code..
       PropertiesFile::Options options;
       options.applicationName     = "Standalone Plugin Runner";
@@ -66,6 +66,7 @@ public:
             ps->getUserSettings(),
             false);
       filterWindow->setVisible(true);
+      DBG("initialize end");
 
    }
 

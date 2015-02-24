@@ -5,6 +5,10 @@
               jucerVersion="3.1.1" defines="STANDALONE&#10;DEBUG&#10;">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
+      <FILE id="B15udg" name="RingTransformBuffer.cpp" compile="1" resource="0"
+            file="../plugin/Source/RingTransformBuffer.cpp"/>
+      <FILE id="LFG3TK" name="RingTransformBuffer.h" compile="0" resource="0"
+            file="../plugin/Source/RingTransformBuffer.h"/>
       <FILE id="T8nLYO" name="Spectrogram.cpp" compile="1" resource="0" file="../plugin/Source/Spectrogram.cpp"/>
       <FILE id="NlmxTk" name="Spectrogram.h" compile="0" resource="0" file="../plugin/Source/Spectrogram.h"/>
       <FILE id="UTbVP1" name="StandaloneFilterWindow.cpp" compile="1" resource="0"
@@ -31,12 +35,12 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK"
-                externalLibraries="ltfat&#10;ltfatf&#10;fftw3&#10;fftw3f" extraLinkerFlags="-L/home/susnak/dev/ltfat/lib"
-                extraCompilerFlags="-I/home/susnak/dev/ltfat/src">
+                externalLibraries="ltfatf&#10;ltfat&#10;fftw3f&#10;fftw3" extraLinkerFlags="-L/home/susnak/dev/ltfat/lib"
+                extraCompilerFlags="-I/home/susnak/dev/ltfat/src" extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="standalone"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
                        targetName="standalone"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -56,6 +60,28 @@
         <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
+    <CODEBLOCKS targetFolder="Builds/CodeBlocks">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="standalone"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="standalone"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+      </MODULEPATHS>
+    </CODEBLOCKS>
   </EXPORTFORMATS>
   <MODULES>
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>

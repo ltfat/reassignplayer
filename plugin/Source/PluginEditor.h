@@ -46,7 +46,9 @@
                                                                     //[/Comments]
 */
 class PluginEditor  : public AudioProcessorEditor,
-                      public MouseListener
+                      public ButtonListener,
+                      public ComboBoxListener,
+                      public ChangeListener
 {
 public:
     //==============================================================================
@@ -56,6 +58,14 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel);
+    void changeListenerCallback(ChangeBroadcaster *source);
+    void comboBoxChanged (ComboBox* comboBox);
+    void buttonClicked (Button* button);
+    Spectrogram* getSpectrogram() const {return spectrogram; }
+    FileFilter& getFileFilter() const {return *fileFilter; }
+
+    void setSettings(PropertySet* settingsToUse){ settings = settingsToUse;};
+    void loadFilters();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -65,7 +75,48 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ScopedPointer<OpenGLContext> ogl;
     PluginAudioProcessor& processor;
+    OwnedArray<DirectoryContentsList> dirContents;
+    ScopedPointer<TimeSliceThread> tsThread;
+    ScopedPointer<FileFilter> fileFilter;
+    OwnedArray<File> filterbankFiles;
+
+    PropertySet* settings;
+    OwnedArray<Component> trash;
+
+
+    // GUI components
+    ScopedPointer<Button> reassignToggle;
+    ScopedPointer<ComboBox> channelChooser;
+
+    // This is a file filter class accepting only files with .json suffix
+    // and containing element g
+    class JSONFilterbankFileFilter: public FileFilter
+    {
+    ScopedPointer<ComboBox> channelChooser;
+       public:
+             JSONFilterbankFileFilter(const String &filterDescription):
+                FileFilter(filterDescription){}
+             ~JSONFilterbankFileFilter() {}
+             bool isFileSuitable(const File &file) const override
+             {
+                if(file.getFileName().endsWith(".json"))
+                {
+                     var v = JSON::parse(file);
+                     if(v==var::null) return false;
+                     var g = v["g"];
+                     if(v==var::null) return false;
+                     return true;
+                }
+                else
+                {
+                   return false;
+                }
+             }
+             bool isDirectorySuitable(const File &file) const override {return false;}
+       private:
+    };
     //[/UserVariables]
 
     //==============================================================================

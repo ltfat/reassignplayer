@@ -48,6 +48,7 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
      sampleRate(44100),
      samplesPerBlock(512)
 {
+   DBG("StandalonePluginHolder constructor begin");
    // Initialization
    createPlugin();
    setupAudioDevices();
@@ -88,6 +89,7 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
 
    processorGraph->prepareToPlay(sampleRate, samplesPerBlock);
    startPlaying();
+   DBG("StandalonePluginHolder constructor end");
 }
 
 StandalonePluginHolder::~StandalonePluginHolder()
@@ -224,10 +226,8 @@ void StandalonePluginHolder::showAudioSettingsDialog()
 
 void StandalonePluginHolder::saveAudioDeviceState()
 {
-   std::cout << "saveAudioDeviceState called " << std::endl;
    if (settings != nullptr)
    {
-      std::cout << "And it is not null!!! " << std::endl;
       ScopedPointer<XmlElement> xml (deviceManager.createStateXml());
       settings->setValue ("audioSetup", xml);
    }

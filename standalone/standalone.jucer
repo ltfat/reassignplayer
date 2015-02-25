@@ -5,6 +5,8 @@
               jucerVersion="3.1.0" defines="STANDALONE">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
+      <FILE id="CwwYcU" name="loop.svg" compile="0" resource="1" file="pics/loop.svg"/>
+      <FILE id="efaZLp" name="loopOn.svg" compile="0" resource="1" file="pics/loopOn.svg"/>
       <FILE id="uEk6PE" name="audfile.svg" compile="0" resource="1" file="pics/audfile.svg"/>
       <FILE id="nySaA7" name="audfileOn.svg" compile="0" resource="1" file="pics/audfileOn.svg"/>
       <FILE id="RlEPsq" name="back.svg" compile="0" resource="1" file="pics/back.svg"/>

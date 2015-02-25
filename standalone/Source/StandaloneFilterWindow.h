@@ -116,6 +116,17 @@ private:
         ButtonListener* listener;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterWindowToolbarItemFactory)
     };
+    
+/*    class CustomToolbarButton: public ToolbarButton
+    {
+    public:
+        void changedState();
+        {
+            ToolbarButtion::setCurrentImage (ToolbarButtion::getImageToUse());
+        }
+    private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomToolbarButton)
+    };*/
 
     class GenericToolbarItemComponent: public ToolbarItemComponent
     {

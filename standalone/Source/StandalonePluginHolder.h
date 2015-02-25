@@ -46,7 +46,7 @@ public:
         if (fileSuffix.isEmpty())
             return String();
 
-        return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;        
+        return (fileSuffix.startsWithChar ('.') ? "*" : "*.") + fileSuffix;
     }
 
     //==============================================================================
@@ -61,21 +61,25 @@ public:
     void askUserToLoadState (const String& fileSuffix = String());
 
     //==============================================================================
-    // 
+    //
     void startPlaying();
     void stopPlaying();
     void reloadPluginState();
     void savePluginState();
-    // 
+    //
     void saveAudioDeviceState();
     void reloadAudioDeviceState();
     void showAudioSettingsDialog();
 
     bool setFile(File& file);
 
+    // Playback control
+    bool changePlaybackState(int state);
+
     // Graph manipulation routines
     void inputIsMicOnly();
     void inputIsFileOnly();
+    int getCurrentSource();
 
     // For holding properties
     OptionalScopedPointer<PropertySet> settings;
@@ -87,6 +91,8 @@ public:
 private:
     double sampleRate;
     int samplesPerBlock;
+    int currentSource;
+    bool wasPlaying;
     // Produces AudioFormatReader
     AudioFormatManager formatManager;
     // this is killed together with formatReaderSource
@@ -101,7 +107,7 @@ private:
     // This is wrapped in AudioTransportSource
     ScopedPointer<AudioFormatReaderSource> formatReaderSource;
 
-    //     
+    //
     AudioDeviceManager deviceManager;
     AudioProcessorPlayer player;
 
@@ -124,7 +130,7 @@ private:
     // background thread
     TimeSliceThread thread;
     ScopedPointer<File> openedFile;
-    
+
     bool loadFileIntoTransport();
 
     void setupAudioDevices();

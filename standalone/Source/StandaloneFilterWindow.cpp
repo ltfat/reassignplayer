@@ -15,10 +15,10 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       Colour backgroundColour,
       PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
-   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton)
      //optionsButton ("options"),
-     micfileButton ("MIC"),
-     fileChooserButton ("Open file...")
+     //micfileButton ("MIC"),
+     //fileChooserButton ("Open file...")
 {
    menuBarComponent = new MenuBarComponent(this);
 
@@ -39,7 +39,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    setTitleBarHeight(20);
    setSize(oldWidth+12, oldHeight + 5 * getTitleBarHeight());
    setResizable(true, true);
-   
+
    // Label
    fileLabel.setText(String("No file loaded"), dontSendNotification);
    fileLabel.setColour(Label::textColourId, Colours::red);
@@ -47,10 +47,8 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
 
    // Init toolbar
-   //toolbar.setStyle(Toolbar::textOnly);
    tbfac = new FilterWindowToolbarItemFactory(this);
    toolbar.addDefaultItems(*tbfac);
-   //toolbar.addItem(*tbfac,1);
    Component::addAndMakeVisible(toolbar);
 
 
@@ -59,18 +57,18 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    Component::addAndMakeVisible (fileLabel);
    //Component::addAndMakeVisible (optionsButton);
    //Component::addAndMakeVisible (fileChooserButton);
-   Component::addAndMakeVisible (micfileButton);
+   //Component::addAndMakeVisible (micfileButton);
 
-   micfileButton.addListener(this);
+   //micfileButton.addListener(this);
    fileLabel.addListener(this);
-   fileChooserButton.addListener(this);
+   //fileChooserButton.addListener(this);
    //optionsButton.addListener (this);
    //optionsButton.setTriggeredOnMouseDown (true);
    //fileChooserButton.setTriggeredOnMouseDown (true);
-   micfileButton.setTriggeredOnMouseDown (true);
-   micfileButton.setClickingTogglesState(true);
-   
-                       
+   //micfileButton.setTriggeredOnMouseDown (true);
+   //micfileButton.setClickingTogglesState(true);
+
+
    if (PropertySet* props = pluginHolder->settings)
    {
       const int x = props->getIntValue ("windowX", -100);
@@ -142,73 +140,128 @@ void StandaloneFilterWindow::closeButtonPressed()
 
 void StandaloneFilterWindow::buttonClicked (Button* b)
 {
-   if (b == &micfileButton)
-   {
-      if (b->getToggleState())
-      {
-         pluginHolder->inputIsMicOnly();
-         std::wcout << "Input should be a mic now" << std::endl;
-      }
-      else
-      {
-         pluginHolder->inputIsFileOnly();
-         std::wcout << "Input should be a file now" << std::endl;
-      }
-   }
-
-/*   if (b == &fileChooserButton)
-   {
-      FileChooser chooser ("Select a Wave file to play...",
-                           File::nonexistent,
-                           "*.wav;*.mp3");
-
-      if (chooser.browseForFileToOpen())
-      {
-         File file (chooser.getResult());
-         pluginHolder->setFile(file);
-         String s = String(L"Loaded: ") + file.getFullPathName();
-         fileLabel.setText(s, sendNotification);
-         setName(file.getFileName());
-      }
-   }
-*/
-    
    for (int ii = 0; ii < toolbar.getNumItems(); ii++)
    {
       if (b == toolbar.getItemComponent(ii))
       {
-        switch (toolbar.getItemId(ii))
+        ToolbarItemComponent* c;
+        ToolbarButton* cc;
+        bool isP;
+        if (toolbar.getItemId(ii) == 6)
         {
-        case 1:
-            std::cout << "BACK button pressed" << std::endl;
-            break;        
-        case 2:
-            std::cout << "PLAY button pressed" << std::endl;
-            break;        
-        case 3:
-            std::cout << "PAUSE button pressed" << std::endl;
-            break;        
-        case 4:
-            std::cout << "STOP button pressed" << std::endl;
-            break;        
-        case 5:
-            std::cout << "FORWARD button pressed" << std::endl;
-            break;        
-        case 6:
-            std::cout << "MIC button pressed" << std::endl;
-            break;        
-        case 7:
-            std::cout << "FILE button pressed" << std::endl;
-            break;        
-        case 8:
-            std::cout << "SAVE button pressed" << std::endl;
-            break;        
-        default:
-            break;
+            b->setToggleState(!(b->getToggleState()),dontSendNotification);
+            
+            if (b->getToggleState())
+            {
+                pluginHolder->inputIsMicOnly();
+                std::wcout << "Input should be a mic now" << std::endl;
+            }
+            else
+            {
+                pluginHolder->inputIsFileOnly();
+                std::wcout << "Input should be a file now" << std::endl;
+            }            
         }
+        else if (pluginHolder->getCurrentSource() == 1)
+        {
+            switch (toolbar.getItemId(ii))
+            {
+            case 1:
+                std::cout << "BACK button pressed" << std::endl;
+                break;
+            case 2:
+                isP = pluginHolder->changePlaybackState(1);
+                if(!isP)
+                {
+                    for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                    {
+                        switch (toolbar.getItemId(jj))
+                        {
+                        case 2:
+                            c = toolbar.getItemComponent(jj);
+                            cc = static_cast<ToolbarButton*>(c);
+                            cc->setToggleState(1,dontSendNotification);
+                            break;
+                        case 3:
+                        case 4:
+                            c = toolbar.getItemComponent(jj);
+                            cc = static_cast<ToolbarButton*>(c);
+                            cc->setToggleState(0,dontSendNotification);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                std::cout << "PLAY button pressed" << std::endl;
+                break;
+            case 3:
+                isP = pluginHolder->changePlaybackState(2);
+                if(isP)
+                {
+                    for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                    {
+                        switch (toolbar.getItemId(jj))
+                        {
+                        case 2:
+                            c = toolbar.getItemComponent(jj);
+                            cc = static_cast<ToolbarButton*>(c);
+                            cc->setToggleState(0,dontSendNotification);
+                            break;
+                        case 3:
+                            c = toolbar.getItemComponent(jj);
+                            cc = static_cast<ToolbarButton*>(c);
+                            cc->setToggleState(1,dontSendNotification);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                std::cout << "PAUSE button pressed" << std::endl;
+                break;
+            case 4:
+                isP = pluginHolder->changePlaybackState(3);
+                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                {
+                    switch (toolbar.getItemId(jj))
+                    {
+                    case 2:
+                    case 3:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(0,dontSendNotification);
+                        break;
+                    case 4:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(1,dontSendNotification);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                std::cout << "STOP button pressed" << std::endl;
+                break;
+            case 5:
+                std::cout << "FORWARD button pressed" << std::endl;
+                break;
+            case 7:
+                std::cout << "FILE button pressed" << std::endl;
+                break;
+            case 8:
+                std::cout << "LOOP button pressed" << std::endl;
+                break;    
+            case 9:
+                std::cout << "SAVE button pressed" << std::endl;
+                break;
+            default:
+                break;
+            }
 
+        }
       }
-   }
+    }
 
 }
 
@@ -225,8 +278,8 @@ void StandaloneFilterWindow::resized()
 {
    DocumentWindow::resized();
    //optionsButton.setBounds (8, 6, proportionOfWidth(0.1f), getTitleBarHeight() - 8);
-   micfileButton.setBounds (getWidth() - 64, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
-   fileChooserButton.setBounds (getWidth() - 128, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
+   //micfileButton.setBounds (getWidth() - 64, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
+   //fileChooserButton.setBounds (getWidth() - 128, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
    fileLabel.setBounds(0, getHeight() - getTitleBarHeight(), getWidth() - 20, getTitleBarHeight());
 
    menuBarComponent->setBounds(0, getTitleBarHeight(), getWidth(), getTitleBarHeight());
@@ -247,7 +300,7 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::FilterWindowToolbarItemFactory(ButtonListener* listener_)
    : listener(listener_)
 {
-    
+
 }
 
 StandaloneFilterWindow::FilterWindowToolbarItemFactory
@@ -257,17 +310,17 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 }
 
 enum ToolbarItemIds
-{
-    back = 1,
-    play,
-    pause,
-    stop,
-    forward,
-    micToggle,
-    fileToggle,
-    saveImg
-};
-
+   {
+       back = 1,
+       play,
+       pause,
+       stop,
+       forward,
+       micToggle,
+       fileToggle,
+       loopToggle,
+       saveImg
+   };
 
 
 ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
@@ -277,7 +330,8 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
    String buttonText, binDataOff, binDataOn;
    Drawable* iconOff;
    Drawable* iconOn;
-    
+   bool* toggleState = new bool(false);
+
    switch(itemId)
     {
     case back:
@@ -289,16 +343,19 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         binDataOff = "play_svg";
         binDataOn = "playOn_svg";
         buttonText = "play";
+        *toggleState = true;
         break;
     case pause:
         binDataOff = "pause_svg";
         binDataOn = "pauseOn_svg";
         buttonText = "pause";
+        *toggleState = true;
         break;
     case stop:
         binDataOff = "stop_svg";
         binDataOn = "stopOn_svg";
         buttonText = "stop";
+        *toggleState = true;
         break;
     case forward:
         binDataOff = "forward_svg";
@@ -309,11 +366,19 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         binDataOff = "mic_svg";
         binDataOn = "micOn_svg";
         buttonText = "toggle MIC";
+        *toggleState = true;
         break;
     case fileToggle:
         binDataOff = "audfile_svg";
         binDataOn = "audfileOn_svg";
         buttonText = "toggle FILE";
+        *toggleState = true;
+        break;
+    case loopToggle:
+        binDataOff = "loop_svg";
+        binDataOn = "loopOn_svg";
+        buttonText = "toggle LOOP";
+        *toggleState = true;
         break;
     case saveImg:
         binDataOff = "save_svg";
@@ -323,12 +388,13 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
     default:
         break;
     }
-   
+
    iconData = BinaryData::getNamedResource(binDataOff.toRawUTF8(),NumBytes);
    iconOff = Drawable::createFromImageData(iconData,NumBytes);
-   iconData = BinaryData::getNamedResource(binDataOff.toRawUTF8(),NumBytes);
+   iconData = BinaryData::getNamedResource(binDataOn.toRawUTF8(),NumBytes);
    iconOn = Drawable::createFromImageData(iconData,NumBytes);
    ToolbarButton* b = new ToolbarButton(itemId,buttonText,iconOff,iconOn);
+   //b->setClickingTogglesState(*toggleState);
    b->addListener(listener);
    return b;
 }
@@ -336,15 +402,23 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::getDefaultItemSet(Array<int> &ids)
 {
+   ids.add (flexibleSpacerId); 
    ids.add(back);
    ids.add(play);
    ids.add(pause);
    ids.add(stop);
    ids.add(forward);
-   ids.add(micToggle);
+   ids.add(loopToggle);
+   ids.add (flexibleSpacerId);
    ids.add (separatorBarId);
-   ids.add(fileToggle);
-   ids.add(saveImg);    
+   ids.add (flexibleSpacerId);
+   ids.add(micToggle);
+   ids.add (flexibleSpacerId);
+   ids.add (separatorBarId);
+   ids.add (flexibleSpacerId);
+   //ids.add(fileToggle);
+   ids.add(saveImg);
+   ids.add (flexibleSpacerId);
 }
 
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
@@ -357,7 +431,8 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add(forward);
    ids.add(micToggle);
    ids.add(fileToggle);
-   ids.add(saveImg);   
+   ids.add(loopToggle);
+   ids.add(saveImg);
    
    // Spacers and Separators
    ids.add (separatorBarId);
@@ -412,7 +487,7 @@ PopupMenu StandaloneFilterWindow
       pm.addItem (2, TRANS("Save Image..."));
       pm.addSeparator();
       pm.addItem (3, TRANS("Exit"));
-      break; 
+      break;
    case OPTIONS:
       pm.addItem (1, TRANS("Audio Settings..."));
       pm.addSeparator();
@@ -448,7 +523,31 @@ void StandaloneFilterWindow
                String s = String(L"Loaded: ") + file.getFullPathName();
                fileLabel.setText(s, sendNotification);
                setName(file.getFileName());
-             }      
+               // Set toolbar button activation pattern
+               ToolbarItemComponent* c;
+               ToolbarButton* cc;
+               for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+               {
+                    switch (toolbar.getItemId(jj))
+                    {
+                    case 2:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(1,dontSendNotification);
+                        break;
+                    case 3:
+                    case 4:
+                    case 6:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(0,dontSendNotification);
+                        break;
+                    default:
+                        break;
+                    }
+               }
+               //------------------------------------------
+             }
          }
          break;
       case 2:

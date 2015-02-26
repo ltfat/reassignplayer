@@ -16,7 +16,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
    : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | 
-                     DocumentWindow::maximiseButton | DocumentWindow::closeButton),
+                     DocumentWindow::maximiseButton | DocumentWindow::closeButton)
      //optionsButton ("options"),
      //micfileButton ("MIC"),
      //fileChooserButton ("Open file...")

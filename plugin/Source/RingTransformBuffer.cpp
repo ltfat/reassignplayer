@@ -939,10 +939,10 @@ void RingReassignedBLFilterbankBuffer::performTransform()
     // tgrad,fgrad,cs
 
     // Super easy type casing !! :)
-    filterbankphasegrad_s(reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(c)),
+    /*filterbankphasegrad_s(reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(c)),
                           reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(ch)),
                           reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(cd)),
-                          M, blFilt->Lc, bufLen, minlvl, tgrad, fgrad, cs);
+                          M, blFilt->Lc, bufLen, minlvl, tgrad, fgrad, cs);*/
 
     // And do the reassignment
     float** sr = reassignedCoefs.getUnchecked(head);

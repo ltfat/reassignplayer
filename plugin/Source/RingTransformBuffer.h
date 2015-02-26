@@ -32,6 +32,8 @@ LLast year, the became
 #include <type_traits>
 #include <cstring>
 #include <fstream>
+#include <tbb/tbb.h>
+using namespace tbb;
 
 namespace SpectrogramPlottableMethods
 {
@@ -110,7 +112,7 @@ public:
     RingFFTBuffer(int bufLen_, winType winType_ = winType::hann,
                   int nChannels_ = 1, int nBuf_ = 2);
     virtual ~RingFFTBuffer();
-    virtual void performTransform() override;
+    virtual void performTransform() noexcept override;
     virtual bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows) override;
     fftwf_complex* getFFTCoefficients(bool doConsume = true);
 protected:
@@ -192,7 +194,7 @@ public:
                            winType winType_ = winType::hann,
                            int nChannels_ = 1, int nBuf_ = 2);*/
     virtual ~RingBLFilterbankBuffer();
-    void performTransform() override;
+    void performTransform() noexcept override;
     virtual bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows ) override;
     fftwf_complex** getFilterbankCoefficients(int filterbankId = 0, bool doConsume = true);
     fftwf_complex** getFilterbankOverlaidCoefficients(int filterbankId = 0, bool doConsume = true);
@@ -242,7 +244,7 @@ public:
     {
         doPlotReassigned = doSet;
     };
-    void performTransform() override;
+    void performTransform() noexcept override;
 private:
     Atomic<int> doPlotReassigned;
     Array<float**> reassignedCoefs;

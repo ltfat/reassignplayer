@@ -103,6 +103,8 @@ void Spectrogram::stripBackendToRepaint()
     MathOp::toRange(stripBackend, totalStripElNo , std::max( minDB.get(), initMinDB ),
                     std::min( maxDB.get(), initMaxDB ),
                     colourmapLen.get() - 1);
+
+
     // Use colourmap to fill the strip image
     MathOp::imageInColourmap(strip, stripBackend, colourmap);
     // strip is now ready to be plotted
@@ -116,6 +118,7 @@ void Spectrogram::stripBackendToRepaint()
         stripPos = 0;
     }
 
+    const MessageManagerLock mmLock;
     repaint();
 }
 
@@ -369,6 +372,7 @@ void Spectrogram::MathOp::toRange(HeapBlock<float>& in, int inLen,
 void Spectrogram::MathOp::imageInColourmap(Image& image, HeapBlock<float>& data,
         HeapBlock<uint32>& cmap)
 {
+    // The image is upside down
     int width = image.getWidth();
     int height = image.getHeight();
     // Jules says:
@@ -380,7 +384,7 @@ void Spectrogram::MathOp::imageInColourmap(Image& image, HeapBlock<float>& data,
     for (int y = 0; y < height; ++y)
     {
         uint32* rowPtr = reinterpret_cast<uint32*>(idata.getLinePointer(y));
-        float* dataPtr = data.getData() + y * width;
+        float* dataPtr = data.getData() + (height-1 - y) * width;
 
         for (int x = 0; x < width; ++x)
         {

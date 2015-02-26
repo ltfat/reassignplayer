@@ -196,7 +196,7 @@ void coefsToAbsMatrix<fftwf_complex>(fftwf_complex* coefs[], ltfatInt Lc[], int 
             float tmpyPrec = rowsRatio * m;
             int tmpy = static_cast<int>(tmpyPrec);
             tmpyPrec -= tmpy;
-            tmpy = M - 2 - tmpy;
+            //tmpy = M - 2 - tmpy;
             fftwf_complex* coefstmpy = coefs[tmpy];
             fftwf_complex* coefstmpyplus1 = coefs[tmpy + 1];
             for (int ii = 0; ii < stripWidth; ++ii)
@@ -204,9 +204,9 @@ void coefsToAbsMatrix<fftwf_complex>(fftwf_complex* coefs[], ltfatInt Lc[], int 
                 float tmpxPrec = colsRatios[ii] * ii;
                 int tmpx = static_cast<int>(tmpxPrec);
                 tmpxPrec -= tmpx;
-                tmpx = Lc[tmpy] - 2 - tmpx;
+                // tmpx = Lc[tmpy] - 2 - tmpx;
                 float* coefstmpytmpx = coefstmpy[tmpx];
-                float* coefstmpytmpxplus1 = coefstmpy[tmpx+1];
+                float* coefstmpytmpxplus1 = coefstmpy[tmpx + 1];
                 float intx1 =  (1.0f - tmpxPrec) * ABS(coefstmpytmpx) + tmpxPrec * ABS( coefstmpytmpxplus1);
                 float intx2 =  (1.0f - tmpxPrec) * ABS(coefstmpyplus1[tmpx]) + tmpxPrec * ABS(coefstmpyplus1[tmpx + 1]);
                 DATAEL(m, ii) = (1.0f - tmpyPrec) * intx1 + tmpyPrec * intx2;
@@ -346,7 +346,7 @@ void RingFFTBuffer::destroyFFTBuffers()
     }
 }
 
-void RingFFTBuffer::performTransform()
+void RingFFTBuffer::performTransform() noexcept
 {
     float* in = buf[head];
     fftwf_complex* out = bufFFTCoefs.getUnchecked(head);
@@ -492,6 +492,7 @@ void RingBLFilterbankBuffer::createFilterbankBuffers()
             {
                 bufEl[m] = static_cast<fftwf_complex*>(fftwf_malloc(blFilt->Lc[m] * sizeof(fftwf_complex)));
                 bufEl2[m] = static_cast<fftwf_complex*>(fftwf_malloc(sizeof(fftwf_complex) * blFilt->Lc[m] / 2));
+                memset(bufEl[m], 0, blFilt->Lc[m]*sizeof(fftwf_complex) );
                 memset(bufEl2[m], 0, blFilt->Lc[m]*sizeof(fftwf_complex) / 2);
             }
             arrEl->add(bufEl);
@@ -533,47 +534,83 @@ void RingBLFilterbankBuffer::destroyFilterbankBuffers()
     bufFilterbankOverlaidCoefs.clear(true);
 }
 
-void RingBLFilterbankBuffer::performTransform()
+void RingBLFilterbankBuffer::performTransform() noexcept
 {
     int locHead = head;
     // Do FFT of the block
     RingFFTBuffer::performTransform();
     // bufFFTCoefs[head] contains fresh FFT samples
 
-    for (int ii = 0; ii < filterbanks.size(); ++ii)
+    //for (int ii = 0; ii < filterbanks.size(); ++ii)
+
+    parallel_for( blocked_range<size_t>(0, filterbanks.size(), 1), [ = ](const blocked_range<size_t>& rbig)
     {
-        fftwf_complex** C = bufFilterbankCoefs.getUnchecked(locHead)->getUnchecked(ii);
-        BLFilterbankDef* blFilt = filterbanks[ii];
-        filterbank_fftbl_execute_s(p[ii],
-                                   reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
-                                   reinterpret_cast<const float _Complex **>(blFilt->G),
-                                   blFilt->M, blFilt->foff, blFilt->realonly,
-                                   reinterpret_cast<float _Complex **>(C));
+        for (size_t ii = rbig.begin(); ii != rbig.end(); ++ii)
 
-        // Do the overlays
-        fftwf_complex** overlayfront = bufFilterbankOverlaidCoefs.getUnchecked(locHead)->getUnchecked(ii);
-
-        for (int m = 0; m < blFilt->M; ++m)
         {
-            for (int ii = 0; ii < blFilt->Lc[m] / 2; ++ii)
+            fftwf_complex** C = bufFilterbankCoefs.getUnchecked(locHead)->getUnchecked(ii);
+            BLFilterbankDef* blFilt = filterbanks.getUnchecked(ii);
+
+            // #pragma omp parallel for private(m)
+
+            //for (int m = 0; m < blFilt->M; ++m)
+            parallel_for( blocked_range<size_t>(0, blFilt->M, 10), [ = ](const blocked_range<size_t>& r)
             {
-                overlayfront[m][ii][0] += C[m][ii][0];
-                overlayfront[m][ii][1] += C[m][ii][1];
+
+                for (size_t i = r.begin(); i != r.end(); ++i)
+                {
+                    convsub_fftbl_execute_s(p[ii][i],
+                    reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
+                    reinterpret_cast<const float _Complex *>(blFilt->G[i]),
+                    blFilt->foff[i], 0 , reinterpret_cast<float _Complex *>(C[i]));
+                }
             }
-        }
+                        );
 
-        // This is actually safe, because we keep one slot open in the ring buffer and it
-        // is not even accessed by the producer
+            /*
 
-        int headplusone = ((locHead + 1) % nBuf);
-        fftwf_complex** overlayback = bufFilterbankOverlaidCoefs.getUnchecked(headplusone)->getUnchecked(ii);
+                    filterbank_fftbl_execute_s(p[ii],
+                    reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
+                    reinterpret_cast<const float _Complex **>(blFilt->G),
+                    blFilt->M, blFilt->foff, blFilt->realonly,
+                    reinterpret_cast<float _Complex **>(C));
+            */
+            // Do the overlays
+            fftwf_complex** overlayfront = bufFilterbankOverlaidCoefs.getUnchecked(locHead)->getUnchecked(ii);
 
-        for (int m = 0; m < blFilt->M; ++m)
-        {
-            int Lchalf = blFilt->Lc[m] / 2;
-            memcpy(overlayback[m], C[m] + Lchalf, Lchalf * sizeof(fftwf_complex));
+            //for (int m = 0; m < blFilt->M; ++m)
+            parallel_for( blocked_range<size_t>(0, blFilt->M, 10), [ = ](const blocked_range<size_t>& r)
+            {
+                for (size_t m = r.begin(); m != r.end(); ++m)
+                {
+
+                    fftwf_complex* overlayfrontTmp = overlayfront[m];
+                    fftwf_complex* CTmp = C[m];
+                    for (int ii = 0; ii < blFilt->Lchalf[m] ; ++ii)
+                    {
+                        overlayfrontTmp[ii][0] += CTmp[ii][0];
+                        overlayfrontTmp[ii][1] += CTmp[ii][1];
+                    }
+                }
+            });
+            // This is actually safe, because we keep one slot open in the ring buffer and it
+            // is not even accessed by the producer
+
+            int headplusone = ((locHead + 1) % nBuf);
+            fftwf_complex** overlayback = bufFilterbankOverlaidCoefs.getUnchecked(headplusone)->getUnchecked(ii);
+
+            //for (int m = 0; m < blFilt->M; ++m)
+            parallel_for( blocked_range<size_t>(0, blFilt->M, 10), [ = ](const blocked_range<size_t>& r)
+            {
+                for (size_t m = r.begin(); m != r.end(); ++m)
+                {
+                    memcpy(overlayback[m], C[m] + blFilt->Lchalf[m], blFilt->Lchalf[m] * sizeof(fftwf_complex));
+                }
+            });
+
         }
     }
+                );
 
 }
 
@@ -920,7 +957,7 @@ destroyReassignBuffers()
 
 }
 
-void RingReassignedBLFilterbankBuffer::performTransform()
+void RingReassignedBLFilterbankBuffer::performTransform() noexcept
 {
 
     RingBLFilterbankBuffer::performTransform();
@@ -947,9 +984,9 @@ void RingReassignedBLFilterbankBuffer::performTransform()
     // And do the reassignment
     float** sr = reassignedCoefs.getUnchecked(head);
     filterbankreassign_s(const_cast<const float**>(cs),
-                         const_cast<const float**>(tgrad),
-                         const_cast<const float**>(fgrad),
-                         Lchalf, blFilt->a, cFreq, M, sr, NULL);
+    const_cast<const float**>(tgrad),
+    const_cast<const float**>(fgrad),
+    Lchalf, blFilt->a, cFreq, M, sr, NULL);
 }
 
 float** RingReassignedBLFilterbankBuffer::

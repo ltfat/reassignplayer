@@ -46,7 +46,8 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
      thread("File preload"),
      openedFile(nullptr),
      sampleRate(44100),
-     samplesPerBlock(512)
+     samplesPerBlock(512),
+     currentSource(0)
 {
    DBG("StandalonePluginHolder constructor begin");
    // Initialization
@@ -55,8 +56,12 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
    reloadPluginState();
    thread.startThread();
    formatManager.registerBasicFormats();
+   
+   //
+   wasPlaying = false;
+   //currentSource = 0;   // No input
 
-   // 
+   //
    sourceProcessor = new AudioSourceProcessor(&transportSource, false);
    sourceProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
@@ -80,12 +85,12 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
    for (int ii = 0; ii < 2; ++ii)
    {
       processorGraph->addConnection(sourceNode->nodeId, ii, pluginNode->nodeId, ii);
-      processorGraph->addConnection(inNode->nodeId, ii, pluginNode->nodeId, ii);
+      //processorGraph->addConnection(inNode->nodeId, ii, pluginNode->nodeId, ii);
       processorGraph->addConnection(pluginNode->nodeId, ii, outNode->nodeId, ii);
    }
 
    // Cut the connection between inNode and pluginNode
-   inputIsFileOnly();
+   //inputIsFileOnly();
 
    processorGraph->prepareToPlay(sampleRate, samplesPerBlock);
    startPlaying();
@@ -127,6 +132,7 @@ bool StandalonePluginHolder::setFile(File& file)
       return false;
 
    inputIsFileOnly();
+   transportSource.start();
    return true;
 }
 
@@ -322,6 +328,7 @@ void StandalonePluginHolder::shutDownAudioDevices()
    deviceManager.removeAudioCallback (&player);
 }
 
+
 void StandalonePluginHolder::inputIsMicOnly()
 {
    if (! processorGraph->isConnected(inNode->nodeId, pluginNode->nodeId))
@@ -331,10 +338,17 @@ void StandalonePluginHolder::inputIsMicOnly()
 
    if (transportSource.isPlaying())
    {
+      wasPlaying = true;
       transportSource.stop();
    }
-
+   else
+   {
+      wasPlaying = false;
+   }
+   
+   currentSource = 2; // MIC/AUX input
 }
+
 void StandalonePluginHolder::inputIsFileOnly()
 {
    // Just disconnect the node
@@ -343,10 +357,17 @@ void StandalonePluginHolder::inputIsFileOnly()
       processorGraph->disconnectNode(inNode->nodeId);
    }
 
-   if (! transportSource.isPlaying())
+   if (! transportSource.isPlaying() && wasPlaying)
    {
       transportSource.start();
    }
+   
+   currentSource = 1; // File input
+}
+
+int StandalonePluginHolder::getCurrentSource()
+{
+    return currentSource;
 }
 
 void StandalonePluginHolder::connectNodes(uint32 node1, uint32 node2)
@@ -355,3 +376,37 @@ void StandalonePluginHolder::connectNodes(uint32 node1, uint32 node2)
    processorGraph->addConnection(node1, 1, node2, 1);
 }
 
+// Control Playback
+
+bool StandalonePluginHolder::changePlaybackState(int state)
+{
+    enum allPlaybackStates {PLAY = 1, PAUSE, STOP};
+    bool wasP = transportSource.isPlaying();
+
+    switch(state)
+    {
+    case PLAY:
+        if (! wasP)
+        {
+            transportSource.start();
+        }
+        break;
+    case PAUSE:
+        if (wasP)
+        {
+            transportSource.stop();
+        }
+        break;
+    case STOP:
+        if (wasP)
+        {
+            transportSource.stop();
+        }
+        transportSource.setPosition(0.0);
+        break;
+    default:
+        break;
+    }
+
+    return wasP;
+}

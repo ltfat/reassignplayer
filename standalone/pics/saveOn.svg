@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="264.000000pt"
+   height="264.000000pt"
+   viewBox="0 0 264.000000 264.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg4004"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="saveOn.svg">
+  <defs
+     id="defs4020" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1863"
+     inkscape:window-height="1056"
+     id="namedview4018"
+     showgrid="false"
+     inkscape:zoom="0.71515152"
+     inkscape:cx="-141.92797"
+     inkscape:cy="165"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4004" />
+  <metadata
+     id="metadata4006">
+Created by potrace 1.11, written by Peter Selinger 2001-2013
+<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     transform="translate(0.000000,264.000000) scale(0.100000,-0.100000)"
+     fill="#000000"
+     stroke="none"
+     id="g4008"
+     style="fill:#ae3030;fill-opacity:1">
+    <path
+       d="M320 1320 l0 -1000 1000 0 1000 0 0 873 0 872 -128 128 -127 127 -123 0 -122 0 0 -315 0 -315 -500 0 -500 0 0 315 0 315 -250 0 -250 0 0 -1000z m1630 -500 l0 -380 -690 0 -690 0 0 380 0 380 690 0 690 0 0 -380z m250 -185 l0 -65 -65 0 -65 0 0 65 0 65 65 0 65 0 0 -65z"
+       id="path4010"
+       style="fill:#ae3030;fill-opacity:1" />
+    <path
+       d="M820 880 l0 -60 310 0 310 0 0 60 0 60 -310 0 -310 0 0 -60z"
+       id="path4012"
+       style="fill:#ae3030;fill-opacity:1" />
+    <path
+       d="M820 630 l0 -60 435 0 435 0 0 60 0 60 -435 0 -435 0 0 -60z"
+       id="path4014"
+       style="fill:#ae3030;fill-opacity:1" />
+    <path
+       d="M1450 2005 l0 -185 120 0 120 0 0 185 0 185 -120 0 -120 0 0 -185z"
+       id="path4016"
+       style="fill:#ae3030;fill-opacity:1" />
+  </g>
+</svg>

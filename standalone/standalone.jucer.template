@@ -21,6 +21,33 @@
             file="Source/AudioSourceProcessor.cpp"/>
       <FILE id="Xaoa1a" name="AudioSourceProcessor.h" compile="0" resource="0"
             file="Source/AudioSourceProcessor.h"/>
+      <FILE id="CwwYcU" name="loop.svg" compile="0" resource="1" file="pics/loop.svg"/>
+      <FILE id="efaZLp" name="loopOn.svg" compile="0" resource="1" file="pics/loopOn.svg"/>
+      <FILE id="uEk6PE" name="audfile.svg" compile="0" resource="1" file="pics/audfile.svg"/>
+      <FILE id="nySaA7" name="audfileOn.svg" compile="0" resource="1" file="pics/audfileOn.svg"/>
+      <FILE id="RlEPsq" name="back.svg" compile="0" resource="1" file="pics/back.svg"/>
+      <FILE id="LZDfhZ" name="backOn.svg" compile="0" resource="1" file="pics/backOn.svg"/>
+      <FILE id="mxiH9o" name="forward.svg" compile="0" resource="1" file="pics/forward.svg"/>
+      <FILE id="NqXtBt" name="forwardOn.svg" compile="0" resource="1" file="pics/forwardOn.svg"/>
+      <FILE id="Fc9H3E" name="incback.svg" compile="0" resource="1" file="pics/incback.svg"/>
+      <FILE id="V5PwOi" name="incbackOn.svg" compile="0" resource="1" file="pics/incbackOn.svg"/>
+      <FILE id="Ylygpz" name="incforward.svg" compile="0" resource="1" file="pics/incforward.svg"/>
+      <FILE id="Ze9YNy" name="incforwardOn.svg" compile="0" resource="1"
+            file="pics/incforwardOn.svg"/>
+      <FILE id="cugoc2" name="mic.svg" compile="0" resource="1" file="pics/mic.svg"/>
+      <FILE id="BU9o3D" name="micOn.svg" compile="0" resource="1" file="pics/micOn.svg"/>
+      <FILE id="bpHBqn" name="pause.svg" compile="0" resource="1" file="pics/pause.svg"/>
+      <FILE id="OL1Tja" name="pauseOn.svg" compile="0" resource="1" file="pics/pauseOn.svg"/>
+      <FILE id="vcDuuC" name="play.svg" compile="0" resource="1" file="pics/play.svg"/>
+      <FILE id="PCSbn2" name="playOn.svg" compile="0" resource="1" file="pics/playOn.svg"/>
+      <FILE id="p8ql8Q" name="save.svg" compile="0" resource="1" file="pics/save.svg"/>
+      <FILE id="nAKk9K" name="saveOn.svg" compile="0" resource="1" file="pics/saveOn.svg"/>
+      <FILE id="on7Yl4" name="stop.svg" compile="0" resource="1" file="pics/stop.svg"/>
+      <FILE id="INk5k7" name="stopOn.svg" compile="0" resource="1" file="pics/stopOn.svg"/>
+      <FILE id="NYOIVQ" name="generateColormaps.m" compile="1" resource="0"
+            file="../plugin/Source/generateColormaps.m"/>
+      <FILE id="P54EHM" name="ltfatColormaps.h" compile="0" resource="0"
+            file="../plugin/Source/ltfatColormaps.h"/>
       <FILE id="i5Q2QI" name="PluginEditor.cpp" compile="1" resource="0"
             file="../plugin/Source/PluginEditor.cpp"/>
       <FILE id="xfcczb" name="PluginEditor.h" compile="0" resource="0" file="../plugin/Source/PluginEditor.h"/>
@@ -44,20 +71,20 @@
                        targetName="standalone"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_events" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_graphics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_data_structures" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_gui_basics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_gui_extra" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_cryptography" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_video" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_opengl" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_basics" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_devices" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_formats" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_processors" path="/home/nholighaus/juce/modules/"/>
+        <MODULEPATH id="juce_audio_utils" path="/home/nholighaus/juce/modules/"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <CODEBLOCKS targetFolder="Builds/CodeBlocks">

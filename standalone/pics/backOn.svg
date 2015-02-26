@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="264.000000pt"
+   height="264.000000pt"
+   viewBox="0 0 264.000000 264.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg3914"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="backOn.svg">
+  <defs
+     id="defs3924" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1863"
+     inkscape:window-height="1056"
+     id="namedview3922"
+     showgrid="false"
+     inkscape:zoom="0.71515152"
+     inkscape:cx="-141.92797"
+     inkscape:cy="165"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3914" />
+  <metadata
+     id="metadata3916">
+Created by potrace 1.11, written by Peter Selinger 2001-2013
+<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     transform="translate(0.000000,264.000000) scale(0.100000,-0.100000)"
+     fill="#000000"
+     stroke="none"
+     id="g3918"
+     style="fill:#ae3030;fill-opacity:1">
+    <path
+       d="M1407 1640 c-180 -105 -334 -193 -342 -196 -13 -5 -15 16 -15 158 0 201 2 198 -117 198 -65 0 -83 -3 -96 -18 -15 -17 -17 -64 -17 -465 l0 -446 22 -15 c16 -11 46 -16 99 -16 110 0 109 -1 109 198 0 95 4 162 9 162 6 0 160 -88 344 -195 183 -107 342 -195 353 -195 11 0 29 6 40 14 18 14 19 32 22 483 1 363 -1 474 -11 493 -27 53 -48 45 -400 -160z"
+       id="path3920"
+       style="fill:#ae3030;fill-opacity:1" />
+  </g>
+</svg>

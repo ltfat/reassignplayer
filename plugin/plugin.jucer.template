@@ -8,7 +8,7 @@
               pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.plugin"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.1">
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.0">
   <MAINGROUP id="vMC3sj" name="plugin">
     <GROUP id="{F7222CBA-A03D-435F-46B5-6452A7641465}" name="Source">
       <FILE id="VK4DeV" name="RingTransformBuffer.cpp" compile="1" resource="0"
@@ -37,20 +37,20 @@
                        targetName="plugin"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_events" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_cryptography" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_video" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_opengl" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="/home/nholighaus/juce/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="/home/nholighaus/juce/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>

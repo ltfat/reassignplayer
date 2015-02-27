@@ -148,9 +148,9 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    jassert(samplesPerBlock > bufLen / 2 );
 
    Array<File> files;
-   files.add(File("/home/susnak/dev/reassignmentJuce/plugin/Source/2048_44100_erb.lfb"));
-   files.add(File("/home/susnak/dev/reassignmentJuce/plugin/Source/2048_44100_erb_fgrad.lfb"));
-   files.add(File("/home/susnak/dev/reassignmentJuce/plugin/Source/2048_44100_erb_tgrad.lfb"));
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb.lfb"));
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb_fgrad.lfb"));
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb_tgrad.lfb"));
    fftBuf = new RingBLFilterbankBuffer(files,bufLen,RingFFTBuffer::winType::hann,1,3);
    //fftBuf = new RingFFTBuffer(bufLen,RingFFTBuffer::winType::hann,1,3);
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());

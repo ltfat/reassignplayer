@@ -9,6 +9,12 @@
 
 namespace BinaryData
 {
+    extern const char*   loop_svg;
+    const int            loop_svgSize = 1278;
+
+    extern const char*   loopOn_svg;
+    const int            loopOn_svgSize = 1281;
+
     extern const char*   audfile_svg;
     const int            audfile_svgSize = 1023;
 
@@ -38,12 +44,6 @@ namespace BinaryData
 
     extern const char*   incforwardOn_svg;
     const int            incforwardOn_svgSize = 2192;
-
-    extern const char*   loop_svg;
-    const int            loop_svgSize = 1278;
-
-    extern const char*   loopOn_svg;
-    const int            loopOn_svgSize = 1281;
 
     extern const char*   mic_svg;
     const int            mic_svgSize = 1767;

@@ -68,7 +68,7 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
   ogl = new OpenGLContext();
   //ogl->setSwapInterval(0);
-  ogl->attachTo(*spectrogram);
+  //ogl->attachTo(*spectrogram);
 
    //ogl->setSwapInterval(1);
    /* DBG("PluginEditor constructor");

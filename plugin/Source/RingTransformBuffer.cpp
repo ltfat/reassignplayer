@@ -701,14 +701,27 @@ createDefFromFile(File& file)
 
     // This is only for testing purposes
     // std::cout << byteSize << std::endl;
-    shouldBeAtLeast = 4;
+    shouldBeAtLeast = 8;
     if (byteSize < shouldBeAtLeast)
     {
         throw String(String("Reading error, no filterbank data file") +
                      file.getFileName());
     }
+    unsigned long binFilterbankLength;
     unsigned blockLength;
     unsigned M;
+
+    // Read filterbank length
+    if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
+    {
+        unsigned* tempInt = new unsigned;
+        dataFile.read(reinterpret_cast <char*> (tempInt), 4);
+        binFilterbankLength = static_cast <unsigned long> (*tempInt);
+    }
+    else // Handle case of 16-bit unsigned
+    {
+        dataFile.read(reinterpret_cast <char*> (binFilterbankLength), 4);
+    }
 
     // Determine block length and number of channels
     BLFilterbankDef::getFilterbankBaseData (&dataFile, &blockLength, &M);
@@ -718,7 +731,7 @@ createDefFromFile(File& file)
     // std::cout << "M is: " << M << std::endl;
 
     // This is the second check whether the file has the correct length
-    shouldBeAtLeast += 6 * M + 2;
+    shouldBeAtLeast += 10 * M + 2;
 
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;
@@ -730,12 +743,13 @@ createDefFromFile(File& file)
 
     unsigned aOne;
     unsigned* a = new unsigned[M];
+    float* fc = new float[M];
     unsigned* foff = new unsigned[M];
     unsigned* filtLengths = new unsigned[M];
 
     // Determine filter bank parameters
     // (TODO: change order in the MATLAB files for filtLengths to be at the end)
-    BLFilterbankDef::getFilterbankParamData (&dataFile, M, &aOne, a, foff, filtLengths);
+    BLFilterbankDef::getFilterbankParamData (&dataFile, M, &aOne, a, fc, foff, filtLengths);
 
     // This is only for testing purposes
     // std::cout << "foff is: " << std::endl;
@@ -751,6 +765,8 @@ createDefFromFile(File& file)
     {
         shouldBeAtLeast += 4 * (filtLengths[kk]);
     }
+    std::cout << shouldBeAtLeast << std::endl;
+        std::cout << byteSize << std::endl;
 
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;
@@ -759,9 +775,10 @@ createDefFromFile(File& file)
     {
         dataFile.close();
         delete [] a;
+        delete [] fc;
         delete [] foff;
         delete [] filtLengths;
-        throw String("Reading error, no filterbank data file.");
+        throw String("Reading error, no filterbank data file (3)");
     }
 
     float** G = new float*[M];
@@ -792,6 +809,7 @@ createDefFromFile(File& file)
     int * realonly_ = static_cast<int*>(fftwf_malloc(M * sizeof(ltfatInt)));
     memset(realonly_, 0, M * sizeof(ltfatInt));
     double *a_ = static_cast<double*>(fftwf_malloc(M * sizeof(double)));
+    double *fc_ = static_cast<double*>(fftwf_malloc(M * sizeof(double)));
     ltfatInt *Lc_ = static_cast<ltfatInt*>(fftwf_malloc(M * sizeof(ltfatInt)));
     ltfatInt *Lchalf_ = static_cast<ltfatInt*>(fftwf_malloc(M * sizeof(ltfatInt)));
 
@@ -805,15 +823,17 @@ createDefFromFile(File& file)
         }
         foff_[kk] = foff[kk];
         a_[kk] = static_cast<double>(aOne) / a[kk];
+        fc_[kk] = static_cast<double>(fc[kk]);
         Lc_[kk] = static_cast<ltfatInt>(std::round(static_cast<double>(L) / a_[kk]));
         Lchalf_[kk] = static_cast<ltfatInt>(std::floor(Lc_[kk] / 2.0));
     }
 
     BLFilterbankDef* retVal = new BLFilterbankDef(const_cast<const fftwf_complex**>(G_),
-            Gl_, foff_, realonly_, a_, Lc_, Lchalf_, (int)M, L);
+            Gl_, foff_, realonly_, a_, fc_, Lc_, Lchalf_, (int)M, L);
 
     //  Free tep variables
     delete [] a;
+    delete [] fc;
     delete [] foff;
     delete [] filtLengths;
     for (unsigned kk = 0; kk < M; ++kk)
@@ -846,19 +866,14 @@ getFilterbankBaseData(std::ifstream* dataFilePtr, unsigned* blockLengthPtr, unsi
 void RingBLFilterbankBuffer::BLFilterbankDef::
 getFilterbankParamData(std::ifstream* dataFilePtr,
                        unsigned M, unsigned* aOnePtr,
-                       unsigned a[], unsigned foff[],
-                       unsigned filtLengths[])
+                       unsigned a[], float fc[],
+                       unsigned foff[], unsigned filtLengths[])
 {
     if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
     {
         unsigned short* tempAry = new unsigned short[M];
         unsigned short* tempInt = new unsigned short;
 
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
-        for (unsigned kk = 0; kk < M; ++kk)
-        {
-            filtLengths[kk] = static_cast <unsigned> (tempAry[kk]);
-        }
         (*dataFilePtr).read(reinterpret_cast <char*> (tempInt), 2);
         (*aOnePtr) = static_cast <unsigned> (*tempInt);
         (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
@@ -866,10 +881,16 @@ getFilterbankParamData(std::ifstream* dataFilePtr,
         {
             a[kk] = static_cast <unsigned> (tempAry[kk]);
         }
+        (*dataFilePtr).read(reinterpret_cast <char*> (fc), 4 * M);
         (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
         for (unsigned kk = 0; kk < M; ++kk)
         {
             foff[kk] = static_cast <unsigned> (tempAry[kk]);
+        }
+        (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
+        for (unsigned kk = 0; kk < M; ++kk)
+        {
+            filtLengths[kk] = static_cast <unsigned> (tempAry[kk]);
         }
 
     }
@@ -878,6 +899,7 @@ getFilterbankParamData(std::ifstream* dataFilePtr,
         (*dataFilePtr).read(reinterpret_cast <char*> (filtLengths), 2 * M);
         (*dataFilePtr).read(reinterpret_cast <char*> (aOnePtr), 2);
         (*dataFilePtr).read(reinterpret_cast <char*> (a), 2 * M);
+        (*dataFilePtr).read(reinterpret_cast <char*> (fc), 4 * M);
         (*dataFilePtr).read(reinterpret_cast <char*> (foff), 2 * M);
     }
 }

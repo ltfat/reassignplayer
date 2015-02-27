@@ -48,7 +48,7 @@ a(:,1) = fread(fid,[1 1],'uint16');
 a(:,2) = fread(fid,[num_chans 1],'uint16');
 
 % Read center frequencies
-fc = fread(fid,[num_chans 1],'uint16');
+fc = fread(fid,[num_chans 1],'float32');
 
 % Read frequency offsets
 foff = fread(fid,[num_chans 1],'uint16');

@@ -148,10 +148,17 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    jassert(samplesPerBlock > bufLen / 2 );
 
    Array<File> files;
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb.lfb"));
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb_fgrad.lfb"));
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/2048_44100_erb_tgrad.lfb"));
+   try{
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test.lfb"));
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test_fgrad.lfb"));
+   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test_tgrad.lfb"));
    fftBuf = new RingBLFilterbankBuffer(files,bufLen,RingFFTBuffer::winType::hann,1,3);
+   }
+   catch(String& stuff)
+   {
+   std::cout << "something random" << stuff << std::endl;
+   //std::cout << reinterpret_cast<String&>(stuff) << std::endl;
+   }
    //fftBuf = new RingFFTBuffer(bufLen,RingFFTBuffer::winType::hann,1,3);
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    pe->getSpectrogram()->setSpectrogramSource(fftBuf);

@@ -149,6 +149,7 @@ protected:
         const ltfatInt*       foff;
         const int*            realonly;
         const double*         a;
+        const double*         fc;
         const ltfatInt*       Lc;
         const ltfatInt*       Lchalf;
         const int             M;
@@ -159,8 +160,8 @@ protected:
                 unsigned* mPtr);
         static void getFilterbankParamData (std::ifstream* dataFilePtr,
                 unsigned M, unsigned* aOne,
-                unsigned a[], unsigned foff[],
-                unsigned filtLengths[]);
+                unsigned a[], float fc[],
+                unsigned foff[], unsigned filtLengths[]);
         static void getFilterbankFilterData (std::ifstream* dataFilePtr,
                 unsigned M, unsigned filtLengths[],
                 float** G);
@@ -171,12 +172,13 @@ protected:
                         ltfatInt*             foff_,
                         int*                  realonly_,
                         double*               a_,
+                        double*               fc_,
                         ltfatInt*             Lc_,
                         ltfatInt*             Lchalf_,
                         int                   M_,
                         int                   L_):
             G(G_), Gl(Gl_), foff(foff_), realonly(realonly_), a(a_),
-            Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
+            fc(fc_), Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
 
         BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
         BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable

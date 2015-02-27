@@ -81,8 +81,9 @@ else
     fidtgrad = fopen([full_name(1:end-4),'_tgrad.lfb'],'wb');
 end
 
-temp = [block_len;num_chans;afull;fc;foff;filt_lens];
-lofb = 2*numel(temp)+4*numel(g_mat)+4;
+temp0 = [block_len;num_chans;afull];
+temp1 = [foff;filt_lens];
+lofb = 2*numel(temp0)+2*numel(temp1)+4*numel(fc)+4*numel(g_mat)+4;
 
 % Write filterbank length
 fwrite(fid,lofb,'uint32');
@@ -90,9 +91,17 @@ fwrite(fidfgrad,lofb,'uint32');
 fwrite(fidtgrad,lofb,'uint32');
 
 % Write filterbank parameters
-fwrite(fid,temp,'uint16');
-fwrite(fidfgrad,temp,'uint16');
-fwrite(fidtgrad,temp,'uint16');
+fwrite(fid,temp0,'uint16');
+fwrite(fidfgrad,temp0,'uint16');
+fwrite(fidtgrad,temp0,'uint16');
+
+fwrite(fid,fc,'float32');
+fwrite(fidfgrad,fc,'float32');
+fwrite(fidtgrad,fc,'float32');
+
+fwrite(fid,temp1,'uint16');
+fwrite(fidfgrad,temp1,'uint16');
+fwrite(fidtgrad,temp1,'uint16');
 
 % Write filter data
 fwrite(fid,g_mat,'float32');

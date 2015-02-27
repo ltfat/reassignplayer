@@ -46,7 +46,7 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
    reassignToggle = new TextButton("Reassig toggle");
    reassignToggle->setToggleState(true, sendNotification);
    reassignToggle->setClickingTogglesState(true);
-   reassignToggle->addListener(this);
+   reassignToggle->addListener(this); 
 
    channelChooser = new ComboBox();
    for (int ii = 1; ii <= processor.getNumInputChannels(); ++ii)
@@ -67,10 +67,9 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
 
   ogl = new OpenGLContext();
-  //ogl->setSwapInterval(0);
-  //ogl->attachTo(*spectrogram);
+  ogl->attachTo(*spectrogram);
 
-   //ogl->setSwapInterval(1);
+    //ogl->setSwapInterval(1);
    /* DBG("PluginEditor constructor");
     settings = nullptr;
     fileFilter = new JSONFilterbankFileFilter("JSONFilterbankFileFilter");

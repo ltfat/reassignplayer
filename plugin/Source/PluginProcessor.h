@@ -48,7 +48,7 @@ public:
       b2048 = 2048, empty
    };
    //==============================================================================
-   PluginAudioProcessor(suppBufLens bufferLen_ = suppBufLens::b2048);
+   PluginAudioProcessor(Array<File> fbData, suppBufLens bufferLen_ = suppBufLens::b2048);
    ~PluginAudioProcessor();
 
    //==============================================================================
@@ -71,7 +71,7 @@ public:
    const String getParameterName (int index) override;
    const String getParameterText (int index) override;
 
-   
+
    const String getInputChannelName (int channelIndex) const override;
    const String getOutputChannelName (int channelIndex) const override;
    bool isInputChannelStereoPair (int index) const override;
@@ -95,8 +95,11 @@ public:
 
    //void setBufferLen(PluginAudioProcessor::supportedBufferLengths bLen);
    RingTransformBuffer* getRingBuffer();
+
+   AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter();
 private:
    int bufLen;
+   Array<File> filterbankData;
    ScopedPointer<RingFFTBuffer> fftBuf;
    // Parameters
    int paramActChannel, paramReassignedSwitch;

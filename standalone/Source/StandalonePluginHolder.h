@@ -32,7 +32,7 @@ public:
         store its settings - the object that is passed-in will be owned by this
         class and deleted automatically when no longer needed. (It can also be null)
     */
-    StandalonePluginHolder (PropertySet* settingsToUse, bool takeOwnershipOfSettings);
+    StandalonePluginHolder (Array<File> fbData, PropertySet* settingsToUse, bool takeOwnershipOfSettings);
 
     ~StandalonePluginHolder();
 
@@ -93,6 +93,7 @@ private:
     int samplesPerBlock;
     int currentSource;
     bool wasPlaying;
+    Array<File> filterbankData;
     // Produces AudioFormatReader
     AudioFormatManager formatManager;
     // this is killed together with formatReaderSource

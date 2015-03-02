@@ -76,15 +76,15 @@ public:
 
     //==============================================================================
     // MenuBarModel related
-    
+
     enum MENUITEMS { FILE = 0, OPTIONS };
     void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
-    StringArray getMenuBarNames() override;    
+    StringArray getMenuBarNames() override;
 
-    
+
     void resized() override;
-    
+
 private:
     ScopedPointer<OpenGLContext> ogl;
     ScopedPointer<StandalonePluginHolder> pluginHolder;
@@ -101,23 +101,23 @@ private:
     // Toolbar
     Toolbar toolbar;
     ScopedPointer<ToolbarItemFactory> tbfac;
-    
+
     class FilterWindowToolbarItemFactory: public ToolbarItemFactory
     {
     public:
         FilterWindowToolbarItemFactory(ButtonListener* listener_);
         ~FilterWindowToolbarItemFactory();
-        
+
         void getAllToolbarItemIds(Array<int> &ids) override;
         void getDefaultItemSet(Array<int> &ids) override;
         ToolbarItemComponent* createItem(int itemId) override;
-        
+
     private:
-    
+
         ButtonListener* listener;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterWindowToolbarItemFactory)
     };
-    
+
 /*    class CustomToolbarButton: public ToolbarButton
     {
     public:

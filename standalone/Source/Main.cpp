@@ -18,7 +18,7 @@ public:
    ~StandaloneApplication()
    {
       DBG("destructor called");
- /*    
+ /*
        if (nullptr != ps)
       {
          // Save the state

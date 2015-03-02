@@ -11,7 +11,7 @@
 #include "AudioSourceProcessor.h"
 
 AudioSourceProcessor::AudioSourceProcessor(AudioSource* const inputSource,
-                                           const bool takeOwnership) 
+                                           const bool takeOwnership)
 : input(inputSource),audioSourceOwned(takeOwnership)
 {
 
@@ -19,7 +19,7 @@ AudioSourceProcessor::AudioSourceProcessor(AudioSource* const inputSource,
 AudioSourceProcessor::~AudioSourceProcessor()
 {
 	if (audioSourceOwned)
-		delete input;	
+		delete input;
 }
 void AudioSourceProcessor::prepareToPlay (double sampleRate,
 					                           int estimatedSamplesPerBlock)
@@ -42,7 +42,7 @@ void AudioSourceProcessor::processBlock (AudioSampleBuffer& buffer,
 	info.buffer=&buffer;
 	info.startSample=0;
 	info.numSamples=buffer.getNumSamples();
-	
+
 	input->getNextAudioBlock(info);
 }
 

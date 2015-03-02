@@ -15,7 +15,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
       Colour backgroundColour,
       PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
-   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | 
+   : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton |
                      DocumentWindow::maximiseButton | DocumentWindow::closeButton)
      //optionsButton ("options"),
      //micfileButton ("MIC"),
@@ -25,8 +25,30 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    DBG("StandaloneFilterWindow constructor");
    menuBarComponent = new MenuBarComponent(this);
 
+   // Load filter bank data
+   Array<File> fbData;
+   String tmpString = String();
+   FileChooser fbDataChooser ("Select filter bank data for analysis...",
+                               File::nonexistent,
+                               "*.lfb");
+   if (fbDataChooser.browseForFileToOpen())
+   {
+       fbData.add(fbDataChooser.getResult());
+       tmpString += fbDataChooser.getResult().getFullPathName();
+       tmpString = tmpString.dropLastCharacters(4);
+       fbData.add(tmpString += String("_fgrad.lfb"));
+       tmpString = tmpString.dropLastCharacters(10);
+       fbData.add(tmpString += String("_tgrad.lfb"));
+
+       if ( (!fbData[1].existsAsFile()) || (!fbData[2].existsAsFile()))
+                fbData.removeLast(2);
+   }
+   else
+   {
+       throw String("Failed to open filter bank data file.");
+   }
    // Create the wrapped AudioProcessorEditor
-   pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings);
+   pluginHolder = new StandalonePluginHolder (fbData, settingsToUse, takeOwnershipOfSettings);
    createEditorComp();
    AudioProcessorEditor* e = pluginHolder->getPluginEditor();
    if (nullptr == e )
@@ -156,7 +178,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
         if (toolbar.getItemId(ii) == 6)
         {
             b->setToggleState(!(b->getToggleState()),dontSendNotification);
-            
+
             if (b->getToggleState())
             {
                 pluginHolder->inputIsMicOnly();
@@ -166,7 +188,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
             {
                 pluginHolder->inputIsFileOnly();
                 std::wcout << "Input should be a file now" << std::endl;
-            }            
+            }
         }
         else if (pluginHolder->getCurrentSource() == 1)
         {
@@ -257,7 +279,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
                 break;
             case 8:
                 std::cout << "LOOP button pressed" << std::endl;
-                break;    
+                break;
             case 9:
                 std::cout << "SAVE button pressed" << std::endl;
                 break;
@@ -408,7 +430,7 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::getDefaultItemSet(Array<int> &ids)
 {
-   ids.add (flexibleSpacerId); 
+   ids.add (flexibleSpacerId);
    ids.add(back);
    ids.add(play);
    ids.add(pause);
@@ -439,7 +461,7 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add(fileToggle);
    ids.add(loopToggle);
    ids.add(saveImg);
-   
+
    // Spacers and Separators
    ids.add (separatorBarId);
    ids.add (spacerId);

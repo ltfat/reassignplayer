@@ -9,9 +9,11 @@
 */
 
 #include "StandalonePluginHolder.h"
+//#include "../../plugin/Source/PluginProcessor.h"
 
 
-extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
+//extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
+extern AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter(Array<File> fbData_);
 
 //==============================================================================
 /**
@@ -40,11 +42,12 @@ extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 */
 
 
-StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
+StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
    : settings (settingsToUse, takeOwnershipOfSettings),
      thread("File preload"),
      openedFile(nullptr),
+     filterbankData(fbData),
      sampleRate(44100),
      samplesPerBlock(512),
      currentSource(0)
@@ -56,7 +59,7 @@ StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
    reloadPluginState();
    thread.startThread();
    formatManager.registerBasicFormats();
-   
+
    //
    wasPlaying = false;
    //currentSource = 0;   // No input
@@ -108,7 +111,7 @@ StandalonePluginHolder::~StandalonePluginHolder()
 void StandalonePluginHolder::createPlugin()
 {
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-   pluginProcessor = createPluginFilter();
+   pluginProcessor = createCustomPluginFilter(filterbankData);
    jassert (pluginProcessor != nullptr); // Your createPluginFilter() function must return a valid object!
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 
@@ -345,7 +348,7 @@ void StandalonePluginHolder::inputIsMicOnly()
    {
       wasPlaying = false;
    }
-   
+
    currentSource = 2; // MIC/AUX input
 }
 
@@ -361,7 +364,7 @@ void StandalonePluginHolder::inputIsFileOnly()
    {
       transportSource.start();
    }
-   
+
    currentSource = 1; // File input
 }
 

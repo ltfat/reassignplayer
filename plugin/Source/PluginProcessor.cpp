@@ -13,8 +13,11 @@
 
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor(PluginAudioProcessor::suppBufLens bufferLen_)
-   : bufLen(static_cast<int>(bufferLen_)), paramActChannel(0), paramReassignedSwitch(1.0f)
+PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData, PluginAudioProcessor::suppBufLens bufferLen_)
+   : filterbankData(fbData),
+     bufLen(static_cast<int>(bufferLen_)),
+     paramActChannel(0),
+     paramReassignedSwitch(1.0f)
 {
    DBG("PLuginAudioProcessor constructor");
 }
@@ -147,17 +150,14 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Choose next bigger supported BufferLength or throw an error
    jassert(samplesPerBlock > bufLen / 2 );
 
-   Array<File> files;
-   try{
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test.lfb"));
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test_fgrad.lfb"));
-   files.add(File("/home/nholighaus/dev/reassignment/plugin/Source/44100_test_tgrad.lfb"));
-   fftBuf = new RingBLFilterbankBuffer(files,bufLen,RingFFTBuffer::winType::hann,1,3);
-   }
-   catch(String& stuff)
+   //Array<File> files;
+   try
    {
-   std::cout << "something random" << stuff << std::endl;
-   //std::cout << reinterpret_cast<String&>(stuff) << std::endl;
+        fftBuf = new RingBLFilterbankBuffer(filterbankData,bufLen,RingFFTBuffer::winType::hann,1,3);
+   }
+   catch(String& thisException)
+   {
+        std::cout << thisException << std::endl;
    }
    //fftBuf = new RingFFTBuffer(bufLen,RingFFTBuffer::winType::hann,1,3);
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
@@ -220,10 +220,17 @@ void PluginAudioProcessor::setStateInformation (const void* data, int sizeInByte
 
 //==============================================================================
 // This creates new instances of the plugin..
-AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+/*AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-   return new PluginAudioProcessor();
+   Array<File> fbData;
+   return new PluginAudioProcessor(fbData);
+}*/
+
+AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter(Array<File> filterbankData)
+{
+   return new PluginAudioProcessor(filterbankData);
 }
+
 
 RingTransformBuffer* PluginAudioProcessor::getRingBuffer()
 {

@@ -6,7 +6,7 @@
     Author:  susnak
 
   =============================================================================
-  
+
   Based on:
   http://www.juce.com/forum/topic/audiosamplebuffer-speed-ups
 */
@@ -20,26 +20,26 @@ class AudioSourceProcessor : public AudioProcessor
 public:
     AudioSourceProcessor(AudioSource* const s, bool takeOwnership);
     virtual ~AudioSourceProcessor();
-    
+
     void prepareToPlay(double sampleRate, int estimatedSamplesPerBlock) override;
-    
+
     void releaseResources() override;
     void processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessage) override;
-    
+
     bool silenceInProducesSilenceOut() const { return true; }
     double getTailLengthSeconds() const { return 0.0; }
     bool hasEditor() const { return false; }
-    
+
     const String getName() const { return L"AudioSource wrapper"; }
-    
+
     const String getInputChannelName(const int channelIndex) const { return String(channelIndex + 1); }
     const String getOutputChannelName(const int channelIndex) const { return String(channelIndex + 1); }
-    
+
     bool isInputChannelStereoPair (int index)	const	{ return false;	}
 	bool isOutputChannelStereoPair (int index)	const	{ return false; }
 	bool acceptsMidi() const							{ return false; }
 	bool producesMidi() const							{ return false; }
-	
+
 	AudioProcessorEditor* createEditor()						{ return nullptr; }
 	int getNumParameters()										{ return 0; }
 	const String getParameterName (int parameterIndex)			{ return String::empty; }

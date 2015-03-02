@@ -765,8 +765,6 @@ createDefFromFile(File& file)
     {
         shouldBeAtLeast += 4 * (filtLengths[kk]);
     }
-    std::cout << shouldBeAtLeast << std::endl;
-        std::cout << byteSize << std::endl;
 
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;

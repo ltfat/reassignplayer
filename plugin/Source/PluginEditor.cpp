@@ -36,7 +36,7 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
 
     //[UserPreSize]
-
+ 
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -196,7 +196,7 @@ void PluginEditor::buttonClicked (Button* button)
 {
    if (button == reassignToggle)
    {
-      processor.setParameterNotifyingHost (PluginAudioProcessor::kReassignedSwitch, reassignToggle->isDown());
+      processor.setParameterNotifyingHost (PluginAudioProcessor::kReassignedSwitch, reassignToggle->getToggleState());
    }
 
 }

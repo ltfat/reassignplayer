@@ -38,7 +38,7 @@ void RingTransformBuffer::appendSamples(const float* samples[], int samplesLen)
     {
         if (isFull())
         {
-            DBG("BUFFER IS FULL");
+            // DBG("BUFFER IS FULL");
             return;
         }
         // Number of samples we can write to the actual buffer
@@ -232,7 +232,7 @@ void coefsToAbsMatrix<float>(float* coefs[], ltfatInt Lc[], int M,
             float tmpyPrec = rowsRatio * m;
             int tmpy = static_cast<int>(tmpyPrec);
             tmpyPrec -= tmpy;
-            tmpy = Lc[0] - 2 - tmpy;
+
             for (int ii = 0; ii < stripWidth; ++ii)
             {
                 DATAEL(m, ii) =  (1.0f - tmpyPrec) * (c[tmpy]) + tmpyPrec * (c[tmpy + 1]);
@@ -251,7 +251,6 @@ void coefsToAbsMatrix<float>(float* coefs[], ltfatInt Lc[], int M,
             float tmpyPrec = rowsRatio * m;
             int tmpy = static_cast<int>(tmpyPrec);
             tmpyPrec -= tmpy;
-            tmpy = M - 2 - tmpy;
             for (int ii = 0; ii < stripWidth; ++ii)
             {
                 float tmpxPrec = colsRatios[ii] * ii;
@@ -415,13 +414,20 @@ RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<File> filterbankFiles_, int
     : RingFFTBuffer(bufLen_, winType_, nChannels_, nBuf_),
       plotOverlaiedCoefficients(true), filterbankFiles(filterbankFiles_)
 {
-    DBG("RingBLFilterbankBuffer constructor started");
     readFilterbankDefinitions();
-    DBG("Before allocating buffers");
     createFilterbankBuffers();
-    DBG("Before creating plans");
     createFilterbankPlan();
-    DBG("RingBLFilterbankBuffer constructor ended");
+}
+
+RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterbankDefs_, int bufLen_,
+        winType winType_,  int nChannels_, int nBuf_)
+    : RingFFTBuffer(bufLen_, winType_, nChannels_, nBuf_),
+      plotOverlaiedCoefficients(true)
+{
+    for (BLFilterbankDef* f : filterbankDefs_)  filterbanks.add(f);
+
+    createFilterbankBuffers();
+    createFilterbankPlan();
 }
 
 
@@ -501,6 +507,7 @@ void RingBLFilterbankBuffer::createFilterbankBuffers()
         bufFilterbankCoefs.add(arrEl);
         bufFilterbankOverlaidCoefs.add(arrEl2);
     }
+
     dummy = static_cast<fftwf_complex**>(fftwf_malloc(filterbanks[0]->M * sizeof(fftwf_complex*)));
     for (int m = 0; m < filterbanks[0]->M; ++m)
     {
@@ -568,7 +575,6 @@ void RingBLFilterbankBuffer::performTransform() noexcept
                         );
 
             /*
-
                     filterbank_fftbl_execute_s(p[ii],
                     reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
                     reinterpret_cast<const float _Complex **>(blFilt->G),
@@ -678,9 +684,8 @@ bool RingBLFilterbankBuffer::getBufferCoefficientsAsAbsMatrix(float * matrix, in
 }
 
 RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef::
-createDefFromFile(File& file)
+createDefFromFile(File& file, std::streamoff byteOffset)
 {
-    int L = 2048;
     // Read the file:
     std::streampos dataSize, readSize;
     std::ifstream dataFile;
@@ -695,7 +700,7 @@ createDefFromFile(File& file)
     }
 
     dataSize = dataFile.tellg(); // Length = eof
-    dataFile.seekg(0, std::ios::beg); // Reset stream to beginning of file
+    dataFile.seekg(byteOffset, std::ios::beg); // Reset stream to beginning of file
 
     byteSize = static_cast<unsigned long>(dataSize); // Recast file size as integer
 
@@ -766,6 +771,7 @@ createDefFromFile(File& file)
         shouldBeAtLeast += 4 * (filtLengths[kk]);
     }
 
+
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;
 
@@ -822,12 +828,12 @@ createDefFromFile(File& file)
         foff_[kk] = foff[kk];
         a_[kk] = static_cast<double>(aOne) / a[kk];
         fc_[kk] = static_cast<double>(fc[kk]);
-        Lc_[kk] = static_cast<ltfatInt>(std::round(static_cast<double>(L) / a_[kk]));
+        Lc_[kk] = static_cast<ltfatInt>(std::round(static_cast<double>(blockLength) / a_[kk]));
         Lchalf_[kk] = static_cast<ltfatInt>(std::floor(Lc_[kk] / 2.0));
     }
 
     BLFilterbankDef* retVal = new BLFilterbankDef(const_cast<const fftwf_complex**>(G_),
-            Gl_, foff_, realonly_, a_, fc_, Lc_, Lchalf_, (int)M, L);
+            Gl_, foff_, realonly_, a_, fc_, Lc_, Lchalf_, (int)M, blockLength);
 
     //  Free tep variables
     delete [] a;
@@ -941,7 +947,7 @@ RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
 {
     // There are now 3 filters in filterbanks
     // We need to check whether thea are all the same..
-
+    setActivePlotReassigned( true);
     createReassignBuffers();
     createReassignPlan();
 }
@@ -968,12 +974,60 @@ destroyReassignPlan()
 void RingReassignedBLFilterbankBuffer::
 createReassignBuffers()
 {
-    //BLFilterbankDef* first = filterbanks.getFirst();
+    // tgrad,fgrad,cs,
+    // reassignedCoefs
+    BLFilterbankDef* blFilt = filterbanks.getFirst();
+    int M = blFilt->M;
+    const ltfatInt* Lchalf = blFilt->Lchalf;
+    for (int ii = 0; ii < nBuf; ++ii)
+    {
+        reassignedCoefs.add(static_cast<float**>(fftwf_malloc(M * sizeof(float*))));
+    }
+
+    tgrad = static_cast<float**>(fftwf_malloc(M * sizeof(float*)));
+    fgrad = static_cast<float**>(fftwf_malloc(M * sizeof(float*)));
+    cs    = static_cast<float**>(fftwf_malloc(M * sizeof(float*)));
+
+    for (int m = 0; m < blFilt->M; ++m)
+    {
+        size_t LchalfinBytes = Lchalf[m]*sizeof(float);
+        for (float** a: reassignedCoefs)
+        {
+            a[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
+            memset(a[m],0,LchalfinBytes);
+        }
+        tgrad[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
+        fgrad[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
+        cs[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
+        memset(tgrad[m],0,LchalfinBytes);
+        memset(fgrad[m],0,LchalfinBytes);
+        memset(cs[m],0,LchalfinBytes);
+    }
 
 }
 void RingReassignedBLFilterbankBuffer::
 destroyReassignBuffers()
 {
+    BLFilterbankDef* blFilt = filterbanks.getFirst();
+    int M = blFilt->M;
+
+    for (auto a : reassignedCoefs)
+    {
+        for (int m = 0; m < M; ++m) fftwf_free(a[m]);
+
+        fftwf_free(a);
+    }
+
+    for (int m = 0; m < M; ++m)
+    {
+        fftwf_free(tgrad[m]);
+        fftwf_free(fgrad[m]);
+        fftwf_free(cs[m]);
+    }
+
+    fftwf_free(tgrad);
+    fftwf_free(fgrad);
+    fftwf_free(cs);
 
 }
 
@@ -996,17 +1050,17 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
     // tgrad,fgrad,cs
 
     // Super easy type casing !! :)
-    /*filterbankphasegrad_s(reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(c)),
+    filterbankphasegrad_s(reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(c)),
                           reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(ch)),
                           reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(cd)),
-                          M, blFilt->Lc, bufLen, minlvl, tgrad, fgrad, cs);*/
-
-    // And do the reassignment
-    float** sr = reassignedCoefs.getUnchecked(head);
-    filterbankreassign_s(const_cast<const float**>(cs),
-    const_cast<const float**>(tgrad),
-    const_cast<const float**>(fgrad),
-    Lchalf, blFilt->a, cFreq, M, sr, NULL);
+                          M, blFilt->Lchalf, bufLen, minlvl, tgrad, fgrad, cs);
+        // And do the reassignment
+        float** sr = reassignedCoefs.getUnchecked(head);
+        filterbankreassign_s(const_cast<const float**>(cs),
+        const_cast<const float**>(tgrad),
+        const_cast<const float**>(fgrad),
+        blFilt->Lchalf, blFilt->a, blFilt->fc, M, sr, NULL);
+        
 }
 
 float** RingReassignedBLFilterbankBuffer::
@@ -1036,7 +1090,7 @@ getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows )
     float** cEl = getReassignedCoefficients(true);
     if (nullptr == cEl) return false;
 
-    SpectrogramPlottableMethods::coefsToAbsMatrix(cEl, const_cast<ltfatInt*>(filterbanks[0]->Lc),
+    SpectrogramPlottableMethods::coefsToAbsMatrix(cEl, const_cast<ltfatInt*>(filterbanks[0]->Lchalf),
             filterbanks[0]->M,
             matrix, cols, rows);
     return true;

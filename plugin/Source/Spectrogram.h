@@ -115,6 +115,8 @@ private:
 
     OwnedArray<Component> trash;
 
+    CriticalSection objectLock;
+
     void populatePopupMenu();
 
     class MathOp

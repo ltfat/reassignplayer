@@ -78,6 +78,7 @@ void Spectrogram::populatePopupMenu()
     minmaxdbLabel->attachToComponent(minmaxdb, true);
     pm->addCustomItem(1, minmaxdb, 130, 30, false);
 
+
     minmaxdb->addListener(this);
 }
 
@@ -105,19 +106,23 @@ void Spectrogram::stripBackendToRepaint()
                     colourmapLen.get() - 1);
 
 
-    // Use colourmap to fill the strip image
-    MathOp::imageInColourmap(strip, stripBackend, colourmap);
-    // strip is now ready to be plotted
-    // Lock the rest as we will draw to image
-    // const ScopedLock imageGraphicsLock(objectLock);
-
-    //const MessageManagerLock mml (Thread::getCurrentThread());
-    ++stripPos;
-    if (stripPos.get() * stripWidth >= image.getWidth())
     {
-        stripPos = 0;
+        // Strip is read in repaint, we must avoid rewriting it when it is read in
+        // repaint
+        const ScopedLock imageGraphicsLock(objectLock);
+        MathOp::imageInColourmap(strip, stripBackend, colourmap);
     }
 
+    int stripPosLoc = stripPos.get()+1;
+    if (stripPosLoc * stripWidth >= image.getWidth())
+    {
+        stripPosLoc = 0;
+    }
+
+    // This is an atomic operation
+    stripPos = stripPosLoc;
+
+    // repaint shoild be called from the message thread
     const MessageManagerLock mmLock;
     repaint();
 }
@@ -152,16 +157,23 @@ void Spectrogram::paint (Graphics& g)
 {
     static int counter = 0;
     double startTime = Time::getMillisecondCounterHiRes();
+
     // Ensure we are using the same stripPos during the paint method
+    // stripPos is atomic
     int stripPosLoc = stripPos.get();
 
-    // Draw strip to the image first
-    imageGraphics->drawImage(strip,
-                             stripPosLoc * stripWidth, 0, stripWidth,       image.getHeight(),
-                             0                       , 0, strip.getWidth(), strip.getHeight());
+    {
+        // Lock. Strip are shared between threads
+        const ScopedLock imageGraphicsLock(objectLock);
+
+        // Draw strip to the image first
+        imageGraphics->drawImage(strip,
+                                 (stripPosLoc-1) * stripWidth, 0, stripWidth,       image.getHeight(),
+                                 0                       , 0, strip.getWidth(), strip.getHeight());
+    }
 
     // Draw the strip itself
-    int stripPosInPix = stripPos.get() * stripWidth;
+    int stripPosInPix = stripPosLoc * stripWidth;
     float stripPosRel = ((float)stripPosInPix) / image.getWidth();
 
     g.drawImage(image, 0, 0, getWidth() * (1 - stripPosRel), getHeight(),
@@ -203,11 +215,13 @@ void Spectrogram::paint (Graphics& g)
 void Spectrogram::resized()
 {
     // There are no child Components
+    // We are currently on the Message thread
     repaint();
 }
 void Spectrogram::timerCallback()
 {
-    // We are on the Message thread, just signalise new data and exit
+    // We are on the Message thread, just signalise new data is available and exit
+    // Atomic
     timerFired = 1;
 }
 
@@ -215,19 +229,24 @@ void Spectrogram::run()
 {
     while (!threadShouldExit())
     {
+        // The current thead is not killed yet
         if (1 == timerFired.get())
         {
             if (nullptr != ringBuffer)
             {
+                // Check new data
                 bool isValid = ringBuffer->getBufferCoefficientsAsAbsMatrix(stripBackend,
                                strip.getWidth(), strip.getHeight());
                 if (isValid)
                 {
+                    // New data is available
                     stripBackendToRepaint();
                 }
             }
 
-
+            // Atomic
+            // It might happen that the timer fires before we get here, but it is not a
+            // problem
             timerFired = 0;
         }
     }
@@ -268,7 +287,6 @@ void Spectrogram::sliderValueChanged(Slider* slider)
             midDB = ( minDB.get() + maxDB.get()) / 2.0;
             slider->setValue(midDB.get(), dontSendNotification);
         }
-
     }
 }
 

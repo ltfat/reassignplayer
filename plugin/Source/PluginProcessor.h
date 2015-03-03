@@ -100,7 +100,7 @@ public:
 private:
    int bufLen;
    Array<File> filterbankData;
-   ScopedPointer<RingFFTBuffer> fftBuf;
+   ScopedPointer<RingReassignedBLFilterbankBuffer> fftBuf;
    // Parameters
    int paramActChannel, paramReassignedSwitch;
 
@@ -108,7 +108,5 @@ private:
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };
 
-
-
-
 #endif  // PLUGINPROCESSOR_H_INCLUDED
+

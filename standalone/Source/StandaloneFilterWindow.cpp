@@ -279,6 +279,20 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
                 break;
             case 8:
                 std::cout << "LOOP button pressed" << std::endl;
+                pluginHolder->toggleLooping();
+                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                {
+                    switch (toolbar.getItemId(jj))
+                    {
+                    case 8:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(!cc->getToggleState(),dontSendNotification);
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 break;
             case 9:
                 std::cout << "SAVE button pressed" << std::endl;
@@ -371,19 +385,16 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         binDataOff = "play_svg";
         binDataOn = "playOn_svg";
         buttonText = "play";
-        *toggleState = true;
         break;
     case pause:
         binDataOff = "pause_svg";
         binDataOn = "pauseOn_svg";
         buttonText = "pause";
-        *toggleState = true;
         break;
     case stop:
         binDataOff = "stop_svg";
         binDataOn = "stopOn_svg";
         buttonText = "stop";
-        *toggleState = true;
         break;
     case forward:
         binDataOff = "forward_svg";
@@ -394,19 +405,16 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         binDataOff = "mic_svg";
         binDataOn = "micOn_svg";
         buttonText = "toggle MIC";
-        *toggleState = true;
         break;
     case fileToggle:
         binDataOff = "audfile_svg";
         binDataOn = "audfileOn_svg";
         buttonText = "toggle FILE";
-        *toggleState = true;
         break;
     case loopToggle:
         binDataOff = "loop_svg";
         binDataOn = "loopOn_svg";
         buttonText = "toggle LOOP";
-        *toggleState = true;
         break;
     case saveImg:
         binDataOff = "save_svg";
@@ -569,6 +577,11 @@ void StandaloneFilterWindow
                         c = toolbar.getItemComponent(jj);
                         cc = static_cast<ToolbarButton*>(c);
                         cc->setToggleState(0,dontSendNotification);
+                        break;
+                    case 8:
+                        c = toolbar.getItemComponent(jj);
+                        cc = static_cast<ToolbarButton*>(c);
+                        cc->setToggleState(1,dontSendNotification);
                         break;
                     default:
                         break;

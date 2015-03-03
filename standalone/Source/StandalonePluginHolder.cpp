@@ -413,3 +413,16 @@ bool StandalonePluginHolder::changePlaybackState(int state)
 
     return wasP;
 }
+
+// Loop button interface
+
+void StandalonePluginHolder::toggleLooping()
+{
+    if (formatReaderSource != nullptr)
+    {
+        if (formatReaderSource->isLooping())
+            formatReaderSource->setLooping(false);
+        else
+            formatReaderSource->setLooping(true);
+    }
+}

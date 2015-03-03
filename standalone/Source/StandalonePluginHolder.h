@@ -75,6 +75,7 @@ public:
 
     // Playback control
     bool changePlaybackState(int state);
+    void toggleLooping();
 
     // Graph manipulation routines
     void inputIsMicOnly();

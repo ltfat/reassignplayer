@@ -49,6 +49,7 @@ float PluginAudioProcessor::getParameter (int index)
 
 void PluginAudioProcessor::setParameter (int index, float newValue)
 {
+
    switch(index)
    {
       case kActChannel:         paramActChannel = std::min(static_cast<int>(newValue),getNumInputChannels()-1); break;
@@ -74,11 +75,13 @@ const String PluginAudioProcessor::getParameterText (int index)
 
 const String PluginAudioProcessor::getInputChannelName (int channelIndex) const
 {
+
    return String (channelIndex + 1);
 }
 
 const String PluginAudioProcessor::getOutputChannelName (int channelIndex) const
 {
+
    return String (channelIndex);
 }
 
@@ -89,7 +92,7 @@ bool PluginAudioProcessor::isInputChannelStereoPair (int index) const
 
 bool PluginAudioProcessor::isOutputChannelStereoPair (int index) const
 {
-   return true;
+    return true;
 }
 
 bool PluginAudioProcessor::acceptsMidi() const
@@ -138,6 +141,7 @@ void PluginAudioProcessor::setCurrentProgram (int /*index*/)
 const String PluginAudioProcessor::getProgramName (int index)
 {
    return String();
+
 }
 
 void PluginAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
@@ -148,6 +152,7 @@ void PluginAudioProcessor::changeProgramName (int /*index*/, const String& /*new
 void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Choose next bigger supported BufferLength or throw an error
+
    jassert(samplesPerBlock > bufLen / 2 );
 
    //Array<File> files;
@@ -198,6 +203,7 @@ bool PluginAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* PluginAudioProcessor::createEditor()
 {
+
    PluginEditor* p = new PluginEditor (*this);
    return p;
 }
@@ -205,9 +211,9 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-   // You should use this method to store your parameters in the memory block.
-   // You could do that either as raw data, or use the XML or ValueTree classes
-   // as intermediaries to make it easy to save and load complex data.
+    // You should use this method to store your parameters in the memory block.
+    // You could do that either as raw data, or use the XML or ValueTree classes
+    // as intermediaries to make it easy to save and load complex data.
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)

@@ -769,7 +769,7 @@ createDefFromFile(File& file)
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;
 
-    if (byteSize != shouldBeAtLeast)
+    if (byteSize < shouldBeAtLeast)
     {
         dataFile.close();
         delete [] a;

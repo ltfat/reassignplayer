@@ -26,27 +26,15 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    menuBarComponent = new MenuBarComponent(this);
 
    // Load filter bank data
-   Array<File> fbData;
-   String tmpString = String();
-   FileChooser fbDataChooser ("Select filter bank data for analysis...",
-                               File::nonexistent,
-                               "*.lfb");
-   if (fbDataChooser.browseForFileToOpen())
-   {
-       fbData.add(fbDataChooser.getResult());
-       tmpString += fbDataChooser.getResult().getFullPathName();
-       tmpString = tmpString.dropLastCharacters(4);
-       fbData.add(tmpString += String("_fgrad.lfb"));
-       tmpString = tmpString.dropLastCharacters(10);
-       fbData.add(tmpString += String("_tgrad.lfb"));
+   Array<File> fbData = FilterbankFileLoader();
 
-       if ( (!fbData[1].existsAsFile()) || (!fbData[2].existsAsFile()))
-                fbData.removeLast(2);
-   }
-   else
-   {
-       throw String("Failed to open filter bank data file.");
-   }
+   Array<unsigned long> startingBytes;
+   Array<unsigned> blockLengths;
+   unsigned* activeFilterbank = nullptr;
+
+   FilterbankSelectWindow* fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,activeFilterbank);
+   fbWindow->setVisible(true);
+
    // Create the wrapped AudioProcessorEditor
    pluginHolder = new StandalonePluginHolder (fbData, settingsToUse, takeOwnershipOfSettings);
    createEditorComp();
@@ -623,3 +611,165 @@ void StandaloneFilterWindow
       break;
    }
 }
+
+//============================================================================
+// FilterbankFileLoader
+
+Array<File> StandaloneFilterWindow::FilterbankFileLoader()
+{
+   Array<File> fbData;
+   String tmpString = String();
+   FileChooser fbDataChooser ("Select filter bank data for analysis...",
+                               File::nonexistent,
+                               "*.lfb");
+   if (fbDataChooser.browseForFileToOpen())
+   {
+       fbData.add(fbDataChooser.getResult());
+       tmpString += fbDataChooser.getResult().getFullPathName();
+       tmpString = tmpString.dropLastCharacters(4);
+       fbData.add(tmpString += String("_fgrad.lfb"));
+       tmpString = tmpString.dropLastCharacters(10);
+       fbData.add(tmpString += String("_tgrad.lfb"));
+
+       if ( (!fbData[1].existsAsFile()) || (!fbData[2].existsAsFile()))
+                fbData.removeLast(2);
+   }
+   else
+   {
+       throw String("Failed to open filter bank data file.");
+   }
+
+   return fbData;
+}
+
+//============================================================================
+// FilterbankSelectWindow
+
+StandaloneFilterWindow::FilterbankSelectWindow
+::FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank_)
+: DocumentWindow (fbFile.getFileNameWithoutExtension(), Colours::lightgrey, DocumentWindow::minimiseButton |
+                     DocumentWindow::maximiseButton | DocumentWindow::closeButton),
+//ResizableWindow (fbFile.getFileNameWithoutExtension(), true),
+confirmButton("Ok"),
+filterbanksRead(0),
+activeFilterbank(activeFilterbank_),
+fbDataButtons()
+{
+    setTitleBarHeight(20);
+
+    // Read file and interpret fundamental data
+    std::streampos dataSize, readSize;
+    std::ifstream dataFile;
+
+    unsigned long byteSize;
+    dataFile.open (fbFile.getFullPathName().getCharPointer(),
+                   std::ios::in | std::ios::binary | std::ios::ate);
+
+    if (dataFile.fail())
+    {
+        throw String(String("File ") + fbFile.getFileName() + String(" not found!"));
+    }
+
+    dataSize = dataFile.tellg(); // Length = eof
+    dataFile.seekg(0, std::ios::beg); // Reset stream to beginning of file
+
+    byteSize = static_cast<unsigned long>(dataSize); // Recast file size as integer
+
+    unsigned long currentPosition = 0, binFilterbankLength;
+
+    while ( currentPosition < byteSize )
+    {
+        dataFile.seekg(currentPosition, std::ios::beg); // Set stream to start of next filter bank
+        startingBytes.add(currentPosition);
+
+        if ( currentPosition < byteSize-6 )
+        {
+            if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
+            {
+                unsigned* tempInt = new unsigned;
+                unsigned short* tempIntShort = new unsigned short;
+                dataFile.read(reinterpret_cast <char*> (tempInt), 4);
+                binFilterbankLength = static_cast <unsigned long> (*tempInt);
+
+                dataFile.read(reinterpret_cast <char*> (tempIntShort), 2);
+                blockLengths.add(static_cast <unsigned long> (*tempIntShort));
+            }
+            else // Handle case of 16-bit unsigned
+            {
+                dataFile.read(reinterpret_cast <char*> (binFilterbankLength), 4);
+                unsigned* tempInt = new unsigned;
+                dataFile.read(reinterpret_cast <char*> (tempInt), 2);
+                blockLengths.add(*tempInt);
+            }
+        }
+        else
+        {
+            throw String("File read error (1)");
+        }
+
+        currentPosition += binFilterbankLength;
+        filterbanksRead++;
+    }
+
+    if ( currentPosition != byteSize )
+    {
+            throw String("File read error (2)");
+    }
+
+    // Setup window
+    Label dialogText("Select filter bank block length...");
+
+    this->setSize(300,5+(filterbanksRead+3)*25);
+    //this->setResizable(false);
+
+    for (unsigned kk = 0 ; kk < filterbanksRead; ++kk)
+    {
+        ToggleButton* newButton = new ToggleButton( String(std::to_string(blockLengths[kk])) += String(" samples"));
+        fbDataButtons.add(newButton);
+        fbDataButtons[kk]->setToggleState ( kk==0, dontSendNotification);
+        fbDataButtons[kk]->setBounds (20, 55+25*kk, 260, 20);
+        fbDataButtons[kk]->addListener(this);
+        addAndMakeVisible(*fbDataButtons[kk]);
+    }
+
+    dialogText.setBounds (20, 30, 260, 20);
+    dialogText.setEditable(false);
+    confirmButton.setBounds (90, getHeight()-25, 120, 20);
+    confirmButton.addListener(this);
+    //cancelButton.setBounds (160, getHeight()-25, 120, 20);
+    addAndMakeVisible(dialogText);
+    addAndMakeVisible(confirmButton);
+    //addAndMakeVisible(cancelButton);
+}
+
+void StandaloneFilterWindow::FilterbankSelectWindow::buttonClicked (Button* b)
+{
+    if (b == &confirmButton)
+    {
+        for ( unsigned kk = 0; kk < filterbanksRead; ++kk)
+        {
+            if ( fbDataButtons[kk]->getToggleState() )
+            {
+                //*activeFilterbank = kk;
+                //JUCEApplicationBase::quit();
+                break;
+            }
+        }
+    }
+
+   for ( unsigned kk = 0; kk < filterbanksRead; ++kk)
+   {
+      if (b == fbDataButtons[kk])
+      {
+        if  (b->getToggleState())
+        {
+            for ( unsigned ii = 0; ii < filterbanksRead; ++ii)
+            {
+                fbDataButtons[ii]->setToggleState( ii == kk, dontSendNotification);
+            }
+        }
+      }
+    }
+
+}
+

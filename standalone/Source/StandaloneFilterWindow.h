@@ -27,6 +27,7 @@
 
 #include "JuceHeader.h"
 #include "StandalonePluginHolder.h"
+#include <fstream>
 
 
 //==============================================================================
@@ -82,8 +83,11 @@ public:
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
     StringArray getMenuBarNames() override;
 
-
     void resized() override;
+
+    //==============================================================================
+    // Filterbank file chooser
+    Array<File> FilterbankFileLoader();
 
 private:
     ScopedPointer<OpenGLContext> ogl;
@@ -101,6 +105,9 @@ private:
     // Toolbar
     Toolbar toolbar;
     ScopedPointer<ToolbarItemFactory> tbfac;
+
+    // Filterbank to use
+    unsigned selectedFilterbank;
 
     class FilterWindowToolbarItemFactory: public ToolbarItemFactory
     {
@@ -143,7 +150,26 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GenericToolbarItemComponent)
     };
 
+    class FilterbankSelectWindow    : public DocumentWindow,
+                                      private ButtonListener
+    {
+    public:
+        FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank);
+
+        void buttonClicked (Button* b) override;
+    private:
+        TextButton confirmButton;
+        //TextButton cancelButton("Cancel");
+        unsigned filterbanksRead;
+        unsigned* activeFilterbank;
+        Array<ToggleButton*> fbDataButtons;
+        ButtonListener* selectListener;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
+    };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };
 
 #endif   // JUCE_STANDALONEFILTERWINDOW_H_INCLUDED
+

@@ -63,7 +63,7 @@
   <EXPORTFORMATS>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK"
                 externalLibraries="ltfatf&#10;ltfat&#10;fftw3f&#10;fftw3&#10;tbb"
-                extraLinkerFlags="-L/home/susnak/dev/ltfat/lib" extraCompilerFlags="-I/home/susnak/dev/ltfat/src&#10;"
+                extraLinkerFlags="-L/home/susnak/dev/ltfat/lib" extraCompilerFlags="-I/home/susnak/dev/ltfat/src&#10;-g"
                 extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"

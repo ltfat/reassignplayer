@@ -141,7 +141,8 @@ protected:
     class BLFilterbankDef
     {
     public:
-        static BLFilterbankDef* createDefFromFile(File& f);
+        static BLFilterbankDef* createDefFromFile(File& f,
+                                                  std::streamoff byteOffset = 0);
         virtual ~BLFilterbankDef();
 
         const fftwf_complex** G;
@@ -192,9 +193,10 @@ public:
     RingBLFilterbankBuffer(Array<File> filterbankFiles_, int bufLen_,
                            winType winType_ = winType::hann,
                            int nChannels_ = 1, int nBuf_ = 2);
-    /*RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterbankFiles_, int bufLen_,
+    RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterbankFiles_, int bufLen_,
                            winType winType_ = winType::hann,
-                           int nChannels_ = 1, int nBuf_ = 2);*/
+                           int nChannels_ = 1, int nBuf_ = 2);
+
     virtual ~RingBLFilterbankBuffer();
     void performTransform() noexcept override;
     virtual bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows ) override;
@@ -254,8 +256,6 @@ private:
     float** tgrad;
     float** fgrad;
     float** cs;
-    ltfatInt* Lchalf;
-    double* cFreq;
 
     void createReassignPlan();
     void destroyReassignPlan();

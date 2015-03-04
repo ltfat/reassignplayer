@@ -148,17 +148,19 @@ void PluginAudioProcessor::changeProgramName (int /*index*/, const String& /*new
 {
 }
 
-//==============================================================================
+//==========================================
 void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Choose next bigger supported BufferLength or throw an error
 
    jassert(samplesPerBlock > bufLen / 2 );
 
+
    //Array<File> files;
    try
    {
-        fftBuf = new RingBLFilterbankBuffer(filterbankData,bufLen,RingFFTBuffer::winType::hann,1,3);
+        fftBuf = new RingReassignedBLFilterbankBuffer(filterbankData.getRawDataPointer(),
+                                                      bufLen,RingFFTBuffer::winType::hann,1,3);
    }
    catch(String& thisException)
    {
@@ -169,6 +171,7 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    pe->getSpectrogram()->setSpectrogramSource(fftBuf);
    // The buffer will notify listeners when a new FFT buffer if available
    //fftBuf->addChangeListener(dynamic_cast<PluginEditor*>(createEditorIfNeeded()));
+  // fftBuf->setActivePlotFilterbank(0,false);
 }
 
 void PluginAudioProcessor::releaseResources()
@@ -190,10 +193,15 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
    // Start rebuffering
    int actBufLen = buffer.getNumSamples();
    const float* srcPtr = buffer.getReadPointer(paramActChannel);
+
    // Add samples to the buffer
    fftBuf->appendSamples(&srcPtr, actBufLen);
+
    (dynamic_cast<PluginEditor*>(getActiveEditor()))->getSpectrogram()->setAudioLoopMs(Time::getMillisecondCounterHiRes()-startTime);
+
+   fftBuf->setActivePlotReassigned(paramReassignedSwitch);
 }
+
 
 //==============================================================================
 bool PluginAudioProcessor::hasEditor() const

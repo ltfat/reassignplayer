@@ -14,8 +14,10 @@
 
 //==============================================================================
 PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData, PluginAudioProcessor::suppBufLens bufferLen_)
-   : filterbankData(fbData),
-     bufLen(static_cast<int>(bufferLen_)),
+    :bufLen(static_cast<int>(bufferLen_)),
+     filterbankData(fbData),
+     fftBuf(nullptr),
+     fftBufReplacing(nullptr),
      paramActChannel(0),
      paramReassignedSwitch(1.0f)
 {
@@ -155,7 +157,6 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
    jassert(samplesPerBlock > bufLen / 2 );
 
-
    //Array<File> files;
    try
    {
@@ -166,11 +167,8 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    {
         std::cout << thisException << std::endl;
    }
-   //fftBuf = new RingFFTBuffer(bufLen,RingFFTBuffer::winType::hann,1,3);
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    pe->getSpectrogram()->setSpectrogramSource(fftBuf);
-   // The buffer will notify listeners when a new FFT buffer if available
-   //fftBuf->addChangeListener(dynamic_cast<PluginEditor*>(createEditorIfNeeded()));
   // fftBuf->setActivePlotFilterbank(0,false);
 }
 
@@ -190,13 +188,27 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
       buffer.clear (i, 0, buffer.getNumSamples());
 
-   // Start rebuffering
    int actBufLen = buffer.getNumSamples();
    const float* srcPtr = buffer.getReadPointer(paramActChannel);
 
-   // Add samples to the buffer
-   fftBuf->appendSamples(&srcPtr, actBufLen);
+/*   if(nullptr != fftBufReplacing.get())
+   {
+   */
+       fftBuf->appendSamples(&srcPtr, actBufLen);
+/*   }
+   else
+   {
+       fftBufReplacing.get()->appendSamples(&srcPtr, actBufLen);
 
+       if(fftBuf->isEmpty())
+       {
+          // Switch the pointers
+          // Cannot just delete
+          fftBuf = nullptr;
+          fftBuf = dynamic_cast<RingReassignedBLFilterbankBuffer*>(fftBufReplacing.get());
+       }
+   }
+*/
    (dynamic_cast<PluginEditor*>(getActiveEditor()))->getSpectrogram()->setAudioLoopMs(Time::getMillisecondCounterHiRes()-startTime);
 
    fftBuf->setActivePlotReassigned(paramReassignedSwitch);
@@ -249,4 +261,13 @@ AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter(Array<File> filterbankDat
 RingTransformBuffer* PluginAudioProcessor::getRingBuffer()
 {
    return fftBuf;
+}
+
+bool PluginAudioProcessor::setRingBuffer(RingTransformBuffer* rtb)
+{
+// Number of buffers must be the same as in the old one? 
+
+  // We do not want this to change again until the switch is complete
+  // returns false if fftBufReplacing was not nullptr
+  return fftBufReplacing.compareAndSetBool(rtb, nullptr);
 }

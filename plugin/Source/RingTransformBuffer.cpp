@@ -464,7 +464,7 @@ void RingBLFilterbankBuffer::createFilterbankPlan()
             // Plan m-th filter
             p.getLast()[m] = convsub_fftbl_init_s(bufLen, blFilt->Gl[m],
                                                   nChannels, blFilt->a[m],
-                                                  reinterpret_cast<const _Complex float*>(bf[m]));
+                                                  const_cast<const fftwf_complex*>(bf[m]));
             DBG("After planning");
         }
     }
@@ -567,19 +567,19 @@ void RingBLFilterbankBuffer::performTransform() noexcept
                 for (size_t i = r.begin(); i != r.end(); ++i)
                 {
                     convsub_fftbl_execute_s(p[ii][i],
-                    reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
-                    reinterpret_cast<const float _Complex *>(blFilt->G[i]),
-                    blFilt->foff[i], 0 , reinterpret_cast<float _Complex *>(C[i]));
+                    const_cast<const fftwf_complex *>(bufFFTCoefs.getUnchecked(locHead)),
+                    const_cast<const fftwf_complex *>(blFilt->G[i]),
+                    blFilt->foff[i], 0 , C[i]);
                 }
             }
                         );
 
             /*
                     filterbank_fftbl_execute_s(p[ii],
-                    reinterpret_cast<const float _Complex *>(bufFFTCoefs.getUnchecked(locHead)),
-                    reinterpret_cast<const float _Complex **>(blFilt->G),
+                    reinterpret_cast<const fftwf_complex *>(bufFFTCoefs.getUnchecked(locHead)),
+                    reinterpret_cast<const fftwf_complex **>(blFilt->G),
                     blFilt->M, blFilt->foff, blFilt->realonly,
-                    reinterpret_cast<float _Complex **>(C));
+                    reinterpret_cast<fftwf_complex **>(C));
             */
             // Do the overlays
             fftwf_complex** overlayfront = bufFilterbankOverlaidCoefs.getUnchecked(locHead)->getUnchecked(ii);
@@ -1050,9 +1050,9 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
     // tgrad,fgrad,cs
 
     // Super easy type casing !! :)
-    filterbankphasegrad_s(reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(c)),
-                          reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(ch)),
-                          reinterpret_cast<const _Complex float**>(const_cast<const fftwf_complex**>(cd)),
+    filterbankphasegrad_s(const_cast<const fftwf_complex**>(c),
+                          const_cast<const fftwf_complex**>(ch),
+                          const_cast<const fftwf_complex**>(cd),
                           M, blFilt->Lchalf, bufLen, minlvl, tgrad, fgrad, cs);
         // And do the reassignment
         float** sr = reassignedCoefs.getUnchecked(head);

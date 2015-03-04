@@ -93,14 +93,17 @@ public:
    void getStateInformation (MemoryBlock& destData) override;
    void setStateInformation (const void* data, int sizeInBytes) override;
 
-   //void setBufferLen(PluginAudioProcessor::supportedBufferLengths bLen);
    RingTransformBuffer* getRingBuffer();
+   // Ownership is taken 
+   bool setRingBuffer(RingTransformBuffer* rtb);
 
    AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter();
 private:
    int bufLen;
    Array<File> filterbankData;
    ScopedPointer<RingReassignedBLFilterbankBuffer> fftBuf;
+   Atomic<RingTransformBuffer*> fftBufReplacing;
+
    // Parameters
    int paramActChannel, paramReassignedSwitch;
 

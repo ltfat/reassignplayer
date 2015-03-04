@@ -43,6 +43,25 @@ class StandaloneFilterWindow    : public DocumentWindow,
                                   private LabelListener,
                                   private MenuBarModel
 {
+private:
+    class FilterbankSelectWindow    : public DocumentWindow,
+    private ButtonListener
+    {
+        public:
+            FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank);
+
+            void buttonClicked (Button* b) override;
+        private:
+            ScopedPointer<TextButton> confirmButton;
+            ScopedPointer<Label> dialogText;
+            //TextButton cancelButton("Cancel");
+            unsigned filterbanksRead;
+            unsigned* activeFilterbank;
+            OwnedArray<ToggleButton> fbDataButtons;
+
+            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
+    };
+
 public:
     //==============================================================================
     /** Creates a window with a given title and colour.
@@ -92,6 +111,7 @@ public:
 private:
     ScopedPointer<OpenGLContext> ogl;
     ScopedPointer<StandalonePluginHolder> pluginHolder;
+    ScopedPointer<FilterbankSelectWindow> fbWindow;
     //==============================================================================
 
     // Graphic components
@@ -150,23 +170,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GenericToolbarItemComponent)
     };
 
-    class FilterbankSelectWindow    : public DocumentWindow,
-                                      private ButtonListener
-    {
-    public:
-        FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank);
-
-        void buttonClicked (Button* b) override;
-    private:
-        TextButton confirmButton;
-        //TextButton cancelButton("Cancel");
-        unsigned filterbanksRead;
-        unsigned* activeFilterbank;
-        Array<ToggleButton*> fbDataButtons;
-        ButtonListener* selectListener;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
-    };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };

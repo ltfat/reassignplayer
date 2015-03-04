@@ -32,7 +32,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    Array<unsigned> blockLengths;
    unsigned* activeFilterbank = nullptr;
 
-   FilterbankSelectWindow* fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,activeFilterbank);
+   fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,activeFilterbank);
    fbWindow->setVisible(true);
 
    // Create the wrapped AudioProcessorEditor
@@ -360,7 +360,6 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
    String buttonText, binDataOff, binDataOn;
    Drawable* iconOff;
    Drawable* iconOn;
-   bool* toggleState = new bool(false);
 
    switch(itemId)
     {
@@ -418,7 +417,6 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
    iconData = BinaryData::getNamedResource(binDataOn.toRawUTF8(),NumBytes);
    iconOn = Drawable::createFromImageData(iconData,NumBytes);
    ToolbarButton* b = new ToolbarButton(itemId,buttonText,iconOff,iconOn);
-   //b->setClickingTogglesState(*toggleState);
    b->addListener(listener);
    return b;
 }
@@ -650,7 +648,7 @@ StandaloneFilterWindow::FilterbankSelectWindow
 : DocumentWindow (fbFile.getFileNameWithoutExtension(), Colours::lightgrey, DocumentWindow::minimiseButton |
                      DocumentWindow::maximiseButton | DocumentWindow::closeButton),
 //ResizableWindow (fbFile.getFileNameWithoutExtension(), true),
-confirmButton("Ok"),
+confirmButton(new TextButton("Ok")),
 filterbanksRead(0),
 activeFilterbank(activeFilterbank_),
 fbDataButtons()
@@ -686,20 +684,20 @@ fbDataButtons()
         {
             if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
             {
-                unsigned* tempInt = new unsigned;
-                unsigned short* tempIntShort = new unsigned short;
-                dataFile.read(reinterpret_cast <char*> (tempInt), 4);
-                binFilterbankLength = static_cast <unsigned long> (*tempInt);
+                unsigned tempInt;
+                unsigned short tempIntShort;
+                dataFile.read(reinterpret_cast <char*> (&tempInt), 4);
+                binFilterbankLength = static_cast <unsigned long> (tempInt);
 
-                dataFile.read(reinterpret_cast <char*> (tempIntShort), 2);
-                blockLengths.add(static_cast <unsigned long> (*tempIntShort));
+                dataFile.read(reinterpret_cast <char*> (&tempIntShort), 2);
+                blockLengths.add(static_cast <unsigned long> (tempIntShort));
             }
             else // Handle case of 16-bit unsigned
             {
                 dataFile.read(reinterpret_cast <char*> (binFilterbankLength), 4);
-                unsigned* tempInt = new unsigned;
-                dataFile.read(reinterpret_cast <char*> (tempInt), 2);
-                blockLengths.add(*tempInt);
+                unsigned tempInt;
+                dataFile.read(reinterpret_cast <char*> (&tempInt), 2);
+                blockLengths.add(tempInt);
             }
         }
         else
@@ -717,10 +715,8 @@ fbDataButtons()
     }
 
     // Setup window
-    Label dialogText("Select filter bank block length...");
+    dialogText = new Label("","Select filter bank block length...");
 
-    this->setSize(300,5+(filterbanksRead+3)*25);
-    //this->setResizable(false);
 
     for (unsigned kk = 0 ; kk < filterbanksRead; ++kk)
     {
@@ -729,13 +725,14 @@ fbDataButtons()
         fbDataButtons[kk]->setToggleState ( kk==0, dontSendNotification);
         fbDataButtons[kk]->setBounds (20, 55+25*kk, 260, 20);
         fbDataButtons[kk]->addListener(this);
-        addAndMakeVisible(*fbDataButtons[kk]);
+        addAndMakeVisible(fbDataButtons[kk]);
     }
 
-    dialogText.setBounds (20, 30, 260, 20);
-    dialogText.setEditable(false);
-    confirmButton.setBounds (90, getHeight()-25, 120, 20);
-    confirmButton.addListener(this);
+    setSize(300,5+(filterbanksRead+3)*25);
+    dialogText->setBounds (20, 30, 260, 20);
+    dialogText->setEditable(false);
+    confirmButton->setBounds (90, getHeight()-25, 120, 20);
+    confirmButton->addListener(this);
     //cancelButton.setBounds (160, getHeight()-25, 120, 20);
     addAndMakeVisible(dialogText);
     addAndMakeVisible(confirmButton);
@@ -744,7 +741,7 @@ fbDataButtons()
 
 void StandaloneFilterWindow::FilterbankSelectWindow::buttonClicked (Button* b)
 {
-    if (b == &confirmButton)
+    if (b == confirmButton)
     {
         for ( unsigned kk = 0; kk < filterbanksRead; ++kk)
         {

@@ -30,9 +30,9 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
    Array<unsigned long> startingBytes;
    Array<unsigned> blockLengths;
-   unsigned* activeFilterbank = nullptr;
+   unsigned activeFilterbank;
 
-   fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,activeFilterbank);
+   fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,&activeFilterbank);
    fbWindow->setVisible(true);
 
    // Create the wrapped AudioProcessorEditor
@@ -747,7 +747,7 @@ void StandaloneFilterWindow::FilterbankSelectWindow::buttonClicked (Button* b)
         {
             if ( fbDataButtons[kk]->getToggleState() )
             {
-                //*activeFilterbank = kk;
+                *activeFilterbank = kk;
                 //JUCEApplicationBase::quit();
                 break;
             }

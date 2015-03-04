@@ -1042,7 +1042,7 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
 
     BLFilterbankDef* blFilt = filterbanks.getFirst();
     const int M = blFilt->M;
-    float minlvl = 1e-6f;
+    float minlvl = 1e-7f;
 
     fftwf_complex** c = bufFilterbankOverlaidCoefs.getUnchecked(head)->getUnchecked(0);
     fftwf_complex** ch = bufFilterbankOverlaidCoefs.getUnchecked(head)->getUnchecked(1);

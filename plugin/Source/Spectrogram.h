@@ -43,10 +43,13 @@ public:
     void mouseDown(const MouseEvent & event) override;
     void timerCallback() override;
     void run() override;
-    void setSpectrogramSource(SpectrogramPlottable* buf)
-    {
-        ringBuffer = buf;
-    }
+
+    void setSpectrogramSource(SpectrogramPlottable* buf);
+    // The same as above but it can fail
+    bool trySetSpectrogramSource(SpectrogramPlottable* buf);
+    // When called, stop ascing for samples as soon as possible
+    bool aboutToChangeSpectrogramSource();
+
     PopupMenu& getPopupMenu()
     {
         return *pm;
@@ -84,6 +87,7 @@ public:
 private:
     void setImageDimensions(int width, int height);
     void stripBackendToRepaint();
+    void populatePopupMenu();
     Atomic<int> timerFired;
     double repaintTimeMaxMs;
     Atomic<double> audioLoopMs;
@@ -99,7 +103,7 @@ private:
     Atomic<int> colourmapLen;
     int stripWidth;
     Atomic<int> stripPos;
-    SpectrogramPlottable* ringBuffer;
+    Atomic<SpectrogramPlottable*> ringBuffer;
 
     ScopedPointer<Thread> spectrogramThread;
     ScopedPointer<Graphics> imageGraphics;
@@ -117,7 +121,8 @@ private:
 
     CriticalSection objectLock;
 
-    void populatePopupMenu();
+    Atomic<int> ringBufferIsValid;
+
 
     class MathOp
     {

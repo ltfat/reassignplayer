@@ -168,7 +168,6 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    {
         std::cout << thisException << std::endl;
    }
-   //fftBuf = nullptr;
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    spectrogram = pe->getSpectrogram();
    spectrogram->setSpectrogramSource(fftBuf);
@@ -194,7 +193,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
    int actBufLen = buffer.getNumSamples();
    const float* srcPtr = buffer.getReadPointer(paramActChannel);
 
-   RingReassignedBLFilterbankBuffer* repl = dynamic_cast<RingReassignedBLFilterbankBuffer*>(fftBufReplacing.get());
+   RingFFTBuffer* repl = fftBufReplacing.get();
 
    if(nullptr==repl)
    {
@@ -240,8 +239,8 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
    spectrogram->setAudioLoopMs(Time::getMillisecondCounterHiRes()-startTime);
 
-   if(nullptr!=fftBuf)
-        fftBuf->setActivePlotReassigned(paramReassignedSwitch);
+   if(nullptr!=fftBuf && typeid(fftBuf) == typeid(RingReassignedBLFilterbankBuffer) )
+       (dynamic_cast<RingReassignedBLFilterbankBuffer*>(fftBuf.get()))->setActivePlotReassigned(paramReassignedSwitch);
 }
 
 
@@ -293,7 +292,7 @@ RingTransformBuffer* PluginAudioProcessor::getRingBuffer()
    return fftBuf;
 }
 
-bool PluginAudioProcessor::trySetRingBuffer(RingTransformBuffer* rtb)
+bool PluginAudioProcessor::trySetRingBuffer(RingFFTBuffer* rtb)
 {
 // Number of buffers must be the same as in the old one? 
 

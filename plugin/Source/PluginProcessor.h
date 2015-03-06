@@ -96,15 +96,15 @@ public:
 
    RingTransformBuffer* getRingBuffer();
    // Ownership is taken 
-   bool trySetRingBuffer(RingTransformBuffer* rtb);
+   bool trySetRingBuffer(RingFFTBuffer* rtb);
 
    AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter();
 private:
    int bufLen;
    Array<File> filterbankData;
    // fftBuf must not be modified from a different thread than audio loop
-   ScopedPointer<RingReassignedBLFilterbankBuffer> fftBuf;
-   Atomic<RingTransformBuffer*> fftBufReplacing;
+   ScopedPointer<RingFFTBuffer> fftBuf;
+   Atomic<RingFFTBuffer*> fftBufReplacing;
    Spectrogram* spectrogram;
 
    // Parameters

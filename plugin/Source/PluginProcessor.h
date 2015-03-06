@@ -19,6 +19,7 @@
 #include "../../plugin/JuceLibraryCode/JuceHeader.h"
 #include "ltfat.h"
 #include "RingTransformBuffer.h"
+#include "Spectrogram.h"
 //Because of the memcpy
 #include <cstring>
 
@@ -95,14 +96,16 @@ public:
 
    RingTransformBuffer* getRingBuffer();
    // Ownership is taken 
-   bool setRingBuffer(RingTransformBuffer* rtb);
+   bool trySetRingBuffer(RingFFTBuffer* rtb);
 
    AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter();
 private:
    int bufLen;
    Array<File> filterbankData;
-   ScopedPointer<RingReassignedBLFilterbankBuffer> fftBuf;
-   Atomic<RingTransformBuffer*> fftBufReplacing;
+   // fftBuf must not be modified from a different thread than audio loop
+   ScopedPointer<RingFFTBuffer> fftBuf;
+   Atomic<RingFFTBuffer*> fftBufReplacing;
+   Spectrogram* spectrogram;
 
    // Parameters
    int paramActChannel, paramReassignedSwitch;

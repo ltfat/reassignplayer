@@ -40,7 +40,8 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     ringBuffer(nullptr),
     minmaxdb(nullptr), speedSlider(nullptr),
     oldMidDB((defaultMinDB + defaultMaxDB) / 2.0),
-    minDB(defaultMinDB), maxDB(defaultMaxDB), midDB(oldMidDB)
+    minDB(defaultMinDB), maxDB(defaultMaxDB), midDB(oldMidDB),
+    ringBufferIsValid(0)
 {
     setBufferedToImage(true);
     stripBackend.malloc(stripWidth * imageHeight * sizeof(float));
@@ -161,6 +162,12 @@ void Spectrogram::paint (Graphics& g)
     // Ensure we are using the same stripPos during the paint method
     // stripPos is atomic
     int stripPosLoc = stripPos.get();
+    int stripPosLocMinOneInPix = (stripPosLoc-1)*stripWidth;
+
+    if( stripPosLocMinOneInPix<0)
+    {
+      stripPosLocMinOneInPix += image.getWidth(); 
+    }
 
     {
         // Lock. Strip are shared between threads
@@ -168,8 +175,8 @@ void Spectrogram::paint (Graphics& g)
 
         // Draw strip to the image first
         imageGraphics->drawImage(strip,
-                                 (stripPosLoc-1) * stripWidth, 0, stripWidth,       image.getHeight(),
-                                 0                       , 0, strip.getWidth(), strip.getHeight());
+                                 stripPosLocMinOneInPix , 0, stripWidth,       image.getHeight(),
+                                 0                      , 0, strip.getWidth(), strip.getHeight());
     }
 
     // Draw the strip itself
@@ -225,6 +232,32 @@ void Spectrogram::timerCallback()
     timerFired = 1;
 }
 
+
+bool Spectrogram::aboutToChangeSpectrogramSource()
+{
+    // Change the value to 0 only if it is 1
+    return ringBufferIsValid.compareAndSetBool(0, 1);
+}
+
+// No thread safety here. Can only be used for the very first call
+void Spectrogram::setSpectrogramSource(SpectrogramPlottable* buf)
+{
+   ringBuffer = buf;
+   ringBufferIsValid = 1;
+}
+
+// Safely replace ringBuf
+// It is sucessfull only when 
+bool Spectrogram::trySetSpectrogramSource(SpectrogramPlottable* buf)
+{
+    // Change ringBuffer only if it is already nullpt   // Change ringBuffer only if it is
+    // already nullptrr
+    bool retval =  ringBuffer.compareAndSetBool(buf, nullptr);
+
+    if(retval) ringBufferIsValid = 1;
+    return retval;
+}
+
 void Spectrogram::run()
 {
     while (!threadShouldExit())
@@ -232,16 +265,20 @@ void Spectrogram::run()
         // The current thead is not killed yet
         if (1 == timerFired.get())
         {
-            if (nullptr != ringBuffer)
+            if (ringBufferIsValid.get() == 1 && nullptr != ringBuffer.get())
             {
                 // Check new data
-                bool isValid = ringBuffer->getBufferCoefficientsAsAbsMatrix(stripBackend,
+                bool isValid = ringBuffer.get()->getBufferCoefficientsAsAbsMatrix(stripBackend,
                                strip.getWidth(), strip.getHeight());
                 if (isValid)
                 {
                     // New data is available
                     stripBackendToRepaint();
                 }
+            }
+            else
+            {
+                ringBuffer = nullptr;
             }
 
             // Atomic

@@ -30,7 +30,6 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
    Array<unsigned long> startingBytes;
    Array<unsigned> blockLengths;
-   unsigned activeFilterbank;
 
    fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,&activeFilterbank);
    fbWindow->setVisible(true);
@@ -645,8 +644,7 @@ Array<File> StandaloneFilterWindow::FilterbankFileLoader()
 
 StandaloneFilterWindow::FilterbankSelectWindow
 ::FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank_)
-: DocumentWindow (fbFile.getFileNameWithoutExtension(), Colours::lightgrey, DocumentWindow::minimiseButton |
-                     DocumentWindow::maximiseButton | DocumentWindow::closeButton),
+: DialogWindow (fbFile.getFileNameWithoutExtension(), Colours::lightgrey, true, true),
 //ResizableWindow (fbFile.getFileNameWithoutExtension(), true),
 confirmButton(new TextButton("Ok")),
 filterbanksRead(0),
@@ -714,6 +712,8 @@ fbDataButtons()
             throw String("File read error (2)");
     }
 
+    *activeFilterbank = 0;
+
     // Setup window
     dialogText = new Label("","Select filter bank block length...");
 
@@ -724,6 +724,7 @@ fbDataButtons()
         fbDataButtons.add(newButton);
         fbDataButtons[kk]->setToggleState ( kk==0, dontSendNotification);
         fbDataButtons[kk]->setBounds (20, 55+25*kk, 260, 20);
+        fbDataButtons[kk]->setRadioGroupId ( 1119, dontSendNotification);
         fbDataButtons[kk]->addListener(this);
         addAndMakeVisible(fbDataButtons[kk]);
     }
@@ -739,6 +740,12 @@ fbDataButtons()
     //addAndMakeVisible(cancelButton);
 }
 
+void StandaloneFilterWindow::FilterbankSelectWindow::closeButtonPressed ()
+{
+    std::cout << *activeFilterbank << std::endl;
+    this->removeFromDesktop();
+}
+
 void StandaloneFilterWindow::FilterbankSelectWindow::buttonClicked (Button* b)
 {
     if (b == confirmButton)
@@ -748,25 +755,11 @@ void StandaloneFilterWindow::FilterbankSelectWindow::buttonClicked (Button* b)
             if ( fbDataButtons[kk]->getToggleState() )
             {
                 *activeFilterbank = kk;
-                //JUCEApplicationBase::quit();
+                //std::cout << *activeFilterbank << std::endl;
                 break;
             }
         }
+        closeButtonPressed();
     }
-
-   for ( unsigned kk = 0; kk < filterbanksRead; ++kk)
-   {
-      if (b == fbDataButtons[kk])
-      {
-        if  (b->getToggleState())
-        {
-            for ( unsigned ii = 0; ii < filterbanksRead; ++ii)
-            {
-                fbDataButtons[ii]->setToggleState( ii == kk, dontSendNotification);
-            }
-        }
-      }
-    }
-
 }
 

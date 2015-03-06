@@ -44,12 +44,13 @@ class StandaloneFilterWindow    : public DocumentWindow,
                                   private MenuBarModel
 {
 private:
-    class FilterbankSelectWindow    : public DocumentWindow,
+    class FilterbankSelectWindow    : public DialogWindow,
     private ButtonListener
     {
         public:
             FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes, Array<unsigned> blockLengths, unsigned* activeFilterbank);
 
+            void closeButtonPressed () override;
             void buttonClicked (Button* b) override;
         private:
             ScopedPointer<TextButton> confirmButton;
@@ -109,6 +110,7 @@ public:
     Array<File> FilterbankFileLoader();
 
 private:
+    unsigned activeFilterbank;
     ScopedPointer<OpenGLContext> ogl;
     ScopedPointer<StandalonePluginHolder> pluginHolder;
     ScopedPointer<FilterbankSelectWindow> fbWindow;

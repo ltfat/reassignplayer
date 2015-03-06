@@ -239,7 +239,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
    spectrogram->setAudioLoopMs(Time::getMillisecondCounterHiRes()-startTime);
 
-   if(nullptr!=fftBuf && typeid(fftBuf) == typeid(RingReassignedBLFilterbankBuffer) )
+   if(nullptr!=fftBuf && typeid(*fftBuf) == typeid(RingReassignedBLFilterbankBuffer) )
        (dynamic_cast<RingReassignedBLFilterbankBuffer*>(fftBuf.get()))->setActivePlotReassigned(paramReassignedSwitch);
 }
 

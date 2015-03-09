@@ -68,7 +68,7 @@ public:
     void savePluginState();
     //
     void saveAudioDeviceState();
-    void reloadAudioDeviceState();
+    String reloadAudioDeviceState();
     void showAudioSettingsDialog();
 
     bool setFile(File& file);
@@ -135,7 +135,7 @@ private:
 
     bool loadFileIntoTransport();
 
-    void setupAudioDevices();
+    String setupAudioDevices();
 
     void shutDownAudioDevices();
 

@@ -53,9 +53,17 @@ StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet*
      currentSource(0)
 {
    DBG("StandalonePluginHolder constructor begin");
+   String errMsg = setupAudioDevices();
+   DBG(errMsg);
+   if(errMsg.isNotEmpty())
+   {
+       DBG("Initialization failed!");
+       throw errMsg;
+   }
+
    // Initialization
    createPlugin();
-   setupAudioDevices();
+
    reloadPluginState();
    thread.startThread();
    formatManager.registerBasicFormats();
@@ -203,6 +211,7 @@ void StandalonePluginHolder::askUserToLoadState (const String& fileSuffix)
 void StandalonePluginHolder::startPlaying()
 {
    player.setProcessor (processorGraph);
+   //player.setProcessor (pluginProcessor);
 }
 
 void StandalonePluginHolder::stopPlaying()
@@ -215,12 +224,14 @@ void StandalonePluginHolder::stopPlaying()
 void StandalonePluginHolder::showAudioSettingsDialog()
 {
    DialogWindow::LaunchOptions o;
+   if(nullptr == pluginProcessor) DBG("pluginProcessor is NULL");
+   
    o.content.setOwned (new AudioDeviceSelectorComponent (deviceManager,
                        pluginProcessor->getNumInputChannels(),
                        pluginProcessor->getNumInputChannels(),
                        pluginProcessor->getNumOutputChannels(),
                        pluginProcessor->getNumOutputChannels(),
-                       true, false,
+                       false, false,
                        true, false));
    o.content->setSize (500, 450);
 
@@ -242,17 +253,20 @@ void StandalonePluginHolder::saveAudioDeviceState()
    }
 }
 
-void StandalonePluginHolder::reloadAudioDeviceState()
+String StandalonePluginHolder::reloadAudioDeviceState()
 {
    ScopedPointer<XmlElement> savedState;
 
    if (settings != nullptr)
       savedState = settings->getXmlValue ("audioSetup");
 
-   deviceManager.initialise (pluginProcessor->getNumInputChannels(),
-                             pluginProcessor->getNumOutputChannels(),
-                             savedState,
-                             true);
+   DBG("Before inilialization");
+   String errMsg = deviceManager.initialise (JucePlugin_MaxNumInputChannels,
+                                              JucePlugin_MaxNumOutputChannels,
+                                              savedState,
+                                              true);
+   DBG("After initialization\n" << errMsg );
+   return errMsg;
 }
 
 //==============================================================================
@@ -315,12 +329,13 @@ bool StandalonePluginHolder::loadFileIntoTransport()
 }
 
 
-void StandalonePluginHolder::setupAudioDevices()
+String StandalonePluginHolder::setupAudioDevices()
 {
+    DBG("Before device manager");
    deviceManager.addAudioCallback (&player);
    deviceManager.addMidiInputCallback (String::empty, &player);
 
-   reloadAudioDeviceState();
+   return reloadAudioDeviceState();
 }
 
 void StandalonePluginHolder::shutDownAudioDevices()

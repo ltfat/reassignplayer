@@ -15,11 +15,11 @@ RingTransformBuffer::RingTransformBuffer(int bufLen_, int nChannels_, int nBuf_)
     bufLen(bufLen_), bufLenHalf(bufLen / 2), nChannels(std::max(nChannels_, 1)),
     nBuf( std::max(nBuf_, 2) + 1), head(0), tail(0), transformOnRead(false)
 {
-    DBG("RingTransformBuffer constructor start");
+    //DBG("RingTransformBuffer constructor start");
     pos = bufLenHalf;
     createBuffers();
 
-    DBG("RingTransformBuffer constructor end");
+    //DBG("RingTransformBuffer constructor end");
 }
 
 RingTransformBuffer::~RingTransformBuffer()
@@ -460,12 +460,12 @@ void RingBLFilterbankBuffer::createFilterbankPlan()
         fftwf_complex ** bf = bufFilterbankCoefs.getFirst()->getUnchecked(ii);
         for (int m = 0; m < blFilt->M; ++m)
         {
-            DBG("Plannning bufLen " << bufLen << " Gl " << blFilt->Gl[m] << " nChannels " << nChannels << " a " << blFilt->a[m]  );
+            //DBG("Plannning bufLen " << bufLen << " Gl " << blFilt->Gl[m] << " nChannels " << nChannels << " a " << blFilt->a[m]  );
             // Plan m-th filter
             p.getLast()[m] = convsub_fftbl_init_s(bufLen, blFilt->Gl[m],
                                                   nChannels, blFilt->a[m],
                                                   const_cast<const fftwf_complex*>(bf[m]));
-            DBG("After planning");
+            //DBG("After planning");
         }
     }
 }

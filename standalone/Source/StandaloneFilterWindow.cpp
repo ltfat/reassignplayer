@@ -27,15 +27,25 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
    // Load filter bank data
    Array<File> fbData = FilterbankFileLoader();
-
+/*
    Array<unsigned long> startingBytes;
    Array<unsigned> blockLengths;
 
    fbWindow = new FilterbankSelectWindow (fbData[1],startingBytes,blockLengths,&activeFilterbank);
    fbWindow->setVisible(true);
-
+*/
    // Create the wrapped AudioProcessorEditor
+   try
+   {
    pluginHolder = new StandalonePluginHolder (fbData, settingsToUse, takeOwnershipOfSettings);
+   }
+   catch(String& err)
+   {
+        std::cout<< "Audio device initialization failed with the following message:"
+                 << std::endl <<  err << std::endl;
+        throw err;
+   }
+
    createEditorComp();
    AudioProcessorEditor* e = pluginHolder->getPluginEditor();
    if (nullptr == e )

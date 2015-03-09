@@ -26,7 +26,7 @@ PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData, PluginAudioProces
 
 PluginAudioProcessor::~PluginAudioProcessor()
 {
-    if(nullptr != fftBufReplacing.get()) delete fftBufReplacing.get();
+ //   if(nullptr != fftBufReplacing.get()) delete fftBufReplacing.get();
 }
 
 //==============================================================================
@@ -156,8 +156,9 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Choose next bigger supported BufferLength or throw an error
 
-   jassert(samplesPerBlock > bufLen / 2 );
-
+   // jassert(samplesPerBlock > bufLen / 2 );
+    
+   DBG("prepareToPlay in PluginAudioProcessor"); 
    //Array<File> files;
    try
    {
@@ -177,10 +178,13 @@ void PluginAudioProcessor::releaseResources()
 {
    // When playback stops, you can use this as an opportunity to free up any
    // spare memory, etc.
-   //
-   //
+   
+   // We must first detach spectrogram to be able to safely remove fftBuf 
+   spectrogram->aboutToChangeSpectrogramSource();
+   while(spectrogram->trySetSpectrogramSource(nullptr)) {}
+
    if(nullptr != fftBufReplacing.get()) delete fftBufReplacing.get();
-   fftBuf = nullptr;
+  fftBuf = nullptr;
 }
 
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
@@ -210,6 +214,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
             // ScopedPointer
             // We assume here that fftBuf was not set in spectrogram either
             fftBuf = repl;
+            fftBuf->appendSamples(&srcPtr, actBufLen);
             spectrogram->setSpectrogramSource(fftBuf);
             fftBufReplacing = nullptr;
        }

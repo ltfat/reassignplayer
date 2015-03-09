@@ -27,6 +27,7 @@
 
 #include "JuceHeader.h"
 #include "StandalonePluginHolder.h"
+#include "../../plugin/Source/FilterbankDataHolder.h"
 #include <fstream>
 
 

@@ -13,9 +13,8 @@
 
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData, PluginAudioProcessor::suppBufLens bufferLen_)
-    :bufLen(static_cast<int>(bufferLen_)),
-     filterbankData(fbData),
+PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData)
+    :filterbankData(fbData),
      fftBuf(nullptr),
      fftBufReplacing(nullptr),
      paramActChannel(0),
@@ -157,13 +156,13 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Choose next bigger supported BufferLength or throw an error
 
    // jassert(samplesPerBlock > bufLen / 2 );
-    
-   DBG("prepareToPlay in PluginAudioProcessor"); 
+
+   DBG("prepareToPlay in PluginAudioProcessor");
    //Array<File> files;
    try
    {
         fftBuf = new RingReassignedBLFilterbankBuffer(filterbankData.getRawDataPointer(),
-                                                      bufLen,RingFFTBuffer::winType::hann,1,3);
+                                                      2048,RingFFTBuffer::winType::hann,1,3);
    }
    catch(String& thisException)
    {

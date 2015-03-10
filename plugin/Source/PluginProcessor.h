@@ -49,7 +49,7 @@ public:
       b2048 = 2048, empty
    };
    //==============================================================================
-   PluginAudioProcessor(Array<File> fbData, suppBufLens bufferLen_ = suppBufLens::b2048);
+   PluginAudioProcessor(Array<File> fbData);
    ~PluginAudioProcessor();
 
    //==============================================================================

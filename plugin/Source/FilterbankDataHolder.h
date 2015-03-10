@@ -6,7 +6,7 @@
 class FilterbankDataHolder
 {
 public:
-    //FilterbankDataHolder();
+    FilterbankDataHolder();
     FilterbankDataHolder(Array<File> loadedFilterbankFiles);
 
     bool getFilterbankData(Array<MemoryBlock> rawFilterbankData_);

@@ -241,6 +241,9 @@ public:
     RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
                                      winType winType_ = winType::hann,
                                      int nChannels_ = 1, int nBuf_ = 2);
+    RingReassignedBLFilterbankBuffer(BLFilterbankDef* filterbankFiles_[3], int bufLen_,
+                                     winType winType_ = winType::hann,
+                                     int nChannels_ = 1, int nBuf_ = 2);
     virtual ~RingReassignedBLFilterbankBuffer();
     virtual bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows ) override;
     float** getReassignedCoefficients(bool doConsume = true);

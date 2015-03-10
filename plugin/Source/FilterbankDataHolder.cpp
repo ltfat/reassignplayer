@@ -13,11 +13,12 @@
 //============================================================================
 // FilterbankDataHolder
 
-/*FilterbankDataHolder()
+FilterbankDataHolder::FilterbankDataHolder()
 {
     Array<File> loadedFilterbankFiles = FilterbankFileLoader();
-    init(Array<File> loadedFilterbankFiles);
-}*/
+    init(loadedFilterbankFiles);
+}
+
 FilterbankDataHolder::FilterbankDataHolder(Array<File> loadedFilterbankFiles):
 numOfFilterbanks(0)
 {

@@ -424,7 +424,7 @@ RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterban
     : RingFFTBuffer(bufLen_, winType_, nChannels_, nBuf_),
       plotOverlaiedCoefficients(true)
 {
-    for (BLFilterbankDef* f : filterbankDefs_)  filterbanks.add(f);
+    for (BLFilterbankDef * f : filterbankDefs_)  filterbanks.add(f);
 
     createFilterbankBuffers();
     createFilterbankPlan();
@@ -953,6 +953,16 @@ RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
 }
 
 RingReassignedBLFilterbankBuffer::
+RingReassignedBLFilterbankBuffer(BLFilterbankDef* filterbankFiles_[3], int bufLen_,
+                                 winType winType, int nChannels_, int nBuf):
+    RingBLFilterbankBuffer(Array<BLFilterbankDef*>(filterbankFiles_, 3), bufLen_, winType, nChannels_, nBuf)
+{
+    setActivePlotReassigned( true);
+    createReassignBuffers();
+    createReassignPlan();
+}
+
+RingReassignedBLFilterbankBuffer::
 ~RingReassignedBLFilterbankBuffer()
 {
     destroyReassignBuffers();
@@ -990,18 +1000,18 @@ createReassignBuffers()
 
     for (int m = 0; m < blFilt->M; ++m)
     {
-        size_t LchalfinBytes = Lchalf[m]*sizeof(float);
-        for (float** a: reassignedCoefs)
+        size_t LchalfinBytes = Lchalf[m] * sizeof(float);
+        for (float** a : reassignedCoefs)
         {
             a[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
-            memset(a[m],0,LchalfinBytes);
+            memset(a[m], 0, LchalfinBytes);
         }
         tgrad[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
         fgrad[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
         cs[m] = static_cast<float*>(fftwf_malloc(LchalfinBytes));
-        memset(tgrad[m],0,LchalfinBytes);
-        memset(fgrad[m],0,LchalfinBytes);
-        memset(cs[m],0,LchalfinBytes);
+        memset(tgrad[m], 0, LchalfinBytes);
+        memset(fgrad[m], 0, LchalfinBytes);
+        memset(cs[m], 0, LchalfinBytes);
     }
 
 }
@@ -1051,16 +1061,17 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
 
     // Super easy type casing !! :)
     filterbankphasegrad_s(const_cast<const fftwf_complex**>(c),
-                          const_cast<const fftwf_complex**>(ch),
-                          const_cast<const fftwf_complex**>(cd),
-                          M, blFilt->Lchalf, bufLen, minlvl, tgrad, fgrad, cs);
-        // And do the reassignment
-        float** sr = reassignedCoefs.getUnchecked(head);
-        filterbankreassign_s(const_cast<const float**>(cs),
-        const_cast<const float**>(tgrad),
-        const_cast<const float**>(fgrad),
-        blFilt->Lchalf, blFilt->a, blFilt->fc, M, sr, NULL);
-        
+    const_cast<const fftwf_complex**>(ch),
+    const_cast<const fftwf_complex**>(cd),
+    M, blFilt->Lchalf, bufLen, minlvl, tgrad, fgrad, cs);
+    // And do the reassignment
+    float** sr = reassignedCoefs.getUnchecked(head);
+
+    filterbankreassign_s(const_cast<const float**>(cs),
+    const_cast<const float**>(tgrad),
+    const_cast<const float**>(fgrad),
+    blFilt->Lchalf, blFilt->a, blFilt->fc, M, sr, NULL);
+
 }
 
 float** RingReassignedBLFilterbankBuffer::

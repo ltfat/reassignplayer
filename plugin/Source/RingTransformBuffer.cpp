@@ -696,28 +696,28 @@ RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef
 createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
 {
     // Create data stream:
-    MemoryInputStream* dataStreamPtr = new MemoryInputStream(memBlock,0);
-    int64 dataSize = dataStreamPtr->getDataSize(), shouldBeAtLeast;
+    MemoryInputStream dataStreamPtr(memBlock,0);
+    int64 dataSize = dataStreamPtr.getDataSize(), shouldBeAtLeast;
 
     if ( dataSize < byteOffset+8 )
     {
         throw String("Reading error, stream does not contain the desired filterbank data");
     }
 
-    dataStreamPtr->setPosition(byteOffset); // Set stream position to beginning of filterbank definition
+    dataStreamPtr.setPosition(byteOffset); // Set stream position to beginning of filterbank definition
 
 
     // Read filterbank length
     unsigned long binFilterbankLength;
     if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
     {
-        unsigned* tempInt = new unsigned;
-        dataStreamPtr->read(tempInt, 4);
-        binFilterbankLength = static_cast <unsigned long> (*tempInt);
+        unsigned tempInt;
+        dataStreamPtr.read(&tempInt, 4);
+        binFilterbankLength = static_cast <unsigned long> (tempInt);
     }
     else // Handle case of 16-bit unsigned
     {
-        dataStreamPtr->read(&binFilterbankLength, 4);
+        dataStreamPtr.read(&binFilterbankLength, 4);
     }
 
     if (dataSize < byteOffset+binFilterbankLength)
@@ -731,7 +731,7 @@ createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
     unsigned M;
 
     // Determine block length and number of channels
-    BLFilterbankDef::getFilterbankBaseData (dataStreamPtr, &blockLength, &M);
+    BLFilterbankDef::getFilterbankBaseData (&dataStreamPtr, &blockLength, &M);
 
     // This is only for testing purposes
     // std::cout << "blockLength is: " << blockLength << std::endl;
@@ -745,7 +745,7 @@ createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
 
     // Determine filter bank parameters
     // (TODO: change order in the MATLAB files for filtLengths to be at the end)
-    BLFilterbankDef::getFilterbankParamData (dataStreamPtr, M, &aOne, a, fc, foff, filtLengths);
+    BLFilterbankDef::getFilterbankParamData (&dataStreamPtr, M, &aOne, a, fc, foff, filtLengths);
 
     // This is only for testing purposes
     // std::cout << "foff is: " << std::endl;
@@ -766,7 +766,7 @@ createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
     }
 
     // Get the filter data
-    BLFilterbankDef::getFilterbankFilterData (dataStreamPtr, M, filtLengths, G);
+    BLFilterbankDef::getFilterbankFilterData (&dataStreamPtr, M, filtLengths, G);
 
     // This is only for testing purposes
     //  std::cout << "G[200] is: " << std::endl;

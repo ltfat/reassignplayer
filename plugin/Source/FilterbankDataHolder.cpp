@@ -63,7 +63,7 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
     }
 
     // Create Stream
-    FileInputStream* baseFilterbankStream = loadedFilterbankFiles[0].createInputStream();
+    ScopedPointer<FileInputStream> baseFilterbankStream = loadedFilterbankFiles[0].createInputStream();
 
     loadedFilterbankFiles[0].getSize();
 

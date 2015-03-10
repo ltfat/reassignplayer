@@ -13,14 +13,17 @@
 //============================================================================
 // FilterbankDataHolder
 
-FilterbankDataHolder::FilterbankDataHolder()
+FilterbankDataHolder::FilterbankDataHolder():
+numOfFilterbanks(0),
+reassignable(false)
 {
     Array<File> loadedFilterbankFiles = FilterbankFileLoader();
     init(loadedFilterbankFiles);
 }
 
 FilterbankDataHolder::FilterbankDataHolder(Array<File> loadedFilterbankFiles):
-numOfFilterbanks(0)
+numOfFilterbanks(0),
+reassignable(false)
 {
     init(loadedFilterbankFiles);
 }
@@ -45,6 +48,7 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
                 throw(String("Schmorf (2)"));
             }
             rawFilterbankData.resize(3);
+            reassignable = true;
             break;
         default:
             throw(String("Schmorf (3)"));
@@ -110,20 +114,18 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
             throw String("File read error (2)");
     }
 
+    fbIndex = 0;
+
     if ( numOfFilterbanks > 1)
     {
-        fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
-        fbWindow->setVisible(true);
-    }
-    else
-    {
-        fbIndex = 0;
+    //    fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
+    //    fbWindow->setVisible(true);
     }
 }
 
 // Parameter reading functions etc.
 
-bool FilterbankDataHolder::getFilterbankData(Array<MemoryBlock> rawFilterbankData_)
+bool FilterbankDataHolder::getFilterbankData(Array<MemoryBlock> &rawFilterbankData_)
 {
     if ( rawFilterbankData.size() != 0)
     {
@@ -144,7 +146,7 @@ int64 FilterbankDataHolder::getStartingByte(int fbIndex_)
         return -1;
 }
 
-long FilterbankDataHolder::getBlockLengths(int fbIndex_)
+long FilterbankDataHolder::getBlockLength(int fbIndex_)
 {
     if ( fbIndex_ >= 0 && fbIndex_ < numOfFilterbanks )
         return blockLengths[fbIndex_];
@@ -168,11 +170,16 @@ bool FilterbankDataHolder::setActiveFilterbank(int fbIndex_)
         return false;
 }
 
+bool FilterbankDataHolder::isReassignable()
+{
+    return reassignable;
+}
+
 //============================================================================
 // FilterbankSelectWindow
 
 FilterbankDataHolder::FilterbankSelectWindow
-::FilterbankSelectWindow (String title, Array<unsigned> blockLengths, int* fbIndexPtr)
+::FilterbankSelectWindow (String title, Array<unsigned>& blockLengths, int* fbIndexPtr)
 : DialogWindow (title, Colours::lightgrey, true, true),
 confirmButton(new TextButton("Ok")),
 activeFilterbank(fbIndexPtr)

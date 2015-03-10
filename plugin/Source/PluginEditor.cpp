@@ -36,14 +36,14 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
 
     //[UserPreSize]
- 
+
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-   reassignToggle = new TextButton("Reassig toggle");
+   reassignToggle = new TextButton("Reassign toggle");
    reassignToggle->setToggleState(true, sendNotification);
    reassignToggle->setClickingTogglesState(true);
    reassignToggle->addListener(this);

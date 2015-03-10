@@ -441,6 +441,7 @@ void RingBLFilterbankBuffer::readFilterbankDefinitions()
 {
     for (File f : filterbankFiles)
     {
+
         filterbanks.add(BLFilterbankDef::createDefFromFile(f));
     }
 }
@@ -684,67 +685,57 @@ bool RingBLFilterbankBuffer::getBufferCoefficientsAsAbsMatrix(float * matrix, in
 }
 
 RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef::
-createDefFromFile(File& file, std::streamoff byteOffset)
+createDefFromFile(File& file, int64 byteOffset)
 {
-    // Read the file:
-    std::streampos dataSize, readSize;
-    std::ifstream dataFile;
+    MemoryBlock fileAsData;
+    file.loadFileAsData (fileAsData);
+    return RingBLFilterbankBuffer::BLFilterbankDef::createDefFromData(fileAsData, byteOffset);
+}
 
-    unsigned long byteSize, shouldBeAtLeast;
-    dataFile.open (file.getFullPathName().getCharPointer(),
-                   std::ios::in | std::ios::binary | std::ios::ate);
+RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef::
+createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
+{
+    // Create data stream:
+    MemoryInputStream* dataStreamPtr = new MemoryInputStream(memBlock,0);
+    int64 dataSize = dataStreamPtr->getDataSize(), shouldBeAtLeast;
 
-    if (dataFile.fail())
+    if ( dataSize < byteOffset+8 )
     {
-        throw String(String("File ") + file.getFileName() + String(" not found!"));
+        throw String("Reading error, stream does not contain the desired filterbank data");
     }
 
-    dataSize = dataFile.tellg(); // Length = eof
-    dataFile.seekg(byteOffset, std::ios::beg); // Reset stream to beginning of file
+    dataStreamPtr->setPosition(byteOffset); // Set stream position to beginning of filterbank definition
 
-    byteSize = static_cast<unsigned long>(dataSize); // Recast file size as integer
-
-    // This is only for testing purposes
-    // std::cout << byteSize << std::endl;
-    shouldBeAtLeast = 8;
-    if (byteSize < shouldBeAtLeast)
-    {
-        throw String(String("Reading error, no filterbank data file") +
-                     file.getFileName());
-    }
-    unsigned long binFilterbankLength;
-    unsigned blockLength;
-    unsigned M;
 
     // Read filterbank length
+    unsigned long binFilterbankLength;
     if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
     {
         unsigned* tempInt = new unsigned;
-        dataFile.read(reinterpret_cast <char*> (tempInt), 4);
+        dataStreamPtr->read(tempInt, 4);
         binFilterbankLength = static_cast <unsigned long> (*tempInt);
     }
     else // Handle case of 16-bit unsigned
     {
-        dataFile.read(reinterpret_cast <char*> (binFilterbankLength), 4);
+        dataStreamPtr->read(&binFilterbankLength, 4);
     }
 
+    if (dataSize < byteOffset+binFilterbankLength)
+    {
+        throw String("Reading error, stream does not contain the desired filterbank data (2)");
+    }
+
+    // This is only for testing purposes
+    // std::cout << byteSize << std::endl;
+    unsigned blockLength;
+    unsigned M;
+
     // Determine block length and number of channels
-    BLFilterbankDef::getFilterbankBaseData (&dataFile, &blockLength, &M);
+    BLFilterbankDef::getFilterbankBaseData (dataStreamPtr, &blockLength, &M);
 
     // This is only for testing purposes
     // std::cout << "blockLength is: " << blockLength << std::endl;
     // std::cout << "M is: " << M << std::endl;
-
-    // This is the second check whether the file has the correct length
-    shouldBeAtLeast += 10 * M + 2;
-
-    // This is only for testing purposes
-    // std::cout << shouldBeAtLeast << std::endl;
-
-    if (byteSize < shouldBeAtLeast)
-    {
-        throw String("Reading error, no filterbank data file (2)");
-    }
 
     unsigned aOne;
     unsigned* a = new unsigned[M];
@@ -754,7 +745,7 @@ createDefFromFile(File& file, std::streamoff byteOffset)
 
     // Determine filter bank parameters
     // (TODO: change order in the MATLAB files for filtLengths to be at the end)
-    BLFilterbankDef::getFilterbankParamData (&dataFile, M, &aOne, a, fc, foff, filtLengths);
+    BLFilterbankDef::getFilterbankParamData (dataStreamPtr, M, &aOne, a, fc, foff, filtLengths);
 
     // This is only for testing purposes
     // std::cout << "foff is: " << std::endl;
@@ -765,25 +756,8 @@ createDefFromFile(File& file, std::streamoff byteOffset)
     // for (int kk = 0; kk < 10; kk++)
     // {std::cout << a[kk] << std::endl;}
 
-    // This is the final check whether the file has the correct length
-    for ( unsigned kk = 0; kk < M; ++kk)
-    {
-        shouldBeAtLeast += 4 * (filtLengths[kk]);
-    }
-
-
     // This is only for testing purposes
     // std::cout << shouldBeAtLeast << std::endl;
-
-    if (byteSize < shouldBeAtLeast)
-    {
-        dataFile.close();
-        delete [] a;
-        delete [] fc;
-        delete [] foff;
-        delete [] filtLengths;
-        throw String("Reading error, no filterbank data file (3)");
-    }
 
     float** G = new float*[M];
     for (unsigned kk = 0; kk < M; ++kk)
@@ -792,10 +766,7 @@ createDefFromFile(File& file, std::streamoff byteOffset)
     }
 
     // Get the filter data
-    BLFilterbankDef::getFilterbankFilterData (&dataFile, M, filtLengths, G);
-
-    // Close the file stream
-    dataFile.close();
+    BLFilterbankDef::getFilterbankFilterData (dataStreamPtr, M, filtLengths, G);
 
     // This is only for testing purposes
     //  std::cout << "G[200] is: " << std::endl;
@@ -850,25 +821,25 @@ createDefFromFile(File& file, std::streamoff byteOffset)
 }
 
 void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankBaseData(std::ifstream* dataFilePtr, unsigned* blockLengthPtr, unsigned* mPtr)
+getFilterbankBaseData(MemoryInputStream* dataStreamPtr, unsigned* blockLengthPtr, unsigned* mPtr)
 {
     if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
     {
         unsigned short* tempInt = new unsigned short;
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempInt), 2);
+        dataStreamPtr->read(tempInt, 2);
         (*blockLengthPtr) = static_cast <unsigned> (*tempInt);
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempInt), 2);
+        dataStreamPtr->read(tempInt, 2);
         (*mPtr) = static_cast <unsigned> (*tempInt);
     }
     else // Handle case of 16-bit unsigned
     {
-        (*dataFilePtr).read(reinterpret_cast <char*> (blockLengthPtr), 2);
-        (*dataFilePtr).read(reinterpret_cast <char*> (mPtr), 2);
+        dataStreamPtr->read(blockLengthPtr, 2);
+        dataStreamPtr->read(mPtr, 2);
     }
 }
 
 void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankParamData(std::ifstream* dataFilePtr,
+getFilterbankParamData(MemoryInputStream* dataStreamPtr,
                        unsigned M, unsigned* aOnePtr,
                        unsigned a[], float fc[],
                        unsigned foff[], unsigned filtLengths[])
@@ -878,20 +849,20 @@ getFilterbankParamData(std::ifstream* dataFilePtr,
         unsigned short* tempAry = new unsigned short[M];
         unsigned short* tempInt = new unsigned short;
 
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempInt), 2);
+        dataStreamPtr->read(tempInt, 2);
         (*aOnePtr) = static_cast <unsigned> (*tempInt);
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
+        dataStreamPtr->read(tempAry, 2 * M);
         for (unsigned kk = 0; kk < M; ++kk)
         {
             a[kk] = static_cast <unsigned> (tempAry[kk]);
         }
-        (*dataFilePtr).read(reinterpret_cast <char*> (fc), 4 * M);
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
+        dataStreamPtr->read(fc, 4 * M);
+        dataStreamPtr->read(tempAry, 2 * M);
         for (unsigned kk = 0; kk < M; ++kk)
         {
             foff[kk] = static_cast <unsigned> (tempAry[kk]);
         }
-        (*dataFilePtr).read(reinterpret_cast <char*> (tempAry), 2 * M);
+        dataStreamPtr->read(tempAry, 2 * M);
         for (unsigned kk = 0; kk < M; ++kk)
         {
             filtLengths[kk] = static_cast <unsigned> (tempAry[kk]);
@@ -900,23 +871,23 @@ getFilterbankParamData(std::ifstream* dataFilePtr,
     }
     else // Handle case of 16-bit unsigned
     {
-        (*dataFilePtr).read(reinterpret_cast <char*> (filtLengths), 2 * M);
-        (*dataFilePtr).read(reinterpret_cast <char*> (aOnePtr), 2);
-        (*dataFilePtr).read(reinterpret_cast <char*> (a), 2 * M);
-        (*dataFilePtr).read(reinterpret_cast <char*> (fc), 4 * M);
-        (*dataFilePtr).read(reinterpret_cast <char*> (foff), 2 * M);
+        dataStreamPtr->read(filtLengths, 2 * M);
+        dataStreamPtr->read(aOnePtr, 2);
+        dataStreamPtr->read(a, 2 * M);
+        dataStreamPtr->read(fc, 4 * M);
+        dataStreamPtr->read(foff, 2 * M);
     }
 }
 
 void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankFilterData(std::ifstream* dataFilePtr,
+getFilterbankFilterData(MemoryInputStream* dataStreamPtr,
                         unsigned M, unsigned filtLengths[],
                         float** G)
 {
     // We currently assume float to always be 32-bit (We should add a sanity check here at least)
     for (unsigned kk = 0; kk < M; ++kk)
     {
-        (*dataFilePtr).read(reinterpret_cast <char*> (G[kk]), 4 * filtLengths[kk]);
+        dataStreamPtr->read(G[kk], 4 * filtLengths[kk]);
     }
 
 }
@@ -939,7 +910,7 @@ RingBLFilterbankBuffer::BLFilterbankDef::~BLFilterbankDef()
     if (nullptr != Lc) fftwf_free((void*)Lc);
 }
 
-RingReassignedBLFilterbankBuffer::
+/*RingReassignedBLFilterbankBuffer::
 RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
                                  winType winType,
                                  int nChannels_, int nBuf):
@@ -950,7 +921,7 @@ RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
     setActivePlotReassigned( true);
     createReassignBuffers();
     createReassignPlan();
-}
+}*/
 
 RingReassignedBLFilterbankBuffer::
 RingReassignedBLFilterbankBuffer(BLFilterbankDef* filterbankFiles_[3], int bufLen_,

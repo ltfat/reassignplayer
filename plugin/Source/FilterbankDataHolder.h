@@ -9,14 +9,16 @@ public:
     FilterbankDataHolder();
     FilterbankDataHolder(Array<File> loadedFilterbankFiles);
 
-    bool getFilterbankData(Array<MemoryBlock> rawFilterbankData_);
+    bool getFilterbankData(Array<MemoryBlock> &rawFilterbankData_);
     int64 getStartingByte(int fbIndex_);
-    long getBlockLengths(int fbIndex_);
+    long getBlockLength(int fbIndex_);
     /*OwnedArray<MemoryBlock> rawFilterbankData;
     OwnedArray<unsigned long> startingBytes;
     OwnedArray<unsigned> blockLengths;*/
     int getActiveFilterbank();
     bool setActiveFilterbank(int fbIndex_);
+
+    bool isReassignable();
 
     //==============================================================================
     // Filterbank file chooser
@@ -29,7 +31,7 @@ private:
                                    private ButtonListener
     {
     public:
-        FilterbankSelectWindow (String title, Array<unsigned> blockLengths, int* fbIndexPtr);
+        FilterbankSelectWindow (String title, Array<unsigned>& blockLengths, int* fbIndexPtr);
 
         void closeButtonPressed () override;
         void buttonClicked (Button* b) override;
@@ -49,6 +51,7 @@ private:
     Array<unsigned> blockLengths;
     ScopedPointer<FilterbankSelectWindow> fbWindow;
 
+    bool reassignable;
     int numOfFilterbanks;
     int fbIndex;
 

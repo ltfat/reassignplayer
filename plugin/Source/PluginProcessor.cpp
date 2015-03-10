@@ -11,16 +11,15 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
 //==============================================================================
 PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData)
-    :filterbankData(fbData),
-     fftBuf(nullptr),
+    :fftBuf(nullptr),
      fftBufReplacing(nullptr),
      paramActChannel(0),
      paramReassignedSwitch(1.0f)
 {
    DBG("PLuginAudioProcessor constructor");
+   dataHolder = new FilterbankDataHolder(fbData);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -161,8 +160,35 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    //Array<File> files;
    try
    {
-        fftBuf = new RingReassignedBLFilterbankBuffer(filterbankData.getRawDataPointer(),
-                                                      2048,RingFFTBuffer::winType::hann,1,3);
+        Array<MemoryBlock> loadedFilterbankData;
+        bool successful = dataHolder->getFilterbankData(loadedFilterbankData);
+        if ( !successful )
+            throw String("PluginProcessor failed to interpret filterbank data");
+
+        Array<RingBLFilterbankBuffer::BLFilterbankDef*> filterbankDefs;
+
+        switch ( loadedFilterbankData.size() )
+        {
+            case 1:
+                filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                        ::createDefFromData(loadedFilterbankData.getReference(0),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
+                fftBuf = new RingBLFilterbankBuffer(filterbankDefs,
+                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
+                                                    RingFFTBuffer::winType::hann,1,3);
+                break;
+            case 3:
+                for (int kk = 0; kk < 3; ++kk )
+                {
+                    filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                            ::createDefFromData(loadedFilterbankData.getReference(kk),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
+                }
+                fftBuf = new RingReassignedBLFilterbankBuffer(filterbankDefs.getRawDataPointer(),
+                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
+                                                    RingFFTBuffer::winType::hann,1,3);
+                break;
+            default:
+                throw String("PluginProcessor: failed to interpret filterbank data");
+        }
    }
    catch(String& thisException)
    {
@@ -171,14 +197,15 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    spectrogram = pe->getSpectrogram();
    spectrogram->setSpectrogramSource(fftBuf);
+   DBG("prepareToPlay in PluginAudioProcessor end");
 }
 
 void PluginAudioProcessor::releaseResources()
 {
    // When playback stops, you can use this as an opportunity to free up any
    // spare memory, etc.
-   
-   // We must first detach spectrogram to be able to safely remove fftBuf 
+
+   // We must first detach spectrogram to be able to safely remove fftBuf
    spectrogram->aboutToChangeSpectrogramSource();
    while(spectrogram->trySetSpectrogramSource(nullptr)) {}
 
@@ -223,14 +250,14 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
             // 1) Start appending samples to the next buffer
             // 2) Wait until the old buffer is empty and do the switch
             // 3) In the meantime, the new buffer might overflow..
-            // Spectrogram must not try to read coefficients as we do the switch 
+            // Spectrogram must not try to read coefficients as we do the switch
 
             // Alert spectrogram about the intention to change the ring buffer
             spectrogram->aboutToChangeSpectrogramSource();
 
             fftBufReplacing.get()->appendSamples(&srcPtr, actBufLen);
 
-            // Try changing the source in spectrogram...if it fails just 
+            // Try changing the source in spectrogram...if it fails just
             // wait until the next iteration..
             // We might also allow to spend some time checking the availability
             if(spectrogram->trySetSpectrogramSource(repl))
@@ -298,7 +325,7 @@ RingTransformBuffer* PluginAudioProcessor::getRingBuffer()
 
 bool PluginAudioProcessor::trySetRingBuffer(RingFFTBuffer* rtb)
 {
-// Number of buffers must be the same as in the old one? 
+// Number of buffers must be the same as in the old one?
 
   // We do not want this to change again until the switch is complete
   // returns false if fftBufReplacing was not nullptr

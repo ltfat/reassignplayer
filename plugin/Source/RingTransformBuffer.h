@@ -137,12 +137,14 @@ private:
 
 class RingBLFilterbankBuffer: public RingFFTBuffer
 {
-protected:
+public:
     class BLFilterbankDef
     {
     public:
-        static BLFilterbankDef* createDefFromFile(File& f,
-                                                  std::streamoff byteOffset = 0);
+        static BLFilterbankDef* createDefFromFile(File& file,
+                                                  int64 byteOffset = 0);
+        static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
+                                                  int64 byteOffset = 0);
         virtual ~BLFilterbankDef();
 
         const fftwf_complex** G;
@@ -156,14 +158,14 @@ protected:
         const int             M;
         const int             L;
     private:
-        static void getFilterbankBaseData (std::ifstream* dataFilePtr,
+        static void getFilterbankBaseData (MemoryInputStream* dataPtr,
                 unsigned* blockLengthPtr,
                 unsigned* mPtr);
-        static void getFilterbankParamData (std::ifstream* dataFilePtr,
+        static void getFilterbankParamData (MemoryInputStream* dataPtr,
                 unsigned M, unsigned* aOne,
                 unsigned a[], float fc[],
                 unsigned foff[], unsigned filtLengths[]);
-        static void getFilterbankFilterData (std::ifstream* dataFilePtr,
+        static void getFilterbankFilterData (MemoryInputStream* dataPtr,
                 unsigned M, unsigned filtLengths[],
                 float** G);
 
@@ -184,8 +186,6 @@ protected:
         BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
         BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable
     };
-
-public:
 
     RingBLFilterbankBuffer(File filterbankFile_, int bufLen_,
                            winType winType_ = winType::hann,

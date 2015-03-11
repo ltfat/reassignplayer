@@ -19,6 +19,9 @@ public:
     bool setActiveFilterbank(int fbIndex_);
 
     bool isReassignable();
+    void selectorWindowVisibility(bool isVisible_);
+    void addChangeListenerToWindow(ChangeListener* listener);
+    void removeChangeListenerFromWindow(ChangeListener* listener);
 
     //==============================================================================
     // Filterbank file chooser
@@ -28,6 +31,7 @@ private:
     void init(Array<File> loadedFilterbankFiles);
 
     class FilterbankSelectWindow : public DialogWindow,
+                                   public ChangeBroadcaster,
                                    private ButtonListener
     {
     public:

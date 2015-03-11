@@ -33,7 +33,8 @@
 //==============================================================================
 /**
 */
-class PluginAudioProcessor  : public AudioProcessor
+class PluginAudioProcessor  : public AudioProcessor,
+                              public ChangeListener
 {
 public:
    // We want to limit range of supported buffers as we have filterbanks only for
@@ -99,7 +100,11 @@ public:
    // Ownership is taken
    bool trySetRingBuffer(RingFFTBuffer* rtb);
 
-   AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter();
+   FilterbankDataHolder* getFilterbankDataHolder();
+
+   //===============================================================================
+   void changeListenerCallback (ChangeBroadcaster *source);
+
 private:
    int bufLen;
    ScopedPointer<FilterbankDataHolder> dataHolder;
@@ -110,6 +115,9 @@ private:
 
    // Parameters
    int paramActChannel, paramReassignedSwitch;
+
+   //
+   RingFFTBuffer* tryCreateRingBufferFromData();
 
    //==============================================================================
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)

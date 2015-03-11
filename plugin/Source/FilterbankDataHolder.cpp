@@ -115,10 +115,11 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
     }
 
     fbIndex = 0;
+    fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
 
     if ( numOfFilterbanks > 1)
     {
-        fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
+        //fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
         fbWindow->setVisible(true);
     }
 }
@@ -175,6 +176,21 @@ bool FilterbankDataHolder::isReassignable()
     return reassignable;
 }
 
+void FilterbankDataHolder::selectorWindowVisibility(bool isVisible_)
+{
+    fbWindow->setVisible(isVisible_);
+}
+
+void FilterbankDataHolder::addChangeListenerToWindow(ChangeListener* listener)
+{
+    fbWindow->addChangeListener(listener);
+}
+
+void FilterbankDataHolder::removeChangeListenerFromWindow(ChangeListener* listener)
+{
+    fbWindow->removeChangeListener(listener);
+}
+
 //============================================================================
 // FilterbankSelectWindow
 
@@ -211,19 +227,22 @@ activeFilterbank(fbIndexPtr)
 
 void FilterbankDataHolder::FilterbankSelectWindow::closeButtonPressed ()
 {
-    std::cout << *activeFilterbank << std::endl;
-    this->removeFromDesktop();
+    this->setVisible(false);
 }
 
 void FilterbankDataHolder::FilterbankSelectWindow::buttonClicked (Button* b)
 {
     if (b == confirmButton)
     {
-        for ( unsigned kk = 0; kk < fbDataButtons.size(); ++kk)
+        for ( int kk = 0; kk < fbDataButtons.size(); ++kk)
         {
             if ( fbDataButtons[kk]->getToggleState() )
             {
-                *activeFilterbank = kk;
+                if ( *activeFilterbank != kk )
+                {
+                    *activeFilterbank = kk;
+                    ChangeBroadcaster::sendChangeMessage();
+                }
                 break;
             }
         }

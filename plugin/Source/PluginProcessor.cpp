@@ -20,6 +20,9 @@ PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData)
 {
    DBG("PLuginAudioProcessor constructor");
    dataHolder = new FilterbankDataHolder(fbData);
+   dataHolder->addChangeListenerToWindow(this);
+
+   fftBuf = tryCreateRingBufferFromData();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -158,42 +161,6 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
    DBG("prepareToPlay in PluginAudioProcessor");
    //Array<File> files;
-   try
-   {
-        Array<MemoryBlock> loadedFilterbankData;
-        bool successful = dataHolder->getFilterbankData(loadedFilterbankData);
-        if ( !successful )
-            throw String("PluginProcessor failed to interpret filterbank data");
-
-        Array<RingBLFilterbankBuffer::BLFilterbankDef*> filterbankDefs;
-
-        switch ( loadedFilterbankData.size() )
-        {
-            case 1:
-                filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
-                        ::createDefFromData(loadedFilterbankData.getReference(0),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
-                fftBuf = new RingBLFilterbankBuffer(filterbankDefs,
-                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
-                                                    RingFFTBuffer::winType::hann,1,3);
-                break;
-            case 3:
-                for (int kk = 0; kk < 3; ++kk )
-                {
-                    filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
-                            ::createDefFromData(loadedFilterbankData.getReference(kk),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
-                }
-                fftBuf = new RingReassignedBLFilterbankBuffer(filterbankDefs.getRawDataPointer(),
-                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
-                                                    RingFFTBuffer::winType::hann,1,3);
-                break;
-            default:
-                throw String("PluginProcessor: failed to interpret filterbank data");
-        }
-   }
-   catch(String& thisException)
-   {
-        std::cout << thisException << std::endl;
-   }
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    spectrogram = pe->getSpectrogram();
    spectrogram->setSpectrogramSource(fftBuf);
@@ -330,4 +297,75 @@ bool PluginAudioProcessor::trySetRingBuffer(RingFFTBuffer* rtb)
   // We do not want this to change again until the switch is complete
   // returns false if fftBufReplacing was not nullptr
   return fftBufReplacing.compareAndSetBool(rtb, nullptr);
+}
+
+FilterbankDataHolder* PluginAudioProcessor::getFilterbankDataHolder()
+{
+    return dataHolder;
+}
+
+void PluginAudioProcessor::changeListenerCallback(ChangeBroadcaster* source)
+{
+    std::cout << "active Filterbank changed" << std::endl;
+    bool changeSuccessful = false;
+    while ( !changeSuccessful )
+    {
+        changeSuccessful = trySetRingBuffer(tryCreateRingBufferFromData());
+    }
+   // We are now on the main message thread
+   /*  RingTransformBuffer* rbuf = processor.getRingBuffer();
+     if(source == rbuf)
+     {
+        // Consume 1 buffer from FFT buffer
+        const fftwf_complex* fbuf = rbuf->getBuffer();
+        if(nullptr != fbuf)
+        {
+           spectrogram->appendStrip(reinterpret_cast<const std::complex<float>*>(fbuf),rbuf->getBufLen()/3);
+           DBG("Consumed Buffer");
+        }
+     }
+     */
+}
+
+RingFFTBuffer* PluginAudioProcessor::tryCreateRingBufferFromData()
+{
+   RingFFTBuffer* newBuf;
+   try
+   {
+
+        Array<MemoryBlock> loadedFilterbankData;
+        bool successful = dataHolder->getFilterbankData(loadedFilterbankData);
+        if ( !successful )
+            throw String("PluginProcessor failed to interpret filterbank data");
+
+        Array<RingBLFilterbankBuffer::BLFilterbankDef*> filterbankDefs;
+
+        switch ( loadedFilterbankData.size() )
+        {
+            case 1:
+                filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                        ::createDefFromData(loadedFilterbankData.getReference(0),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
+                newBuf = new RingBLFilterbankBuffer(filterbankDefs,
+                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
+                                                    RingFFTBuffer::winType::hann,1,3);
+                break;
+            case 3:
+                for (int kk = 0; kk < 3; ++kk )
+                {
+                    filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                            ::createDefFromData(loadedFilterbankData.getReference(kk),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
+                }
+                newBuf = new RingReassignedBLFilterbankBuffer(filterbankDefs.getRawDataPointer(),
+                                                    dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
+                                                    RingFFTBuffer::winType::hann,1,3);
+                break;
+            default:
+                throw String("PluginProcessor: failed to interpret filterbank data");
+        }
+   }
+   catch(String& thisException)
+   {
+        std::cout << thisException << std::endl;
+   }
+   return newBuf;
 }

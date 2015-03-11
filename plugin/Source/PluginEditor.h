@@ -88,6 +88,7 @@ private:
 
     // GUI components
     ScopedPointer<Button> reassignToggle;
+    ScopedPointer<Button> showSelector;
     ScopedPointer<ComboBox> channelChooser;
 
     // This is a file filter class accepting only files with .json suffix

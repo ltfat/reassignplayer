@@ -48,6 +48,10 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
    reassignToggle->setClickingTogglesState(true);
    reassignToggle->addListener(this);
 
+   showSelector = new TextButton("Show Filterbank Selector");
+   showSelector->setToggleState(false, sendNotification);
+   showSelector->addListener(this);
+
    channelChooser = new ComboBox();
    for (int ii = 1; ii <= processor.getNumInputChannels(); ++ii)
    {
@@ -64,6 +68,7 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
    spectrogram->getPopupMenu().addSectionHeader("Plugin options");
    spectrogram->getPopupMenu().addCustomItem(0, channelChooser, 60, 30, false);
    spectrogram->getPopupMenu().addCustomItem(0, reassignToggle, 60, 30, false);
+   spectrogram->getPopupMenu().addCustomItem(0, showSelector, 60, 30, false);
 
 
   ogl = new OpenGLContext();
@@ -194,11 +199,10 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBox)
 
 void PluginEditor::buttonClicked (Button* button)
 {
-   if (button == reassignToggle)
-   {
-      processor.setParameterNotifyingHost (PluginAudioProcessor::kReassignedSwitch, reassignToggle->getToggleState());
-   }
-
+   if ( button == reassignToggle )
+        processor.setParameterNotifyingHost (PluginAudioProcessor::kReassignedSwitch, reassignToggle->getToggleState());
+   else if ( button == showSelector )
+      processor.getFilterbankDataHolder()->selectorWindowVisibility(true);
 }
 
 

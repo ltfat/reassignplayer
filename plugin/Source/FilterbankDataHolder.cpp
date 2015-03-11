@@ -118,8 +118,8 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
 
     if ( numOfFilterbanks > 1)
     {
-    //    fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
-    //    fbWindow->setVisible(true);
+        fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
+        fbWindow->setVisible(true);
     }
 }
 
@@ -196,7 +196,7 @@ activeFilterbank(fbIndexPtr)
         fbDataButtons[kk]->setBounds (20, 55+25*kk, 260, 20);
         fbDataButtons[kk]->setRadioGroupId ( 1119, dontSendNotification);
         fbDataButtons[kk]->addListener(this);
-        addAndMakeVisible(fbDataButtons[kk]);
+        Component::addAndMakeVisible(fbDataButtons[kk]);
     }
 
     setSize(300,5+(blockLengths.size()+3)*25);
@@ -204,8 +204,8 @@ activeFilterbank(fbIndexPtr)
     dialogText->setEditable(false);
     confirmButton->setBounds (90, getHeight()-25, 120, 20);
     confirmButton->addListener(this);
-    addAndMakeVisible(dialogText);
-    addAndMakeVisible(confirmButton);
+    Component::addAndMakeVisible(dialogText);
+    Component::addAndMakeVisible(confirmButton);
 
 }
 

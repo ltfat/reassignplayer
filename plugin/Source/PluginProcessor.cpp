@@ -22,7 +22,6 @@ PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData)
    dataHolder = new FilterbankDataHolder(fbData);
    dataHolder->addChangeListenerToWindow(this);
 
-   fftBuf = tryCreateRingBufferFromData();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -161,6 +160,7 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 
    DBG("prepareToPlay in PluginAudioProcessor");
    //Array<File> files;
+   fftBuf = tryCreateRingBufferFromData();
    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
    spectrogram = pe->getSpectrogram();
    spectrogram->setSpectrogramSource(fftBuf);
@@ -307,24 +307,8 @@ FilterbankDataHolder* PluginAudioProcessor::getFilterbankDataHolder()
 void PluginAudioProcessor::changeListenerCallback(ChangeBroadcaster* source)
 {
     std::cout << "active Filterbank changed" << std::endl;
-    bool changeSuccessful = false;
-    while ( !changeSuccessful )
-    {
-        changeSuccessful = trySetRingBuffer(tryCreateRingBufferFromData());
-    }
-   // We are now on the main message thread
-   /*  RingTransformBuffer* rbuf = processor.getRingBuffer();
-     if(source == rbuf)
-     {
-        // Consume 1 buffer from FFT buffer
-        const fftwf_complex* fbuf = rbuf->getBuffer();
-        if(nullptr != fbuf)
-        {
-           spectrogram->appendStrip(reinterpret_cast<const std::complex<float>*>(fbuf),rbuf->getBufLen()/3);
-           DBG("Consumed Buffer");
-        }
-     }
-     */
+    RingFFTBuffer* tmpBuf = tryCreateRingBufferFromData();
+    while ( !trySetRingBuffer(tmpBuf)) {}
 }
 
 RingFFTBuffer* PluginAudioProcessor::tryCreateRingBufferFromData()

@@ -95,7 +95,7 @@ private:
     private:
         ScopedPointer<TextButton> confirmButton;
         ScopedPointer<Label> dialogText;
-        ScopedPointer<int> activeFilterbank;
+        int* activeFilterbank;
 
         OwnedArray<ToggleButton> fbDataButtons;
 

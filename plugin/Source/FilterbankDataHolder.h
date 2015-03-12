@@ -3,6 +3,9 @@
 
 #include "../../plugin/JuceLibraryCode/JuceHeader.h"
 
+#include "fftw3.h"
+#include "ltfat.h"
+
 class FilterbankDataHolder
 {
 public:
@@ -26,6 +29,55 @@ public:
     //==============================================================================
     // Filterbank file chooser
     static Array<File> FilterbankFileLoader();
+
+    class BLFilterbankDef
+    {
+    public:
+        static BLFilterbankDef* createDefFromFile(File& file,
+                                                  int64 byteOffset = 0);
+        static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
+                                                  int64 byteOffset = 0);
+        virtual ~BLFilterbankDef();
+
+        const fftwf_complex** G;
+        const int*            Gl;
+        const ltfatInt*       foff;
+        const int*            realonly;
+        const double*         a;
+        const double*         fc;
+        const ltfatInt*       Lc;
+        const ltfatInt*       Lchalf;
+        const int             M;
+        const int             L;
+    private:
+        static void getFilterbankBaseData (MemoryInputStream* dataPtr,
+                unsigned* blockLengthPtr,
+                unsigned* mPtr);
+        static void getFilterbankParamData (MemoryInputStream* dataPtr,
+                unsigned M, unsigned* aOne,
+                unsigned a[], float fc[],
+                unsigned foff[], unsigned filtLengths[]);
+        static void getFilterbankFilterData (MemoryInputStream* dataPtr,
+                unsigned M, unsigned filtLengths[],
+                float** G);
+
+        // Make it non-copyable and non createable
+        BLFilterbankDef(const fftwf_complex** G_,
+                        int*                  Gl_,
+                        ltfatInt*             foff_,
+                        int*                  realonly_,
+                        double*               a_,
+                        double*               fc_,
+                        ltfatInt*             Lc_,
+                        ltfatInt*             Lchalf_,
+                        int                   M_,
+                        int                   L_):
+            G(G_), Gl(Gl_), foff(foff_), realonly(realonly_), a(a_),
+            fc(fc_), Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
+
+        BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
+        BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable
+    };
 
 private:
     void init(Array<File> loadedFilterbankFiles);
@@ -62,4 +114,53 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankDataHolder)
 };
 
-#endif // FILTERBANKCHOOSER_H_INCLUDED
+/*class BLFilterbankDef
+{
+ public:
+    static BLFilterbankDef* createDefFromFile(File& file,
+                                              int64 byteOffset = 0);
+    static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
+                                              int64 byteOffset = 0);
+    virtual ~BLFilterbankDef();
+
+    const fftwf_complex** G;
+    const int*            Gl;
+    const ltfatInt*       foff;
+    const int*            realonly;
+    const double*         a;
+    const double*         fc;
+    const ltfatInt*       Lc;
+    const ltfatInt*       Lchalf;
+    const int             M;
+    const int             L;
+private:
+    static void getFilterbankBaseData (MemoryInputStream* dataPtr,
+            unsigned* blockLengthPtr,
+            unsigned* mPtr);
+    static void getFilterbankParamData (MemoryInputStream* dataPtr,
+            unsigned M, unsigned* aOne,
+            unsigned a[], float fc[],
+            unsigned foff[], unsigned filtLengths[]);
+    static void getFilterbankFilterData (MemoryInputStream* dataPtr,
+            unsigned M, unsigned filtLengths[],
+            float** G);
+
+    // Make it non-copyable and non createable
+    BLFilterbankDef(const fftwf_complex** G_,
+                    int*                  Gl_,
+                    ltfatInt*             foff_,
+                    int*                  realonly_,
+                    double*               a_,
+                    double*               fc_,
+                    ltfatInt*             Lc_,
+                    ltfatInt*             Lchalf_,
+                    int                   M_,
+                    int                   L_):
+        G(G_), Gl(Gl_), foff(foff_), realonly(realonly_), a(a_),
+        fc(fc_), Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
+
+    BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
+    BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable
+};*/
+
+#endif // FILTERBANKDATAHOLDER_H_INCLUDED

@@ -276,7 +276,7 @@ RingFFTBuffer::RingFFTBuffer(int bufLen_, winType winType_,  int nChannels_, int
     createPlan();
 
     win.malloc(bufLen);
-    WindowDriver::hannsqrt(bufLen, win.getData());
+    WindowDriver::hann(bufLen, win.getData());
 }
 
 RingFFTBuffer::~RingFFTBuffer()
@@ -419,12 +419,12 @@ RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<File> filterbankFiles_, int
     createFilterbankPlan();
 }
 
-RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterbankDefs_, int bufLen_,
+RingBLFilterbankBuffer::RingBLFilterbankBuffer(Array<FilterbankDataHolder::BLFilterbankDef*> filterbankDefs_, int bufLen_,
         winType winType_,  int nChannels_, int nBuf_)
     : RingFFTBuffer(bufLen_, winType_, nChannels_, nBuf_),
       plotOverlaiedCoefficients(true)
 {
-    for (BLFilterbankDef * f : filterbankDefs_)  filterbanks.add(f);
+    for (FilterbankDataHolder::BLFilterbankDef * f : filterbankDefs_)  filterbanks.add(f);
 
     createFilterbankBuffers();
     createFilterbankPlan();
@@ -442,7 +442,7 @@ void RingBLFilterbankBuffer::readFilterbankDefinitions()
     for (File f : filterbankFiles)
     {
 
-        filterbanks.add(BLFilterbankDef::createDefFromFile(f));
+        filterbanks.add(FilterbankDataHolder::BLFilterbankDef::createDefFromFile(f));
     }
 }
 
@@ -451,7 +451,7 @@ void RingBLFilterbankBuffer::createFilterbankPlan()
     for (int ii = 0; ii < filterbanks.size(); ++ii)
     {
         // Actual filterbank
-        BLFilterbankDef * blFilt = filterbanks[ii];
+        FilterbankDataHolder::BLFilterbankDef * blFilt = filterbanks[ii];
         // Each filterbank has M plans, allocate space for M pointers
         convsub_fftbl_plan_s* pEl = static_cast<convsub_fftbl_plan_s*>
                                     ( fftwf_malloc(blFilt->M * sizeof(convsub_fftbl_plan_s)));
@@ -491,7 +491,7 @@ void RingBLFilterbankBuffer::createFilterbankBuffers()
     {
         Array<fftwf_complex**>* arrEl = new Array<fftwf_complex**>();
         Array<fftwf_complex**>* arrEl2 = new Array<fftwf_complex**>();
-        for (BLFilterbankDef * blFilt : filterbanks)
+        for (FilterbankDataHolder::BLFilterbankDef * blFilt : filterbanks)
         {
             fftwf_complex** bufEl =  static_cast<fftwf_complex**>(fftwf_malloc(blFilt->M * sizeof(fftwf_complex*)));
             fftwf_complex** bufEl2 = static_cast<fftwf_complex**>(fftwf_malloc(blFilt->M * sizeof(fftwf_complex*)));
@@ -526,7 +526,7 @@ void RingBLFilterbankBuffer::destroyFilterbankBuffers()
         Array<fftwf_complex**>* a2 = bufFilterbankOverlaidCoefs[jj];
         for (int ii = 0; ii < filterbanks.size(); ++ii)
         {
-            BLFilterbankDef* blFilt = filterbanks[ii];
+            FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks[ii];
             for (int m = 0; m < blFilt->M; ++m)
             {
                 fftwf_free((*a)[ii][m]);
@@ -557,7 +557,7 @@ void RingBLFilterbankBuffer::performTransform() noexcept
 
         {
             fftwf_complex** C = bufFilterbankCoefs.getUnchecked(locHead)->getUnchecked(ii);
-            BLFilterbankDef* blFilt = filterbanks.getUnchecked(ii);
+            FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getUnchecked(ii);
 
             // #pragma omp parallel for private(m)
 
@@ -684,232 +684,6 @@ bool RingBLFilterbankBuffer::getBufferCoefficientsAsAbsMatrix(float * matrix, in
     return true;
 }
 
-RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef::
-createDefFromFile(File& file, int64 byteOffset)
-{
-    MemoryBlock fileAsData;
-    file.loadFileAsData (fileAsData);
-    return RingBLFilterbankBuffer::BLFilterbankDef::createDefFromData(fileAsData, byteOffset);
-}
-
-RingBLFilterbankBuffer::BLFilterbankDef* RingBLFilterbankBuffer::BLFilterbankDef::
-createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
-{
-    // Create data stream:
-    MemoryInputStream dataStreamPtr(memBlock,0);
-    int64 dataSize = dataStreamPtr.getDataSize(), shouldBeAtLeast;
-
-    if ( dataSize < byteOffset+8 )
-    {
-        throw String("Reading error, stream does not contain the desired filterbank data");
-    }
-
-    dataStreamPtr.setPosition(byteOffset); // Set stream position to beginning of filterbank definition
-
-
-    // Read filterbank length
-    unsigned long binFilterbankLength;
-    if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
-    {
-        unsigned tempInt;
-        dataStreamPtr.read(&tempInt, 4);
-        binFilterbankLength = static_cast <unsigned long> (tempInt);
-    }
-    else // Handle case of 16-bit unsigned
-    {
-        dataStreamPtr.read(&binFilterbankLength, 4);
-    }
-
-    if (dataSize < byteOffset+binFilterbankLength)
-    {
-        throw String("Reading error, stream does not contain the desired filterbank data (2)");
-    }
-
-    // This is only for testing purposes
-    // std::cout << byteSize << std::endl;
-    unsigned blockLength;
-    unsigned M;
-
-    // Determine block length and number of channels
-    BLFilterbankDef::getFilterbankBaseData (&dataStreamPtr, &blockLength, &M);
-
-    // This is only for testing purposes
-    // std::cout << "blockLength is: " << blockLength << std::endl;
-    // std::cout << "M is: " << M << std::endl;
-
-    unsigned aOne;
-    unsigned* a = new unsigned[M];
-    float* fc = new float[M];
-    unsigned* foff = new unsigned[M];
-    unsigned* filtLengths = new unsigned[M];
-
-    // Determine filter bank parameters
-    // (TODO: change order in the MATLAB files for filtLengths to be at the end)
-    BLFilterbankDef::getFilterbankParamData (&dataStreamPtr, M, &aOne, a, fc, foff, filtLengths);
-
-    // This is only for testing purposes
-    // std::cout << "foff is: " << std::endl;
-    // for (int kk = 0; kk < 10; kk++)
-    // {std::cout << foff[kk] << std::endl;}
-    //
-    // std::cout << "a is: " << std::endl;
-    // for (int kk = 0; kk < 10; kk++)
-    // {std::cout << a[kk] << std::endl;}
-
-    // This is only for testing purposes
-    // std::cout << shouldBeAtLeast << std::endl;
-
-    float** G = new float*[M];
-    for (unsigned kk = 0; kk < M; ++kk)
-    {
-        G[kk] = new float[filtLengths[kk]];
-    }
-
-    // Get the filter data
-    BLFilterbankDef::getFilterbankFilterData (&dataStreamPtr, M, filtLengths, G);
-
-    // This is only for testing purposes
-    //  std::cout << "G[200] is: " << std::endl;
-    // for (int kk = 0; kk < 17; kk++)
-    // {std::cout << G[200][kk] << std::endl;}
-
-
-    int *Gl_ = static_cast<int*>(fftwf_malloc(M * sizeof(int)));
-    fftwf_complex ** G_ = static_cast<fftwf_complex**>( fftwf_malloc(M * sizeof(fftwf_complex*)));
-    for (unsigned kk = 0; kk < M; ++kk)
-    {
-        G_[kk] = static_cast<fftwf_complex*>(fftwf_malloc(filtLengths[kk] * sizeof(fftwf_complex)));
-    }
-    ltfatInt *foff_ = static_cast<ltfatInt*>( fftwf_malloc(M * sizeof(ltfatInt)));
-    int * realonly_ = static_cast<int*>(fftwf_malloc(M * sizeof(ltfatInt)));
-    memset(realonly_, 0, M * sizeof(ltfatInt));
-    double *a_ = static_cast<double*>(fftwf_malloc(M * sizeof(double)));
-    double *fc_ = static_cast<double*>(fftwf_malloc(M * sizeof(double)));
-    ltfatInt *Lc_ = static_cast<ltfatInt*>(fftwf_malloc(M * sizeof(ltfatInt)));
-    ltfatInt *Lchalf_ = static_cast<ltfatInt*>(fftwf_malloc(M * sizeof(ltfatInt)));
-
-    for (unsigned kk = 0; kk < M; ++kk)
-    {
-        Gl_[kk] = filtLengths[kk];
-        for (int jj = 0; jj < Gl_[kk]; ++jj)
-        {
-            G_[kk][jj][0] = G[kk][jj];
-            G_[kk][jj][1] = 0.0f;
-        }
-        foff_[kk] = foff[kk];
-        a_[kk] = static_cast<double>(aOne) / a[kk];
-        fc_[kk] = static_cast<double>(fc[kk]);
-        Lc_[kk] = static_cast<ltfatInt>(std::round(static_cast<double>(blockLength) / a_[kk]));
-        Lchalf_[kk] = static_cast<ltfatInt>(std::floor(Lc_[kk] / 2.0));
-    }
-
-    BLFilterbankDef* retVal = new BLFilterbankDef(const_cast<const fftwf_complex**>(G_),
-            Gl_, foff_, realonly_, a_, fc_, Lc_, Lchalf_, (int)M, blockLength);
-
-    //  Free tep variables
-    delete [] a;
-    delete [] fc;
-    delete [] foff;
-    delete [] filtLengths;
-    for (unsigned kk = 0; kk < M; ++kk)
-    {
-        delete [] G[kk];
-    }
-    delete [] G;
-
-    return retVal;
-}
-
-void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankBaseData(MemoryInputStream* dataStreamPtr, unsigned* blockLengthPtr, unsigned* mPtr)
-{
-    if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
-    {
-        unsigned short* tempInt = new unsigned short;
-        dataStreamPtr->read(tempInt, 2);
-        (*blockLengthPtr) = static_cast <unsigned> (*tempInt);
-        dataStreamPtr->read(tempInt, 2);
-        (*mPtr) = static_cast <unsigned> (*tempInt);
-    }
-    else // Handle case of 16-bit unsigned
-    {
-        dataStreamPtr->read(blockLengthPtr, 2);
-        dataStreamPtr->read(mPtr, 2);
-    }
-}
-
-void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankParamData(MemoryInputStream* dataStreamPtr,
-                       unsigned M, unsigned* aOnePtr,
-                       unsigned a[], float fc[],
-                       unsigned foff[], unsigned filtLengths[])
-{
-    if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
-    {
-        unsigned short* tempAry = new unsigned short[M];
-        unsigned short* tempInt = new unsigned short;
-
-        dataStreamPtr->read(tempInt, 2);
-        (*aOnePtr) = static_cast <unsigned> (*tempInt);
-        dataStreamPtr->read(tempAry, 2 * M);
-        for (unsigned kk = 0; kk < M; ++kk)
-        {
-            a[kk] = static_cast <unsigned> (tempAry[kk]);
-        }
-        dataStreamPtr->read(fc, 4 * M);
-        dataStreamPtr->read(tempAry, 2 * M);
-        for (unsigned kk = 0; kk < M; ++kk)
-        {
-            foff[kk] = static_cast <unsigned> (tempAry[kk]);
-        }
-        dataStreamPtr->read(tempAry, 2 * M);
-        for (unsigned kk = 0; kk < M; ++kk)
-        {
-            filtLengths[kk] = static_cast <unsigned> (tempAry[kk]);
-        }
-
-    }
-    else // Handle case of 16-bit unsigned
-    {
-        dataStreamPtr->read(filtLengths, 2 * M);
-        dataStreamPtr->read(aOnePtr, 2);
-        dataStreamPtr->read(a, 2 * M);
-        dataStreamPtr->read(fc, 4 * M);
-        dataStreamPtr->read(foff, 2 * M);
-    }
-}
-
-void RingBLFilterbankBuffer::BLFilterbankDef::
-getFilterbankFilterData(MemoryInputStream* dataStreamPtr,
-                        unsigned M, unsigned filtLengths[],
-                        float** G)
-{
-    // We currently assume float to always be 32-bit (We should add a sanity check here at least)
-    for (unsigned kk = 0; kk < M; ++kk)
-    {
-        dataStreamPtr->read(G[kk], 4 * filtLengths[kk]);
-    }
-
-}
-
-
-RingBLFilterbankBuffer::BLFilterbankDef::~BLFilterbankDef()
-{
-    if (nullptr != G)
-    {
-        for (int ii = 0; ii < M; ++ii)
-            if (nullptr != G[ii])
-                fftwf_free(const_cast<fftwf_complex*>(G[ii]));
-        fftwf_free(G);
-    }
-    // I know I should't, but all the C++ casts  are just horrible in this case.
-    if (nullptr != Gl) fftwf_free((void*)Gl);
-    if (nullptr != foff) fftwf_free((void*)foff);
-    if (nullptr != realonly) fftwf_free((void*)realonly);
-    if (nullptr != a) fftwf_free((void*)a);
-    if (nullptr != Lc) fftwf_free((void*)Lc);
-}
-
 /*RingReassignedBLFilterbankBuffer::
 RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
                                  winType winType,
@@ -924,9 +698,9 @@ RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
 }*/
 
 RingReassignedBLFilterbankBuffer::
-RingReassignedBLFilterbankBuffer(BLFilterbankDef* filterbankFiles_[3], int bufLen_,
+RingReassignedBLFilterbankBuffer(FilterbankDataHolder::BLFilterbankDef* filterbankFiles_[3], int bufLen_,
                                  winType winType, int nChannels_, int nBuf):
-    RingBLFilterbankBuffer(Array<BLFilterbankDef*>(filterbankFiles_, 3), bufLen_, winType, nChannels_, nBuf)
+    RingBLFilterbankBuffer(Array<FilterbankDataHolder::BLFilterbankDef*>(filterbankFiles_, 3), bufLen_, winType, nChannels_, nBuf)
 {
     setActivePlotReassigned( true);
     createReassignBuffers();
@@ -957,7 +731,7 @@ createReassignBuffers()
 {
     // tgrad,fgrad,cs,
     // reassignedCoefs
-    BLFilterbankDef* blFilt = filterbanks.getFirst();
+    FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getFirst();
     int M = blFilt->M;
     const ltfatInt* Lchalf = blFilt->Lchalf;
     for (int ii = 0; ii < nBuf; ++ii)
@@ -989,7 +763,7 @@ createReassignBuffers()
 void RingReassignedBLFilterbankBuffer::
 destroyReassignBuffers()
 {
-    BLFilterbankDef* blFilt = filterbanks.getFirst();
+    FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getFirst();
     int M = blFilt->M;
 
     for (auto a : reassignedCoefs)
@@ -1021,7 +795,7 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
     // 2. coefficients obtained with frequency-weighted window
     // 3. coefficients obtained with time-weighted window
 
-    BLFilterbankDef* blFilt = filterbanks.getFirst();
+    FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getFirst();
     const int M = blFilt->M;
     float minlvl = 1e-7f;
 

@@ -338,12 +338,12 @@ RingFFTBuffer* PluginAudioProcessor::tryCreateRingBufferFromData()
         if ( !successful )
             throw String("PluginProcessor failed to interpret filterbank data");
 
-        Array<RingBLFilterbankBuffer::BLFilterbankDef*> filterbankDefs;
+        Array<FilterbankDataHolder::BLFilterbankDef*> filterbankDefs;
 
         switch ( loadedFilterbankData.size() )
         {
             case 1:
-                filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                filterbankDefs.add(FilterbankDataHolder::BLFilterbankDef
                         ::createDefFromData(loadedFilterbankData.getReference(0),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
                 newBuf = new RingBLFilterbankBuffer(filterbankDefs,
                                                     dataHolder->getBlockLength(dataHolder->getActiveFilterbank()),
@@ -352,7 +352,7 @@ RingFFTBuffer* PluginAudioProcessor::tryCreateRingBufferFromData()
             case 3:
                 for (int kk = 0; kk < 3; ++kk )
                 {
-                    filterbankDefs.add(RingBLFilterbankBuffer::BLFilterbankDef
+                    filterbankDefs.add(FilterbankDataHolder::BLFilterbankDef
                             ::createDefFromData(loadedFilterbankData.getReference(kk),dataHolder->getStartingByte(dataHolder->getActiveFilterbank())));
                 }
                 newBuf = new RingReassignedBLFilterbankBuffer(filterbankDefs.getRawDataPointer(),

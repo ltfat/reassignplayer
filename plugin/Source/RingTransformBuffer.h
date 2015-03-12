@@ -21,14 +21,15 @@ LLast year, the became
 #endif
 
 #include "../../plugin/JuceLibraryCode/JuceHeader.h"
+#include "FilterbankDataHolder.h"
 
 #ifdef STANDALONE
 #undef JUCE_DONT_DECLARE_PROJECTINFO
 #endif
 
 #include <complex>
-#include "fftw3.h"
-#include "ltfat.h"
+/*#include "fftw3.h"
+#include "ltfat.h"*/
 #include <type_traits>
 #include <cstring>
 #include <fstream>
@@ -138,62 +139,13 @@ private:
 class RingBLFilterbankBuffer: public RingFFTBuffer
 {
 public:
-    class BLFilterbankDef
-    {
-    public:
-        static BLFilterbankDef* createDefFromFile(File& file,
-                                                  int64 byteOffset = 0);
-        static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
-                                                  int64 byteOffset = 0);
-        virtual ~BLFilterbankDef();
-
-        const fftwf_complex** G;
-        const int*            Gl;
-        const ltfatInt*       foff;
-        const int*            realonly;
-        const double*         a;
-        const double*         fc;
-        const ltfatInt*       Lc;
-        const ltfatInt*       Lchalf;
-        const int             M;
-        const int             L;
-    private:
-        static void getFilterbankBaseData (MemoryInputStream* dataPtr,
-                unsigned* blockLengthPtr,
-                unsigned* mPtr);
-        static void getFilterbankParamData (MemoryInputStream* dataPtr,
-                unsigned M, unsigned* aOne,
-                unsigned a[], float fc[],
-                unsigned foff[], unsigned filtLengths[]);
-        static void getFilterbankFilterData (MemoryInputStream* dataPtr,
-                unsigned M, unsigned filtLengths[],
-                float** G);
-
-        // Make it non-copyable and non createable
-        BLFilterbankDef(const fftwf_complex** G_,
-                        int*                  Gl_,
-                        ltfatInt*             foff_,
-                        int*                  realonly_,
-                        double*               a_,
-                        double*               fc_,
-                        ltfatInt*             Lc_,
-                        ltfatInt*             Lchalf_,
-                        int                   M_,
-                        int                   L_):
-            G(G_), Gl(Gl_), foff(foff_), realonly(realonly_), a(a_),
-            fc(fc_), Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
-
-        BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
-        BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable
-    };
-
     RingBLFilterbankBuffer(File filterbankFile_, int bufLen_,
                            winType winType_ = winType::hann,
                            int nChannels_ = 1, int nBuf_ = 2);
     RingBLFilterbankBuffer(Array<File> filterbankFiles_, int bufLen_,
                            winType winType_ = winType::hann,
                            int nChannels_ = 1, int nBuf_ = 2);
-    RingBLFilterbankBuffer(Array<BLFilterbankDef*> filterbankFiles_, int bufLen_,
+    RingBLFilterbankBuffer(Array<FilterbankDataHolder::BLFilterbankDef*> filterbankFiles_, int bufLen_,
                            winType winType_ = winType::hann,
                            int nChannels_ = 1, int nBuf_ = 2);
 
@@ -212,7 +164,7 @@ public:
     }
 
 protected:
-    OwnedArray<BLFilterbankDef> filterbanks;
+    OwnedArray<FilterbankDataHolder::BLFilterbankDef> filterbanks;
     OwnedArray<Array<fftwf_complex**>> bufFilterbankOverlaidCoefs;
     OwnedArray<Array<fftwf_complex**>> bufFilterbankCoefs;
     fftwf_complex** dummy;
@@ -241,7 +193,7 @@ public:
     RingReassignedBLFilterbankBuffer(File filterbankFiles_[3], int bufLen_,
                                      winType winType_ = winType::hann,
                                      int nChannels_ = 1, int nBuf_ = 2);
-    RingReassignedBLFilterbankBuffer(BLFilterbankDef* filterbankFiles_[3], int bufLen_,
+    RingReassignedBLFilterbankBuffer(FilterbankDataHolder::BLFilterbankDef* filterbankFiles_[3], int bufLen_,
                                      winType winType_ = winType::hann,
                                      int nChannels_ = 1, int nBuf_ = 2);
     virtual ~RingReassignedBLFilterbankBuffer();

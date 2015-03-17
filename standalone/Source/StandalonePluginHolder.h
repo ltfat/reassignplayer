@@ -23,7 +23,8 @@
 
 #include "AudioSourceProcessor.h"
 
-class StandalonePluginHolder
+class StandalonePluginHolder    : public ChangeListener,
+                                  public ChangeBroadcaster
 {
 public:
     /** Creates an instance of the default plugin.
@@ -71,7 +72,15 @@ public:
     String reloadAudioDeviceState();
     void showAudioSettingsDialog();
 
-    bool setFile(File& file);
+    int getCurrentFileIdx();
+    bool setCurrentFileIdx(int newFileIdx);
+    bool loadFile(File& file);
+    bool addFile(File& file);
+    bool clearFileList();
+    bool removeFile(int fileIndex);
+
+    bool playNext();
+    bool playPrevious();
 
     // Playback control
     bool changePlaybackState(int state);
@@ -81,6 +90,9 @@ public:
     void inputIsMicOnly();
     void inputIsFileOnly();
     int getCurrentSource();
+
+    // Change Listener callback
+    void changeListenerCallback(ChangeBroadcaster* source);
 
     // For holding properties
     OptionalScopedPointer<PropertySet> settings;
@@ -94,6 +106,9 @@ private:
     int samplesPerBlock;
     int currentSource;
     bool wasPlaying;
+    bool loopToggle;
+    bool currentFromPlaylist;
+    int64 oldStreamPosition;
     Array<File> filterbankData;
     // Produces AudioFormatReader
     AudioFormatManager formatManager;
@@ -131,8 +146,13 @@ private:
     AudioProcessorGraph::Node* pluginNode;
     // background thread
     TimeSliceThread thread;
-    ScopedPointer<File> openedFile;
 
+    int currentFileIdx;
+    ScopedPointer<File> currentFile;
+    OwnedArray<File> listOfFiles;
+
+    bool setFile(File& file, int64 startingPosition = 0);
+    bool setNextFile();
     bool loadFileIntoTransport();
 
     String setupAudioDevices();

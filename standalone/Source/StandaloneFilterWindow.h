@@ -42,6 +42,7 @@
 class StandaloneFilterWindow    : public DocumentWindow,
                                   private ButtonListener,   // (can't use Button::Listener due to VC2005 bug)
                                   private LabelListener,
+                                  private ChangeListener,
                                   private MenuBarModel
 {
 private:
@@ -132,6 +133,9 @@ private:
     // Filterbank to use
     unsigned selectedFilterbank;
 
+    // ChangeListener required
+    void changeListenerCallback(ChangeBroadcaster* source);
+
     class FilterWindowToolbarItemFactory: public ToolbarItemFactory
     {
     public:
@@ -148,14 +152,61 @@ private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterWindowToolbarItemFactory)
     };
 
-/*    class CustomToolbarButton: public ToolbarButton
+    /*class PlaylistWindow: public DocumentWindow,
+                          public ListBoxModel
     {
     public:
-        void changedState();
+        PlaylistWindow(ButtonListener* listener_);
+        ~PlaylistWindow();
+
+        class PlaylistWindowToolbarItemFactory: public ToolbarItemFactory
         {
-            ToolbarButtion::setCurrentImage (ToolbarButtion::getImageToUse());
-        }
+        public:
+            PlaylistWindowToolbarItemFactory(ButtonListener* listener_);
+            ~PlaylistWindowToolbarItemFactory();
+
+            void getAllToolbarItemIds(Array<int> &ids) override;
+            void getDefaultItemSet(Array<int> &ids) override;
+            ToolbarItemComponent* createItem(int itemId) override;
+        private:
+
+            ButtonListener* listener;
+            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistWindowToolbarItemFactory)
+        };
+
+
+       void getNumRows () override;
+       void paintListBoxItem (int rowNumber, Graphics &g, int width, int height, bool rowIsSelected) override;
+       void deleteKeyPressed (int lastRowSelected) override;
+
+       void substitutePlaylist (Array<File> newList);
+       void addItemsToList (Array<File> newList);
+       void addItemsToList (File& newList);
+
+       void removeItemsFromList (int indexStart_,int indexEnd_);
+       void removeItemsFromList (int index_);
+
+       Array<String> playList;
+       ScopedPointer<ListBox> playListBox;
+    };*/
+
+    /*class CustomToolbarButton: public ToolbarButton
+    {
+    public:
+        CustomToolbarButton(int itemId, const String &labelText, Array<Drawable*> imagesToUse_);
+        ~CustomToolbarButton();
+
+        void advanceState();
+        void buttonStateChanged() override;
+
     private:
+        Array<Drawable*> imagesToUse;
+        ScopedPointer<Drawable> currentImage;
+        int currentState;
+
+        void setCurrentImage (Drawable*);
+        void updateDrawable();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomToolbarButton)
     };*/
 

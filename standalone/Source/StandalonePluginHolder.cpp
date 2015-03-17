@@ -46,11 +46,15 @@ StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet*
       bool takeOwnershipOfSettings)
    : settings (settingsToUse, takeOwnershipOfSettings),
      thread("File preload"),
-     openedFile(nullptr),
+     currentFile(nullptr),
      filterbankData(fbData),
      sampleRate(44100),
      samplesPerBlock(512),
-     currentSource(0)
+     currentSource(0),
+     currentFileIdx(-1),
+     loopToggle(true),
+     oldStreamPosition(-1),
+     currentFromPlaylist(false)
 {
    DBG("StandalonePluginHolder constructor begin");
    String errMsg = setupAudioDevices();
@@ -67,6 +71,8 @@ StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet*
    reloadPluginState();
    thread.startThread();
    formatManager.registerBasicFormats();
+
+   transportSource.addChangeListener(this);
 
    //
    wasPlaying = false;
@@ -136,15 +142,64 @@ void StandalonePluginHolder::deletePlugin()
    pluginProcessor = nullptr;
 }
 
-bool StandalonePluginHolder::setFile(File& file)
+bool StandalonePluginHolder::loadFile(File& file)
 {
-   openedFile = new File(file);
-   if (! loadFileIntoTransport())
-      return false;
+    if ( currentFromPlaylist )
+        oldStreamPosition = transportSource.getNextReadPosition();
+    setFile(file);
+    currentFromPlaylist = false;
+    return true;
+}
 
-   inputIsFileOnly();
-   transportSource.start();
-   return true;
+bool StandalonePluginHolder::addFile(File& file)
+{
+    File* newFile = new File(file);
+    listOfFiles.add(newFile);
+    if ( listOfFiles.size() == 1 )
+    {
+        currentFileIdx = 0;
+        setFile(file);
+        currentFromPlaylist = true;
+    }
+    return true;
+}
+
+bool StandalonePluginHolder::removeFile(int fileIndex)
+{
+    if ( fileIndex < listOfFiles.size())
+    {
+        listOfFiles.remove(fileIndex,true);
+        if ( currentFileIdx >= fileIndex )
+            currentFileIdx--;
+        //else if ( currentFileIdx = fileIndex )
+        //    currentFileIdx = -1;
+        return true;
+    }
+    else
+        return false;
+}
+
+bool StandalonePluginHolder::clearFileList()
+{
+    listOfFiles.clear(true);
+}
+
+bool StandalonePluginHolder::setFile(File& file, int64 startingPosition)
+{
+   if ( file.existsAsFile() )
+   {
+        currentFile = new File(file);
+        if (! loadFileIntoTransport())
+            return false;
+
+        inputIsFileOnly();
+        if ( startingPosition < transportSource.getTotalLength() )
+                transportSource.setNextReadPosition(startingPosition);
+        transportSource.start();
+        return true;
+   }
+   else
+        return setNextFile();
 }
 
 
@@ -225,7 +280,7 @@ void StandalonePluginHolder::showAudioSettingsDialog()
 {
    DialogWindow::LaunchOptions o;
    if(nullptr == pluginProcessor) DBG("pluginProcessor is NULL");
-   
+
    o.content.setOwned (new AudioDeviceSelectorComponent (deviceManager,
                        pluginProcessor->getNumInputChannels(),
                        pluginProcessor->getNumInputChannels(),
@@ -295,23 +350,21 @@ void StandalonePluginHolder::reloadPluginState()
 
 //==============================================================================
 
-
-
 bool StandalonePluginHolder::loadFileIntoTransport()
 {
    transportSource.stop();
    transportSource.setSource(nullptr);
    formatReaderSource = nullptr;
 
-   if (openedFile != nullptr)
+   if (currentFile != nullptr)
    {
       // The old reader is killed together with formatReaderSource on the previous line
-      reader = formatManager.createReaderFor(*openedFile);
+      reader = formatManager.createReaderFor(*currentFile);
 
       if (reader != nullptr)
       {
          formatReaderSource = new AudioFormatReaderSource(reader, true);
-         formatReaderSource->setLooping(true);
+         formatReaderSource->setLooping(false);
          // We want the file to be read at the common sample-rate
          // Read up to samplesToPreload in advance
          int samplesToPreload = 10*reader->bitsPerSample/8*samplesPerBlock;
@@ -320,7 +373,7 @@ bool StandalonePluginHolder::loadFileIntoTransport()
       }
       else
       {
-         openedFile = nullptr;
+         currentFile = nullptr;
          return false;
       }
    }
@@ -433,11 +486,99 @@ bool StandalonePluginHolder::changePlaybackState(int state)
 
 void StandalonePluginHolder::toggleLooping()
 {
-    if (formatReaderSource != nullptr)
-    {
-        if (formatReaderSource->isLooping())
+    loopToggle = !loopToggle;
+    DBG(loopToggle);
+    //if (transportSource != nullptr)
+    //{
+    /*    if (formatReaderSource->isLooping())
             formatReaderSource->setLooping(false);
         else
-            formatReaderSource->setLooping(true);
+            formatReaderSource->setLooping(true);*/
+    //}
+}
+
+void StandalonePluginHolder::changeListenerCallback(ChangeBroadcaster*)
+{
+    if ( transportSource.getNextReadPosition() > transportSource.getTotalLength() + 1)
+    {
+        DBG("stream end");
+        setNextFile();
     }
+}
+
+bool StandalonePluginHolder::setNextFile()
+{
+    int64 startPosition = oldStreamPosition;
+    if ( currentFile!= nullptr && listOfFiles.size() == 0 && loopToggle )
+    {
+        DBG("Replaying loaded file");
+        currentFromPlaylist = false;
+        return setFile(*currentFile);
+    }
+    else if ( currentFileIdx < listOfFiles.size()-1 && currentFromPlaylist == true)
+    {
+        DBG("Next file in playlist played");
+        DBG(listOfFiles.size());
+        currentFromPlaylist = true;
+        sendChangeMessage();
+        return setFile(*listOfFiles[++currentFileIdx]);
+    }
+    else
+    {
+        if ( currentFileIdx < listOfFiles.size() && currentFromPlaylist == false)
+        {
+            DBG("Resuming playlist");
+            currentFromPlaylist = true;
+            oldStreamPosition = -1;
+            sendChangeMessage();
+            return setFile(*listOfFiles[currentFileIdx],startPosition);
+        }
+        else if ( loopToggle && listOfFiles.size() > 0)
+        {
+            DBG("Playlist exhausted");
+            DBG(listOfFiles.size());
+            currentFileIdx = 0;
+            currentFromPlaylist = true;
+            oldStreamPosition = -1;
+            sendChangeMessage();
+            return setFile(*listOfFiles[currentFileIdx]);
+        }
+    }
+    return false;
+}
+
+int StandalonePluginHolder::getCurrentFileIdx()
+{
+    return currentFileIdx;
+}
+
+bool StandalonePluginHolder::setCurrentFileIdx(int newFileIdx)
+{
+    if ( newFileIdx > -1 && newFileIdx < listOfFiles.size())
+    {
+        if ( currentFileIdx != newFileIdx )
+        {
+            currentFileIdx = newFileIdx;
+            setFile(*listOfFiles[currentFileIdx]);
+            currentFromPlaylist = true;
+        }
+        return true;
+    }
+    return false;
+}
+
+bool StandalonePluginHolder::playNext()
+{
+    if ( currentFileIdx == listOfFiles.size()-1 )
+        return setCurrentFileIdx(0);
+    else
+        return setCurrentFileIdx(currentFileIdx+1);
+}
+
+bool StandalonePluginHolder::playPrevious()
+{
+    if ( currentFileIdx == 0 )
+        return setCurrentFileIdx(listOfFiles.size()-1);
+    else
+        return setCurrentFileIdx(currentFileIdx-1);
 }

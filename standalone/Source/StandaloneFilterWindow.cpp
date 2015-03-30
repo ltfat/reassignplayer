@@ -9,6 +9,7 @@
 */
 
 #include "StandaloneFilterWindow.h"
+#include "CustomToolbarButton.h"
 
 
 StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
@@ -62,12 +63,12 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    fileLabel.setColour(Label::textColourId, Colours::red);
    fileLabel.setColour(Label::backgroundColourId, backgroundColour);
 
-
+   DBG("Before toolbar");
    // Init toolbar
    tbfac = new FilterWindowToolbarItemFactory(this);
    toolbar.addDefaultItems(*tbfac);
    Component::addAndMakeVisible(toolbar);
-
+   DBG("After toolbar");
 
    Component::addAndMakeVisible(menuBarComponent);
    Component::addAndMakeVisible(e, true);
@@ -166,6 +167,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
       {
         ToolbarItemComponent* c;
         ToolbarButton* cc;
+        CustomToolbarButton* ccc;
         bool isP;
         if (toolbar.getItemId(ii) == 6)
         {
@@ -319,9 +321,7 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
                     case 8:
                         c = toolbar.getItemComponent(jj);
                         DBG("Hey, do it!");
-                        cc = static_cast<ToolbarButton*>(c);
-                        cc->setToggleState(!cc->getToggleState(),dontSendNotification);
-                        //static_cast<CustomToolbarButton*>(c)->advanceState();
+                        static_cast<CustomToolbarButton*>(c)->advanceState();
                         break;
                     default:
                         break;
@@ -353,9 +353,6 @@ void StandaloneFilterWindow::labelTextChanged(Label *l)
 void StandaloneFilterWindow::resized()
 {
    DocumentWindow::resized();
-   //optionsButton.setBounds (8, 6, proportionOfWidth(0.1f), getTitleBarHeight() - 8);
-   //micfileButton.setBounds (getWidth() - 64, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
-   //fileChooserButton.setBounds (getWidth() - 128, getTitleBarHeight()+1, 60, getTitleBarHeight() - 2);
    fileLabel.setBounds(0, getHeight() - getTitleBarHeight(), getWidth() - 20, getTitleBarHeight());
 
    menuBarComponent->setBounds(0, getTitleBarHeight(), getWidth(), getTitleBarHeight());
@@ -405,7 +402,7 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
    const char* iconData;
    String buttonText, binDataOff, binDataOn, binDataOnOne;
 
-   //if ( itemId != loopToggle )
+   if ( itemId != loopToggle )
    {
         Drawable* iconOff;
         Drawable* iconOn;
@@ -441,11 +438,6 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
             binDataOn = "micOn_svg";
             buttonText = "toggle MIC";
             break;
-        case loopToggle:
-            binDataOff = "loop_svg";
-            binDataOn = "loopOn_svg";
-            buttonText = "toggle LOOP";
-            break;
         case fileToggle:
             binDataOff = "audfile_svg";
             binDataOn = "audfileOn_svg";
@@ -468,7 +460,7 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         b->addListener(listener);
         return b;
    }
-   /*else
+   else
    {
         Drawable* tempPtr;
         Array<Drawable*> loopIcons;
@@ -477,19 +469,19 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
         binDataOnOne = "loopOnOne_svg";
         buttonText = "toggle LOOP";
 
+        iconData = BinaryData::getNamedResource(binDataOnOne.toRawUTF8(),NumBytes);
+        tempPtr = Drawable::createFromImageData(iconData,NumBytes);
+        loopIcons.add(tempPtr);
         iconData = BinaryData::getNamedResource(binDataOff.toRawUTF8(),NumBytes);
         tempPtr = Drawable::createFromImageData(iconData,NumBytes);
         loopIcons.add(tempPtr);
         iconData = BinaryData::getNamedResource(binDataOn.toRawUTF8(),NumBytes);
         tempPtr = Drawable::createFromImageData(iconData,NumBytes);
         loopIcons.add(tempPtr);
-        iconData = BinaryData::getNamedResource(binDataOnOne.toRawUTF8(),NumBytes);
-        tempPtr = Drawable::createFromImageData(iconData,NumBytes);
-        loopIcons.add(tempPtr);
         CustomToolbarButton* b = new CustomToolbarButton(itemId,buttonText,loopIcons);
         b->addListener(listener);
         return b;
-   }*/
+   }
 }
 
 void StandaloneFilterWindow::FilterWindowToolbarItemFactory
@@ -556,68 +548,6 @@ bool StandaloneFilterWindow::GenericToolbarItemComponent
    minSize = 1;
    maxSize = 1;
 }
-
-//=============================================================================
-// CustomToolbarButton
-
-/*StandaloneFilterWindow::CustomToolbarButton::CustomToolbarButton(const int iid, const String& buttonText, Array<Drawable*> imagesToUse_)
-: ToolbarButton(iid, buttonText,imagesToUse_[0],nullptr),
-  currentImage (nullptr),
-  imagesToUse(imagesToUse_),
-  currentState (0)
-{
-    jassert (imagesToUse.size() != 0);
-
-   for (int kk = 0; kk < imagesToUse.size(); ++kk)
-    {
-        imagesToUse.add(imagesToUse_[kk]);
-    }
-}
-
-StandaloneFilterWindow::CustomToolbarButton::~CustomToolbarButton()
-{
-    imagesToUse.clear();
-}
-
-void StandaloneFilterWindow::CustomToolbarButton::advanceState()
-{
-    currentState = (currentState+1) % imagesToUse.size();
-    DBG(currentState);
-    buttonStateChanged();
-}
-
-void StandaloneFilterWindow::CustomToolbarButton::buttonStateChanged()
-{
-    DBG("Hi the button state changed");
-    setCurrentImage (imagesToUse[currentState]);
-    DBG("Image set");
-}
-
-void StandaloneFilterWindow::CustomToolbarButton::setCurrentImage (Drawable* const newImage)
-{
-    if (newImage != currentImage)
-    {
-        removeChildComponent (currentImage);
-        currentImage = newImage;
-
-        if (currentImage != nullptr)
-        {
-            enablementChanged();
-            addAndMakeVisible (currentImage);
-            updateDrawable();
-        }
-    }
-}
-
-void StandaloneFilterWindow::CustomToolbarButton::updateDrawable()
-{
-    if (currentImage != nullptr)
-    {
-        currentImage->setInterceptsMouseClicks (false, false);
-        currentImage->setTransformToFit (getContentArea().toFloat(), RectanglePlacement::centred);
-        currentImage->setAlpha (isEnabled() ? 1.0f : 0.5f);
-    }
-}*/
 
 //============================================================================
 // MenuBarModel related
@@ -707,8 +637,7 @@ void StandaloneFilterWindow
                         break;
                     }
                }
-               //------------------------------------------
-             }
+            }
          }
          break;
      case 2:

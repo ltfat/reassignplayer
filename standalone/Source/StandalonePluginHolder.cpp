@@ -52,7 +52,7 @@ StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet*
      samplesPerBlock(512),
      currentSource(0),
      currentFileIdx(-1),
-     loopToggle(true),
+     loopState(0),
      oldStreamPosition(-1),
      currentFromPlaylist(false)
 {
@@ -486,8 +486,7 @@ bool StandalonePluginHolder::changePlaybackState(int state)
 
 void StandalonePluginHolder::toggleLooping()
 {
-    loopToggle = !loopToggle;
-    DBG(loopToggle);
+    loopState = (loopState+1) % 3;
     //if (transportSource != nullptr)
     //{
     /*    if (formatReaderSource->isLooping())
@@ -502,40 +501,39 @@ void StandalonePluginHolder::changeListenerCallback(ChangeBroadcaster*)
     if ( transportSource.getNextReadPosition() > transportSource.getTotalLength() + 1)
     {
         DBG("stream end");
-        setNextFile();
+        if ( currentFileIdx < listOfFiles.size()-1 || loopState != 0 )
+            setNextFile();
     }
 }
 
 bool StandalonePluginHolder::setNextFile()
 {
     int64 startPosition = oldStreamPosition;
-    if ( currentFile!= nullptr && listOfFiles.size() == 0 && loopToggle )
+    if ( currentFile == nullptr )
     {
-        DBG("Replaying loaded file");
+        DBG("Stopping playback");
+        return false;
+    }
+    else if ( loopState == 2 || ( loopState == 1 && listOfFiles.size() == 0 ))
+    {
+        DBG("Replaying current file");
+        DBG(loopState);
         currentFromPlaylist = false;
         return setFile(*currentFile);
     }
-    else if ( currentFileIdx < listOfFiles.size()-1 && currentFromPlaylist == true)
+    else if ( listOfFiles.size() != 0 )
     {
-        DBG("Next file in playlist played");
-        DBG(listOfFiles.size());
-        currentFromPlaylist = true;
-        sendChangeMessage();
-        return setFile(*listOfFiles[++currentFileIdx]);
-    }
-    else
-    {
-        if ( currentFileIdx < listOfFiles.size() && currentFromPlaylist == false)
+        if ( currentFileIdx < listOfFiles.size()-1 )
         {
-            DBG("Resuming playlist");
+            DBG("Next file in playlist played");
+            DBG(listOfFiles.size());
             currentFromPlaylist = true;
-            oldStreamPosition = -1;
             sendChangeMessage();
-            return setFile(*listOfFiles[currentFileIdx],startPosition);
+            return setFile(*listOfFiles[++currentFileIdx]);
         }
-        else if ( loopToggle && listOfFiles.size() > 0)
+        else if ( loopState == 1 )
         {
-            DBG("Playlist exhausted");
+            DBG("Playlist exhausted, starting again");
             DBG(listOfFiles.size());
             currentFileIdx = 0;
             currentFromPlaylist = true;
@@ -543,8 +541,17 @@ bool StandalonePluginHolder::setNextFile()
             sendChangeMessage();
             return setFile(*listOfFiles[currentFileIdx]);
         }
+        else if ( loopState == 2 && currentFile != nullptr )
+        {
+            DBG("Replay current playlist file");
+            return setFile(*currentFile);
+        }
     }
-    return false;
+    else
+    {
+        DBG("Stopping playback unexpectedly");
+        return false;
+    }
 }
 
 int StandalonePluginHolder::getCurrentFileIdx()

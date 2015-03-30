@@ -106,7 +106,7 @@ private:
     int samplesPerBlock;
     int currentSource;
     bool wasPlaying;
-    bool loopToggle;
+    int loopState;
     bool currentFromPlaylist;
     int64 oldStreamPosition;
     Array<File> filterbankData;

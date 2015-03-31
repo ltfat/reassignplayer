@@ -9,6 +9,15 @@
 
 namespace BinaryData
 {
+    extern const char*   list_svg;
+    const int            list_svgSize = 4792;
+
+    extern const char*   addFiles_svg;
+    const int            addFiles_svgSize = 2513;
+
+    extern const char*   removeSelected_svg;
+    const int            removeSelected_svgSize = 2158;
+
     extern const char*   loopOnOne_svg;
     const int            loopOnOne_svgSize = 2772;
 
@@ -82,7 +91,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 23;
+    const int namedResourceListSize = 26;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

@@ -73,7 +73,7 @@ public:
     void showAudioSettingsDialog();
 
     int getCurrentFileIdx();
-    bool setCurrentFileIdx(int newFileIdx);
+    bool setCurrentFileIdx(int newFileIdx, bool forceStart = false);
     bool loadFile(File& file);
     bool addFile(File& file);
     bool clearFileList();

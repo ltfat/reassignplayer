@@ -7,8 +7,235 @@
 namespace BinaryData
 {
 
-//================== loopOnOne.svg ==================
+//================== list.svg ==================
 static const unsigned char temp_binary_data_0[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3978\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"removeSelected.svg\">\n"
+"  <defs\n"
+"     id=\"defs3990\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"1863\"\n"
+"     inkscape:window-height=\"1056\"\n"
+"     id=\"namedview3988\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"2.8606061\"\n"
+"     inkscape:cx=\"110.84594\"\n"
+"     inkscape:cy=\"192.9661\"\n"
+"     inkscape:window-x=\"57\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"1\"\n"
+"     inkscape:current-layer=\"svg3978\" />\n"
+"  <metadata\n"
+"     id=\"metadata3980\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"    <dc:title></dc:title>\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986\"\n"
+"     d=\"m 185.93896,153.72511 c -4.24023,-1.7399 -4.83909,-1.77146 -53.9361,-1.70867 -41.097508,0.0526 -45.599442,0.12295 -48.816885,0.64421 -5.127247,0.81457 -7.077833,2.30382 -7.181441,5.34212 -0.09699,2.84436 1.35221,4.32927 5.317807,5.32614 2.77"
+"5577,0.70752 3.075558,0.70713 50.172699,0.6469 51.99684,-0.0665 51.69686,-0.0661 54.8628,-2.00941 1.02199,-0.64773 1.56495,-1.90894 1.641,-4.13917 0.0959,-2.81204 -0.1865,-3.32881 -2.05988,-4.10212 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986-9\"\n"
+"     d=\"m 185.93901,173.72511 c -4.24023,-1.7399 -4.8391,-1.77146 -53.93612,-1.70867 -41.097532,0.0526 -45.599467,0.12295 -48.816912,0.64421 -5.127249,0.81457 -7.077836,2.30382 -7.181444,5.34212 -0.09699,2.84436 1.352211,4.32927 5.31781,5.32614 2.77"
+"5578,0.70752 3.075558,0.70713 50.172726,0.6469 51.99686,-0.0665 51.69688,-0.0661 54.86282,-2.00941 1.02198,-0.64773 1.56494,-1.90894 1.641,-4.13917 0.0959,-2.81204 -0.1865,-3.32881 -2.05988,-4.10212 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986-3\"\n"
+"     d=\"m 185.93896,112.93002 c -4.24023,-1.74 -4.83909,-1.78 -53.9361,-1.71 -41.097506,0.1 -45.599442,0.12 -48.816885,0.64 -5.127247,0.82 -7.077833,2.3 -7.181441,5.34 -0.09699,2.85 1.35221,4.33 5.317807,5.33 2.775577,0.71 3.075558,0.71 50.172699,0."
+"65 51.99684,-0.1 51.69686,-0.1 54.8628,-2.01 1.02199,-0.65 1.56495,-1.91 1.641,-4.14 0.0959,-2.81 -0.1865,-3.33 -2.05988,-4.1 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986-9-6\"\n"
+"     d=\"m 185.93901,132.93002 c -4.24023,-1.74 -4.8391,-1.78 -53.93612,-1.71 -41.097529,0.1 -45.599468,0.12 -48.816912,0.64 -5.127249,0.82 -7.077836,2.3 -7.181444,5.34 -0.09699,2.85 1.352211,4.33 5.31781,5.33 2.775578,0.71 3.075558,0.71 50.172726,0."
+"65 51.99686,-0.1 51.69688,-0.1 54.86282,-2.01 1.02198,-0.65 1.56494,-1.91 1.641,-4.14 0.0959,-2.81 -0.1865,-3.33 -2.05988,-4.1 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986-3-6\"\n"
+"     d=\"m 185.93896,73.726012 c -4.24023,-1.740004 -4.83909,-1.780004 -53.9361,-1.710004 -41.097501,0.1 -45.599441,0.12 -48.816885,0.64 -5.127247,0.820004 -7.077833,2.300004 -7.181441,5.340004 -0.09699,2.85 1.35221,4.33 5.317807,5.33 2.775577,0.71 3"
+".075558,0.71 50.172699,0.65 51.99684,-0.1 51.69686,-0.1 54.8628,-2.01 1.02199,-0.65 1.56495,-1.91 1.641,-4.14 0.0959,-2.81 -0.1865,-3.33 -2.05988,-4.1 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986-9-6-6\"\n"
+"     d=\"m 185.93901,93.726016 c -4.24023,-1.740004 -4.8391,-1.780004 -53.93612,-1.71 -41.097524,0.1 -45.599467,0.12 -48.816912,0.64 -5.127249,0.82 -7.077836,2.3 -7.181444,5.340004 -0.09699,2.85 1.352211,4.33 5.31781,5.33 2.775578,0.71 3.075558,0.71 "
+"50.172726,0.65 51.99686,-0.1 51.69688,-0.1 54.86282,-2.01 1.02198,-0.65 1.56494,-1.91 1.641,-4.14 0.0959,-2.810004 -0.1865,-3.330004 -2.05988,-4.100004 z\" />\n"
+"</svg>\n";
+
+const char* list_svg = (const char*) temp_binary_data_0;
+
+//================== addFiles.svg ==================
+static const unsigned char temp_binary_data_1[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3978\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"pauseOn.svg\">\n"
+"  <defs\n"
+"     id=\"defs3990\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"931\"\n"
+"     inkscape:window-height=\"1028\"\n"
+"     id=\"namedview3988\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"2.8606061\"\n"
+"     inkscape:cx=\"110.84594\"\n"
+"     inkscape:cy=\"206.94915\"\n"
+"     inkscape:window-x=\"67\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"0\"\n"
+"     inkscape:current-layer=\"svg3978\" />\n"
+"  <metadata\n"
+"     id=\"metadata3980\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"    <dc:title></dc:title>\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3984\"\n"
+"     d=\"m 111.8,78.5 c -5.8,3.3 -5.8,3.1 -5.8,54.8 0,47.1 0,47.4 2.2,50.2 3.1,4 7.7,5.5 16.5,5.5 9.4,0 14,-1.9 16.5,-7 1.6,-3.2 1.8,-7.7 1.8,-48.8 0,-48.3 -0.1,-49.4 -5,-53.7 -1.9,-1.7 -3.8,-2 -12.9,-2.3 -8,-0.1 -11.3,0.2 -13.3,1.3 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986\"\n"
+"     d=\"m 178.04001,119.78614 c -4.24023,-5.38354 -4.83909,-5.48118 -53.9361,-5.28691 -41.097505,0.16262 -45.599439,0.38044 -48.816882,1.99328 -5.127247,2.52043 -7.077833,7.12842 -7.181441,16.52942 -0.09699,8.80091 1.35221,13.39545 5.317807,16.47995"
+" 2.775577,2.18916 3.075558,2.18796 50.172696,2.0016 51.99684,-0.20574 51.69686,-0.20456 54.8628,-6.21745 1.02199,-2.00417 1.56495,-5.90655 1.641,-12.80727 0.0959,-8.70091 -0.1865,-10.29989 -2.05988,-12.69262 z\" />\n"
+"</svg>\n";
+
+const char* addFiles_svg = (const char*) temp_binary_data_1;
+
+//================== removeSelected.svg ==================
+static const unsigned char temp_binary_data_2[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3978\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"addFiles.svg\">\n"
+"  <defs\n"
+"     id=\"defs3990\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"931\"\n"
+"     inkscape:window-height=\"1028\"\n"
+"     id=\"namedview3988\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"2.8606061\"\n"
+"     inkscape:cx=\"110.84594\"\n"
+"     inkscape:cy=\"206.94915\"\n"
+"     inkscape:window-x=\"67\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"0\"\n"
+"     inkscape:current-layer=\"svg3978\" />\n"
+"  <metadata\n"
+"     id=\"metadata3980\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"    <dc:title></dc:title>\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986\"\n"
+"     d=\"m 178.04001,119.78614 c -4.24023,-5.38354 -4.83909,-5.48118 -53.9361,-5.28691 -41.097505,0.16262 -45.599439,0.38044 -48.816882,1.99328 -5.127247,2.52043 -7.077833,7.12842 -7.181441,16.52942 -0.09699,8.80091 1.35221,13.39545 5.317807,16.47995"
+" 2.775577,2.18916 3.075558,2.18796 50.172696,2.0016 51.99684,-0.20574 51.69686,-0.20456 54.8628,-6.21745 1.02199,-2.00417 1.56495,-5.90655 1.641,-12.80727 0.0959,-8.70091 -0.1865,-10.29989 -2.05988,-12.69262 z\" />\n"
+"</svg>\n";
+
+const char* removeSelected_svg = (const char*) temp_binary_data_2;
+
+//================== loopOnOne.svg ==================
+static const unsigned char temp_binary_data_3[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -79,10 +306,10 @@ static const unsigned char temp_binary_data_0[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loopOnOne_svg = (const char*) temp_binary_data_0;
+const char* loopOnOne_svg = (const char*) temp_binary_data_3;
 
 //================== loop.svg ==================
-static const unsigned char temp_binary_data_1[] =
+static const unsigned char temp_binary_data_4[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -149,10 +376,10 @@ static const unsigned char temp_binary_data_1[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loop_svg = (const char*) temp_binary_data_1;
+const char* loop_svg = (const char*) temp_binary_data_4;
 
 //================== loopOn.svg ==================
-static const unsigned char temp_binary_data_2[] =
+static const unsigned char temp_binary_data_5[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -220,10 +447,10 @@ static const unsigned char temp_binary_data_2[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loopOn_svg = (const char*) temp_binary_data_2;
+const char* loopOn_svg = (const char*) temp_binary_data_5;
 
 //================== audfile.svg ==================
-static const unsigned char temp_binary_data_3[] =
+static const unsigned char temp_binary_data_6[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -246,10 +473,10 @@ static const unsigned char temp_binary_data_3[] =
 "</g>\n"
 "</svg>\n";
 
-const char* audfile_svg = (const char*) temp_binary_data_3;
+const char* audfile_svg = (const char*) temp_binary_data_6;
 
 //================== audfileOn.svg ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_7[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -319,10 +546,10 @@ static const unsigned char temp_binary_data_4[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* audfileOn_svg = (const char*) temp_binary_data_4;
+const char* audfileOn_svg = (const char*) temp_binary_data_7;
 
 //================== back.svg ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_8[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -342,10 +569,10 @@ static const unsigned char temp_binary_data_5[] =
 "</g>\n"
 "</svg>\n";
 
-const char* back_svg = (const char*) temp_binary_data_5;
+const char* back_svg = (const char*) temp_binary_data_8;
 
 //================== backOn.svg ==================
-static const unsigned char temp_binary_data_6[] =
+static const unsigned char temp_binary_data_9[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -411,10 +638,10 @@ static const unsigned char temp_binary_data_6[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* backOn_svg = (const char*) temp_binary_data_6;
+const char* backOn_svg = (const char*) temp_binary_data_9;
 
 //================== forward.svg ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_10[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -434,10 +661,10 @@ static const unsigned char temp_binary_data_7[] =
 "</g>\n"
 "</svg>\n";
 
-const char* forward_svg = (const char*) temp_binary_data_7;
+const char* forward_svg = (const char*) temp_binary_data_10;
 
 //================== forwardOn.svg ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_11[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -503,10 +730,10 @@ static const unsigned char temp_binary_data_8[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* forwardOn_svg = (const char*) temp_binary_data_8;
+const char* forwardOn_svg = (const char*) temp_binary_data_11;
 
 //================== incback.svg ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_12[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -527,10 +754,10 @@ static const unsigned char temp_binary_data_9[] =
 "</g>\n"
 "</svg>\n";
 
-const char* incback_svg = (const char*) temp_binary_data_9;
+const char* incback_svg = (const char*) temp_binary_data_12;
 
 //================== incbackOn.svg ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_13[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -596,10 +823,10 @@ static const unsigned char temp_binary_data_10[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* incbackOn_svg = (const char*) temp_binary_data_10;
+const char* incbackOn_svg = (const char*) temp_binary_data_13;
 
 //================== incforward.svg ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_14[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -619,10 +846,10 @@ static const unsigned char temp_binary_data_11[] =
 "</g>\n"
 "</svg>\n";
 
-const char* incforward_svg = (const char*) temp_binary_data_11;
+const char* incforward_svg = (const char*) temp_binary_data_14;
 
 //================== incforwardOn.svg ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_15[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -688,10 +915,10 @@ static const unsigned char temp_binary_data_12[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* incforwardOn_svg = (const char*) temp_binary_data_12;
+const char* incforwardOn_svg = (const char*) temp_binary_data_15;
 
 //================== mic.svg ==================
-static const unsigned char temp_binary_data_13[] =
+static const unsigned char temp_binary_data_16[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -724,10 +951,10 @@ static const unsigned char temp_binary_data_13[] =
 "</g>\n"
 "</svg>\n";
 
-const char* mic_svg = (const char*) temp_binary_data_13;
+const char* mic_svg = (const char*) temp_binary_data_16;
 
 //================== micOn.svg ==================
-static const unsigned char temp_binary_data_14[] =
+static const unsigned char temp_binary_data_17[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -802,10 +1029,10 @@ static const unsigned char temp_binary_data_14[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* micOn_svg = (const char*) temp_binary_data_14;
+const char* micOn_svg = (const char*) temp_binary_data_17;
 
 //================== pause.svg ==================
-static const unsigned char temp_binary_data_15[] =
+static const unsigned char temp_binary_data_18[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -826,10 +1053,10 @@ static const unsigned char temp_binary_data_15[] =
 "</g>\n"
 "</svg>\n";
 
-const char* pause_svg = (const char*) temp_binary_data_15;
+const char* pause_svg = (const char*) temp_binary_data_18;
 
 //================== pauseOn.svg ==================
-static const unsigned char temp_binary_data_16[] =
+static const unsigned char temp_binary_data_19[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -898,10 +1125,10 @@ static const unsigned char temp_binary_data_16[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* pauseOn_svg = (const char*) temp_binary_data_16;
+const char* pauseOn_svg = (const char*) temp_binary_data_19;
 
 //================== play.svg ==================
-static const unsigned char temp_binary_data_17[] =
+static const unsigned char temp_binary_data_20[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -919,10 +1146,10 @@ static const unsigned char temp_binary_data_17[] =
 "</g>\n"
 "</svg>\n";
 
-const char* play_svg = (const char*) temp_binary_data_17;
+const char* play_svg = (const char*) temp_binary_data_20;
 
 //================== playOn.svg ==================
-static const unsigned char temp_binary_data_18[] =
+static const unsigned char temp_binary_data_21[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -987,10 +1214,10 @@ static const unsigned char temp_binary_data_18[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* playOn_svg = (const char*) temp_binary_data_18;
+const char* playOn_svg = (const char*) temp_binary_data_21;
 
 //================== save.svg ==================
-static const unsigned char temp_binary_data_19[] =
+static const unsigned char temp_binary_data_22[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1012,10 +1239,10 @@ static const unsigned char temp_binary_data_19[] =
 "</g>\n"
 "</svg>\n";
 
-const char* save_svg = (const char*) temp_binary_data_19;
+const char* save_svg = (const char*) temp_binary_data_22;
 
 //================== saveOn.svg ==================
-static const unsigned char temp_binary_data_20[] =
+static const unsigned char temp_binary_data_23[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1093,10 +1320,10 @@ static const unsigned char temp_binary_data_20[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* saveOn_svg = (const char*) temp_binary_data_20;
+const char* saveOn_svg = (const char*) temp_binary_data_23;
 
 //================== stop.svg ==================
-static const unsigned char temp_binary_data_21[] =
+static const unsigned char temp_binary_data_24[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1114,10 +1341,10 @@ static const unsigned char temp_binary_data_21[] =
 "</g>\n"
 "</svg>\n";
 
-const char* stop_svg = (const char*) temp_binary_data_21;
+const char* stop_svg = (const char*) temp_binary_data_24;
 
 //================== stopOn.svg ==================
-static const unsigned char temp_binary_data_22[] =
+static const unsigned char temp_binary_data_25[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1182,7 +1409,7 @@ static const unsigned char temp_binary_data_22[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* stopOn_svg = (const char*) temp_binary_data_22;
+const char* stopOn_svg = (const char*) temp_binary_data_25;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -1195,6 +1422,9 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
     switch (hash)
     {
+        case 0x503a1f43:  numBytes = 4792; return list_svg;
+        case 0xaa6360fb:  numBytes = 2513; return addFiles_svg;
+        case 0x3463c164:  numBytes = 2158; return removeSelected_svg;
         case 0xdcf58be8:  numBytes = 2772; return loopOnOne_svg;
         case 0x8693c249:  numBytes = 2530; return loop_svg;
         case 0x150e1bc8:  numBytes = 2556; return loopOn_svg;
@@ -1227,6 +1457,9 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
 const char* namedResourceList[] =
 {
+    "list_svg",
+    "addFiles_svg",
+    "removeSelected_svg",
     "loopOnOne_svg",
     "loop_svg",
     "loopOn_svg",

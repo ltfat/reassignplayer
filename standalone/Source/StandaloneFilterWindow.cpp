@@ -67,25 +67,21 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    // Init toolbar
    tbfac = new FilterWindowToolbarItemFactory(this);
    toolbar.addDefaultItems(*tbfac);
+   toolbar.setComponentID("mainToolbar");
    Component::addAndMakeVisible(toolbar);
    DBG("After toolbar");
 
    Component::addAndMakeVisible(menuBarComponent);
    Component::addAndMakeVisible(e, true);
    Component::addAndMakeVisible (fileLabel);
-   //Component::addAndMakeVisible (optionsButton);
-   //Component::addAndMakeVisible (fileChooserButton);
-   //Component::addAndMakeVisible (micfileButton);
 
-   //micfileButton.addListener(this);
    fileLabel.addListener(this);
-   //fileChooserButton.addListener(this);
-   //optionsButton.addListener (this);
-   //optionsButton.setTriggeredOnMouseDown (true);
-   //fileChooserButton.setTriggeredOnMouseDown (true);
-   //micfileButton.setTriggeredOnMouseDown (true);
-   //micfileButton.setClickingTogglesState(true);
 
+   //Playlist Window
+   DBG("Before playlist");
+   plWindow = new PlaylistWindow(this,pluginHolder);
+   plWindow->setVisible(true);
+   DBG("After playlist");
 
    if (PropertySet* props = pluginHolder->settings)
    {
@@ -161,184 +157,217 @@ void StandaloneFilterWindow::closeButtonPressed()
 
 void StandaloneFilterWindow::buttonClicked (Button* b)
 {
-   for (int ii = 0; ii < toolbar.getNumItems(); ii++)
+// Check where the button comes from
+   if ( toolbar.getComponentID() == b->getParentComponent()->getComponentID() )
    {
-      if (b == toolbar.getItemComponent(ii))
-      {
-        ToolbarItemComponent* c;
-        ToolbarButton* cc;
-        CustomToolbarButton* ccc;
-        bool isP;
-        if (toolbar.getItemId(ii) == 6)
+        for (int ii = 0; ii < toolbar.getNumItems(); ii++)
         {
-            b->setToggleState(!(b->getToggleState()),dontSendNotification);
+            if (b == toolbar.getItemComponent(ii))
+            {
+                ToolbarItemComponent* c;
+                ToolbarButton* cc;
+                CustomToolbarButton* ccc;
+                bool isP;
+                if (toolbar.getItemId(ii) == 6)
+                {
+                    b->setToggleState(!(b->getToggleState()),dontSendNotification);
 
-            if (b->getToggleState())
-            {
-                pluginHolder->inputIsMicOnly();
-                std::wcout << "Input should be a mic now" << std::endl;
-            }
-            else
-            {
-                pluginHolder->inputIsFileOnly();
-                std::wcout << "Input should be a file now" << std::endl;
-            }
-        }
-        else if (pluginHolder->getCurrentSource() == 1)
-        {
-            switch (toolbar.getItemId(ii))
-            {
-            case 1:
-                pluginHolder->playPrevious();
-                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
-                {
-                   switch (toolbar.getItemId(jj))
-                   {
-                   case 2:
-                       c = toolbar.getItemComponent(jj);
-                       cc = static_cast<ToolbarButton*>(c);
-                       cc->setToggleState(1,dontSendNotification);
-                       break;
-                   case 3:
-                   case 4:
-                       c = toolbar.getItemComponent(jj);
-                       cc = static_cast<ToolbarButton*>(c);
-                       cc->setToggleState(0,dontSendNotification);
-                       break;
-                   default:
-                       break;
-                   }
-                }
-                DBG("BACK button pressed");
-                break;
-            case 2:
-                isP = pluginHolder->changePlaybackState(1);
-                if(!isP)
-                {
-                    for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                    if (b->getToggleState())
                     {
-                        switch (toolbar.getItemId(jj))
-                        {
-                        case 2:
-                            c = toolbar.getItemComponent(jj);
-                            cc = static_cast<ToolbarButton*>(c);
-                            cc->setToggleState(1,dontSendNotification);
-                            break;
-                        case 3:
-                        case 4:
-                            c = toolbar.getItemComponent(jj);
-                            cc = static_cast<ToolbarButton*>(c);
-                            cc->setToggleState(0,dontSendNotification);
-                            break;
-                        default:
-                            break;
-                        }
+                        pluginHolder->inputIsMicOnly();
+                        std::wcout << "Input should be a mic now" << std::endl;
+                    }
+                    else
+                    {
+                        pluginHolder->inputIsFileOnly();
+                        std::wcout << "Input should be a file now" << std::endl;
                     }
                 }
-                DBG("PLAY button pressed");
-                break;
-            case 3:
-                isP = pluginHolder->changePlaybackState(2);
-                if(isP)
+                else if (toolbar.getItemId(ii) == 9)
                 {
-                    for (int jj = 0; jj < toolbar.getNumItems(); jj++)
-                    {
-                        switch (toolbar.getItemId(jj))
-                        {
-                        case 2:
-                            c = toolbar.getItemComponent(jj);
-                            cc = static_cast<ToolbarButton*>(c);
-                            cc->setToggleState(0,dontSendNotification);
-                            break;
-                        case 3:
-                            c = toolbar.getItemComponent(jj);
-                            cc = static_cast<ToolbarButton*>(c);
-                            cc->setToggleState(1,dontSendNotification);
-                            break;
-                        default:
-                            break;
-                        }
-                    }
+                    DBG("SAVE button pressed");
+                    break;
                 }
-                DBG("PAUSE button pressed");
-                break;
-            case 4:
-                isP = pluginHolder->changePlaybackState(3);
-                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                else if (toolbar.getItemId(ii) == 10)
                 {
-                    switch (toolbar.getItemId(jj))
+                    DBG("PLAYLIST button pressed");
+                    if ( plWindow != nullptr )
+                        plWindow->setVisible(true);
+                    break;
+                }
+                else if (pluginHolder->getCurrentSource() == 1)
+                {
+                    switch (toolbar.getItemId(ii))
                     {
+                    case 1:
+                        pluginHolder->playPrevious();
+                        for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                        {
+                           switch (toolbar.getItemId(jj))
+                           {
+                           case 2:
+                               c = toolbar.getItemComponent(jj);
+                               cc = static_cast<ToolbarButton*>(c);
+                               cc->setToggleState(1,dontSendNotification);
+                               break;
+                           case 3:
+                           case 4:
+                               c = toolbar.getItemComponent(jj);
+                               cc = static_cast<ToolbarButton*>(c);
+                               cc->setToggleState(0,dontSendNotification);
+                               break;
+                           default:
+                               break;
+                           }
+                        }
+                        plWindow->repaint();
+                        DBG("BACK button pressed");
+                        break;
                     case 2:
+                        isP = pluginHolder->changePlaybackState(1);
+                        if(!isP)
+                        {
+                            for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                            {
+                                switch (toolbar.getItemId(jj))
+                                {
+                                case 2:
+                                    c = toolbar.getItemComponent(jj);
+                                    cc = static_cast<ToolbarButton*>(c);
+                                    cc->setToggleState(1,dontSendNotification);
+                                    break;
+                                case 3:
+                                case 4:
+                                    c = toolbar.getItemComponent(jj);
+                                    cc = static_cast<ToolbarButton*>(c);
+                                    cc->setToggleState(0,dontSendNotification);
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
+                        }
+                        DBG("PLAY button pressed");
+                        break;
                     case 3:
-                        c = toolbar.getItemComponent(jj);
-                        cc = static_cast<ToolbarButton*>(c);
-                        cc->setToggleState(0,dontSendNotification);
+                        isP = pluginHolder->changePlaybackState(2);
+                        if(isP)
+                        {
+                            for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                            {
+                                switch (toolbar.getItemId(jj))
+                                {
+                                case 2:
+                                    c = toolbar.getItemComponent(jj);
+                                    cc = static_cast<ToolbarButton*>(c);
+                                    cc->setToggleState(0,dontSendNotification);
+                                    break;
+                                case 3:
+                                    c = toolbar.getItemComponent(jj);
+                                    cc = static_cast<ToolbarButton*>(c);
+                                    cc->setToggleState(1,dontSendNotification);
+                                    break;
+                                default:
+                                    break;
+                                }
+                            }
+                        }
+                        DBG("PAUSE button pressed");
                         break;
                     case 4:
-                        c = toolbar.getItemComponent(jj);
-                        cc = static_cast<ToolbarButton*>(c);
-                        cc->setToggleState(1,dontSendNotification);
+                        isP = pluginHolder->changePlaybackState(3);
+                        for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                        {
+                            switch (toolbar.getItemId(jj))
+                            {
+                            case 2:
+                            case 3:
+                                c = toolbar.getItemComponent(jj);
+                                cc = static_cast<ToolbarButton*>(c);
+                                cc->setToggleState(0,dontSendNotification);
+                                break;
+                            case 4:
+                                c = toolbar.getItemComponent(jj);
+                                cc = static_cast<ToolbarButton*>(c);
+                                cc->setToggleState(1,dontSendNotification);
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        DBG("STOP button pressed");
                         break;
-                    default:
+                    case 5:
+                        pluginHolder->playNext();
+                        for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                        {
+                           switch (toolbar.getItemId(jj))
+                           {
+                           case 2:
+                               c = toolbar.getItemComponent(jj);
+                               cc = static_cast<ToolbarButton*>(c);
+                               cc->setToggleState(1,dontSendNotification);
+                               break;
+                           case 3:
+                           case 4:
+                               c = toolbar.getItemComponent(jj);
+                               cc = static_cast<ToolbarButton*>(c);
+                               cc->setToggleState(0,dontSendNotification);
+                               break;
+                           default:
+                               break;
+                           }
+                        }
+                        plWindow->repaint();
+                        DBG("FORWARD button pressed");
                         break;
-                    }
-                }
-                DBG("STOP button pressed");
-                break;
-            case 5:
-                pluginHolder->playNext();
-                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
-                {
-                   switch (toolbar.getItemId(jj))
-                   {
-                   case 2:
-                       c = toolbar.getItemComponent(jj);
-                       cc = static_cast<ToolbarButton*>(c);
-                       cc->setToggleState(1,dontSendNotification);
-                       break;
-                   case 3:
-                   case 4:
-                       c = toolbar.getItemComponent(jj);
-                       cc = static_cast<ToolbarButton*>(c);
-                       cc->setToggleState(0,dontSendNotification);
-                       break;
-                   default:
-                       break;
-                   }
-                }
-                DBG("FORWARD button pressed");
-                break;
-            case 7:
-                DBG("FILE button pressed");
-                break;
-            case 8:
-                DBG("LOOP button pressed");
-                pluginHolder->toggleLooping();
-                for (int jj = 0; jj < toolbar.getNumItems(); jj++)
-                {
-                    switch (toolbar.getItemId(jj))
-                    {
+                    case 7:
+                        DBG("FILE button pressed");
+                        break;
                     case 8:
-                        c = toolbar.getItemComponent(jj);
-                        DBG("Hey, do it!");
-                        static_cast<CustomToolbarButton*>(c)->advanceState();
+                        DBG("LOOP button pressed");
+                        pluginHolder->toggleLooping();
+                        for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                        {
+                            switch (toolbar.getItemId(jj))
+                            {
+                            case 8:
+                                c = toolbar.getItemComponent(jj);
+                                DBG("Hey, do it!");
+                                static_cast<CustomToolbarButton*>(c)->advanceState();
+                                break;
+                            default:
+                                break;
+                            }
+                        }
                         break;
                     default:
                         break;
                     }
                 }
-                break;
-            case 9:
-                DBG("SAVE button pressed");
-                break;
-            default:
-                break;
             }
-
         }
-      }
     }
-
+    else if ( plWindow->fileControl.getComponentID() == b->getParentComponent()->getComponentID() )
+    {
+        for (int ii = 0; ii < plWindow->fileControl.getNumItems(); ii++)
+        {
+            if (b == plWindow->fileControl.getItemComponent(ii))
+            {
+                switch (plWindow->fileControl.getItemId(ii))
+                {
+                case 1:
+                    menuItemSelected (2, FILE);
+                    break;
+                case 2:
+                    plWindow->deleteKeyPressed(0);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void StandaloneFilterWindow::labelTextChanged(Label *l)
@@ -381,20 +410,6 @@ StandaloneFilterWindow::FilterWindowToolbarItemFactory
 {
 
 }
-
-enum ToolbarItemIds
-   {
-       back = 1,
-       play,
-       pause,
-       stop,
-       forward,
-       micToggle,
-       fileToggle,
-       loopToggle,
-       saveImg
-   };
-
 
 ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
 ::createItem(int itemId)
@@ -447,6 +462,11 @@ ToolbarItemComponent* StandaloneFilterWindow::FilterWindowToolbarItemFactory
             binDataOff = "save_svg";
             binDataOn = "saveOn_svg";
             buttonText = "save IMG";
+            break;
+        case playlist:
+            binDataOff = "list_svg";
+            binDataOn = "list_svg";
+            buttonText = "show playlist";
             break;
         default:
             break;
@@ -503,6 +523,7 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add (flexibleSpacerId);
    //ids.add(fileToggle);
    ids.add(saveImg);
+   ids.add(playlist);
    ids.add (flexibleSpacerId);
 }
 
@@ -518,6 +539,7 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add(fileToggle);
    ids.add(loopToggle);
    ids.add(saveImg);
+   ids.add(playlist);
 
    // Spacers and Separators
    ids.add (separatorBarId);
@@ -525,29 +547,6 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add (flexibleSpacerId);
 }
 
-
-
-//=============================================================================
-// ToolbarItemComponent
-
-StandaloneFilterWindow::GenericToolbarItemComponent
-::GenericToolbarItemComponent (int itemId, const String &labelText, bool isBeingUsedAsAButton):
-   ToolbarItemComponent(itemId, labelText, isBeingUsedAsAButton)  {}
-
-void StandaloneFilterWindow::GenericToolbarItemComponent
-::paintButtonArea (Graphics &g, int width, int height, bool isMouseOver, bool isMouseDown) {}
-
-void StandaloneFilterWindow::GenericToolbarItemComponent
-::contentAreaChanged (const Rectangle<int> &newBounds) {}
-
-bool StandaloneFilterWindow::GenericToolbarItemComponent
-::getToolbarItemSizes (int toolbarThickness, bool isToolbarVertical,
-                       int &preferredSize, int &minSize, int &maxSize)
-{
-   preferredSize = 1;
-   minSize = 1;
-   maxSize = 1;
-}
 
 //============================================================================
 // MenuBarModel related
@@ -648,12 +647,13 @@ void StandaloneFilterWindow
 
          if (chooser.browseForMultipleFilesToOpen())
             {
-               for ( int kk=0; kk<chooser.getResults().size(); ++kk )
+               /*for ( int kk=0; kk<chooser.getResults().size(); ++kk )
                {
                     File file (chooser.getResults().getUnchecked(kk));
                     pluginHolder->addFile(file);
 
-               }
+               }*/
+               plWindow->addItemsToList(chooser.getResults());
                String s = String(L"Added: ") + chooser.getResults().getLast().getFullPathName();
                fileLabel.setText(s, sendNotification);
                setName(chooser.getResults().getLast().getFileName());
@@ -725,4 +725,207 @@ void StandaloneFilterWindow
 void StandaloneFilterWindow::changeListenerCallback(ChangeBroadcaster* )
 {
 
+}
+
+// Playlist Window
+
+StandaloneFilterWindow::PlaylistWindow::PlaylistWindow(ButtonListener* listener_, StandalonePluginHolder* pluginHolder_)
+: DocumentWindow("Playlist",Colours::lightgrey,0,true),
+  listener(listener_),
+  pluginHolder(pluginHolder_)
+{
+   // Window dimensions
+   setTitleBarButtonsRequired (DocumentWindow::closeButton, false);
+   setTitleBarHeight(20);
+   setSize(250, 520);
+   setResizable(false, false);
+
+   //TestList
+   //playList.add("Item 1");
+   //playList.add("Item 2");
+   //playList.add("Item 3");
+   //playList.add("Item 4");
+
+   // Init playListBox
+   playListBox = new ListBox("stuff",this);
+   playListBox->setBounds(0,20,getWidth(),getHeight()-60);
+   playListBox->setMultipleSelectionEnabled(true);
+   playListBox->updateContent();
+   playListBox->repaint();
+   Component::addAndMakeVisible(*playListBox);
+   playListBox->selectRow (0);
+   playListBox->setColour (ListBox::backgroundColourId, Colour::greyLevel (0.9f));
+
+   DBG("Before toolbar");
+   // Init fileControl
+   plfac = new PlaylistWindowToolbarItemFactory(listener);
+   fileControl.setBounds(0,getHeight()-40,getWidth(),40);
+   fileControl.setComponentID("playlistToolbar");
+   fileControl.addDefaultItems(*plfac);
+   Component::addAndMakeVisible(fileControl);
+   DBG("After toolbar");
+
+}
+
+void StandaloneFilterWindow::PlaylistWindow::resized()
+{
+   DocumentWindow::resized();
+   // This line somehow breaks the program
+   //fileControl.setBounds(0,getHeight()-40,getWidth(),40);
+   //playListBox->setBounds(0,20,getWidth(),getHeight()-60);
+}
+
+StandaloneFilterWindow::PlaylistWindow::~PlaylistWindow()
+{
+
+}
+
+ int StandaloneFilterWindow::PlaylistWindow::getNumRows ()
+ {
+    return playList.size();
+ }
+
+ void StandaloneFilterWindow::PlaylistWindow::deleteKeyPressed (int lastRowSelected)
+ {
+    removeItemsFromList(playListBox->getSelectedRows());
+ }
+
+ void StandaloneFilterWindow::PlaylistWindow::substitutePlaylist (Array<File> newList)
+ {
+    playList.clear();
+    pluginHolder->clearFileList();
+    addItemsToList(newList);
+    playListBox->updateContent();
+ }
+
+ void StandaloneFilterWindow::PlaylistWindow::clearPlaylist ()
+ {
+    playList.clear();
+    pluginHolder->clearFileList();
+    playListBox->updateContent();
+ }
+
+ void StandaloneFilterWindow::PlaylistWindow::addItemsToList (Array<File> newList)
+ {
+    for (int kk = 0; kk < newList.size(); ++kk)
+    {
+        playList.add(newList[kk].getFileNameWithoutExtension());
+        pluginHolder->addFile(newList.getReference(kk));
+    }
+    playListBox->updateContent();
+ }
+
+/*void StandaloneFilterWindow::PlaylistWindow::addItemsToList (File& newList)
+{
+
+}*/
+
+void StandaloneFilterWindow::PlaylistWindow::removeItemsFromList (SparseSet<int> selectedRows)
+{
+    for (int kk = getNumRows()-1; kk >= 0 ; --kk)
+    {
+        if ( selectedRows.contains(kk) )
+        {
+            playList.remove(kk);
+            pluginHolder->removeFile(kk);
+        }
+    }
+    playListBox->deselectAllRows();
+    playListBox->updateContent();
+}
+
+/*oid StandaloneFilterWindow::PlaylistWindow::removeItemsFromList (SparseSet<int> selectedRows)
+{
+    for (int kk = 0; kk < selectedRows.size(); ++kk)
+    {
+        playList.remove(selectedRows[kk]);
+        pluginHolder->removeFile(selectedRows[kk]);
+    }
+}*/
+
+void StandaloneFilterWindow::PlaylistWindow::closeButtonPressed()
+{
+    this->setVisible(false);
+}
+
+void StandaloneFilterWindow::PlaylistWindow::paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected)
+{
+        if (rowIsSelected)
+            g.fillAll (findColour (TextEditor::highlightColourId));
+
+        if ( rowNumber == pluginHolder->getCurrentFileIdx() )
+            g.setColour (Colours::darkblue);
+        else
+            g.setColour (Colours::black);
+
+        g.setFont (12.0f);
+        g.drawFittedText (playList[rowNumber].toRawUTF8(), 8, 0, this->getWidth()-16, 20, Justification::centredLeft, 1);
+        // 8, 0, width - 16, height, Justification::centredLeft, 2);
+
+}
+
+void StandaloneFilterWindow::PlaylistWindow::listBoxItemDoubleClicked (int row, const MouseEvent &)
+{
+    pluginHolder->setCurrentFileIdx(row,true);
+    this->repaint();
+}
+
+//========================================================================================================================================
+// PlaylistWindowToolbarItemFactory
+
+StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::PlaylistWindowToolbarItemFactory(ButtonListener* listener_)
+: listener(listener_)
+{
+
+}
+
+StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::~PlaylistWindowToolbarItemFactory()
+{
+
+}
+
+void StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::getAllToolbarItemIds(Array<int> &ids)
+{
+   ids.add(addFiles);
+   ids.add(removeSelected);
+
+   // Spacers and Separators
+   ids.add (separatorBarId);
+   ids.add (spacerId);
+   ids.add (flexibleSpacerId);
+}
+
+void StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::getDefaultItemSet(Array<int> &ids)
+{
+   ids.add(addFiles);
+   ids.add(removeSelected);
+   ids.add (flexibleSpacerId);
+}
+
+ToolbarItemComponent* StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::createItem(int itemId)
+{
+   int NumBytes;
+   const char* iconData;
+   String buttonText, binData;
+
+   Drawable* iconOff;
+   switch(itemId)
+   {
+   case addFiles:
+       binData = "addFiles_svg";
+       buttonText = "addFiles";
+       break;
+   case removeSelected:
+       binData = "removeSelected_svg";
+       buttonText = "removeSelected";
+       break;
+   default:
+       break;
+   }
+
+   iconData = BinaryData::getNamedResource(binData.toRawUTF8(),NumBytes);
+   iconOff = Drawable::createFromImageData(iconData,NumBytes);
+   ToolbarButton* b = new ToolbarButton(itemId,buttonText,iconOff,nullptr);
+   b->addListener(listener);
+   return b;
 }

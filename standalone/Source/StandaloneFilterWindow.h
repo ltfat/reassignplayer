@@ -46,6 +46,62 @@ class StandaloneFilterWindow    : public DocumentWindow,
                                   private MenuBarModel
 {
 private:
+    class PlaylistWindow: public DocumentWindow,
+                          public ListBoxModel
+    {
+    public:
+        PlaylistWindow(ButtonListener* listener_, StandalonePluginHolder* pluginHolder_);
+        ~PlaylistWindow();
+
+        class PlaylistWindowToolbarItemFactory: public ToolbarItemFactory
+        {
+        public:
+            PlaylistWindowToolbarItemFactory(ButtonListener* listener_);
+            ~PlaylistWindowToolbarItemFactory();
+
+            void getAllToolbarItemIds(Array<int> &ids) override;
+            void getDefaultItemSet(Array<int> &ids) override;
+            ToolbarItemComponent* createItem(int itemId) override;
+        private:
+            enum ToolbarItemIds
+            {
+              addFiles = 1,
+              removeSelected
+            };
+
+            ButtonListener* listener;
+            StandalonePluginHolder* pluginHolder;
+            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistWindowToolbarItemFactory)
+        };
+
+
+       int getNumRows () override;
+       void paintListBoxItem (int rowNumber, Graphics &g, int width, int height, bool rowIsSelected) override;
+       void deleteKeyPressed (int lastRowSelected) override;
+
+       void substitutePlaylist (Array<File> newList);
+       void addItemsToList (Array<File> newList);
+       /*void addItemsToList (File& newList);*/
+
+       void removeItemsFromList (SparseSet<int> selectedRows);
+       void clearPlaylist();
+       void listBoxItemDoubleClicked (int row, const MouseEvent &) override;
+
+       //void removeItemsFromList (int index_);
+
+       void resized() override;
+
+       Toolbar fileControl;
+    private:
+       ScopedPointer<ToolbarItemFactory> plfac;
+       Array<String> playList;
+       ScopedPointer<ListBox> playListBox;
+       ButtonListener* listener;
+       StandalonePluginHolder* pluginHolder;
+
+       void closeButtonPressed() override;
+    };
+
     class FilterbankSelectWindow    : public DialogWindow,
     private ButtonListener
     {
@@ -111,6 +167,10 @@ public:
     // Filterbank file chooser
     Array<File> FilterbankFileLoader();
 
+    //==============================================================================
+    // Playlist Window
+    ScopedPointer<PlaylistWindow> plWindow;
+
 private:
     unsigned activeFilterbank;
     ScopedPointer<OpenGLContext> ogl;
@@ -148,82 +208,22 @@ private:
 
     private:
 
+        enum ToolbarItemIds
+        {
+            back = 1,
+            play,
+            pause,
+            stop,
+            forward,
+            micToggle,
+            fileToggle,
+            loopToggle,
+            saveImg,
+            playlist
+        };
         ButtonListener* listener;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterWindowToolbarItemFactory)
     };
-
-    /*class PlaylistWindow: public DocumentWindow,
-                          public ListBoxModel
-    {
-    public:
-        PlaylistWindow(ButtonListener* listener_);
-        ~PlaylistWindow();
-
-        class PlaylistWindowToolbarItemFactory: public ToolbarItemFactory
-        {
-        public:
-            PlaylistWindowToolbarItemFactory(ButtonListener* listener_);
-            ~PlaylistWindowToolbarItemFactory();
-
-            void getAllToolbarItemIds(Array<int> &ids) override;
-            void getDefaultItemSet(Array<int> &ids) override;
-            ToolbarItemComponent* createItem(int itemId) override;
-        private:
-
-            ButtonListener* listener;
-            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistWindowToolbarItemFactory)
-        };
-
-
-       void getNumRows () override;
-       void paintListBoxItem (int rowNumber, Graphics &g, int width, int height, bool rowIsSelected) override;
-       void deleteKeyPressed (int lastRowSelected) override;
-
-       void substitutePlaylist (Array<File> newList);
-       void addItemsToList (Array<File> newList);
-       void addItemsToList (File& newList);
-
-       void removeItemsFromList (int indexStart_,int indexEnd_);
-       void removeItemsFromList (int index_);
-
-       Array<String> playList;
-       ScopedPointer<ListBox> playListBox;
-    };*/
-
-    /*class CustomToolbarButton: public ToolbarButton
-    {
-    public:
-        CustomToolbarButton(int itemId, const String &labelText, Array<Drawable*> imagesToUse_);
-        ~CustomToolbarButton();
-
-        void advanceState();
-        void buttonStateChanged() override;
-
-    private:
-        Array<Drawable*> imagesToUse;
-        ScopedPointer<Drawable> currentImage;
-        int currentState;
-
-        void setCurrentImage (Drawable*);
-        void updateDrawable();
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomToolbarButton)
-    };*/
-
-    class GenericToolbarItemComponent: public ToolbarItemComponent
-    {
-    public:
-        GenericToolbarItemComponent (int itemId,const String &labelText, bool isBeingUsedAsAButton);
-
-        void paintButtonArea (Graphics &g, int width, int height,
-                              bool isMouseOver, bool isMouseDown);
-        void contentAreaChanged (const Rectangle<int> &newBounds);
-        bool getToolbarItemSizes (int toolbarThickness, bool isToolbarVertical,
-                                  int &preferredSize, int &minSize, int &maxSize);
-    private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GenericToolbarItemComponent)
-    };
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandaloneFilterWindow)
 };

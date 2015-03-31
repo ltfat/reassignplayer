@@ -559,11 +559,11 @@ int StandalonePluginHolder::getCurrentFileIdx()
     return currentFileIdx;
 }
 
-bool StandalonePluginHolder::setCurrentFileIdx(int newFileIdx)
+bool StandalonePluginHolder::setCurrentFileIdx(int newFileIdx, bool forceStart)
 {
     if ( newFileIdx > -1 && newFileIdx < listOfFiles.size())
     {
-        if ( currentFileIdx != newFileIdx )
+        if ( currentFileIdx != newFileIdx || forceStart )
         {
             currentFileIdx = newFileIdx;
             setFile(*listOfFiles[currentFileIdx]);

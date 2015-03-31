@@ -576,7 +576,7 @@ bool StandalonePluginHolder::setCurrentFileIdx(int newFileIdx, bool forceStart)
 
 bool StandalonePluginHolder::playNext()
 {
-    if ( currentFileIdx == listOfFiles.size()-1 )
+    if ( currentFileIdx == listOfFiles.size()-1 && loopState == 1 )
         return setCurrentFileIdx(0);
     else
         return setCurrentFileIdx(currentFileIdx+1);
@@ -584,7 +584,7 @@ bool StandalonePluginHolder::playNext()
 
 bool StandalonePluginHolder::playPrevious()
 {
-    if ( currentFileIdx == 0 )
+    if ( currentFileIdx == 0  && loopState == 1 )
         return setCurrentFileIdx(listOfFiles.size()-1);
     else
         return setCurrentFileIdx(currentFileIdx-1);

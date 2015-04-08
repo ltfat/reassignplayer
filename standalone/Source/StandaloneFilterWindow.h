@@ -66,7 +66,8 @@ private:
             enum ToolbarItemIds
             {
               addFiles = 1,
-              removeSelected
+              removeSelected,
+              clearList
             };
 
             ButtonListener* listener;

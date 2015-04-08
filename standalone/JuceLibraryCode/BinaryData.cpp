@@ -7,8 +7,78 @@
 namespace BinaryData
 {
 
-//================== list.svg ==================
+//================== clearList.svg ==================
 static const unsigned char temp_binary_data_0[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+"<svg\n"
+"   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+"   xmlns:cc=\"http://creativecommons.org/ns#\"\n"
+"   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
+"   xmlns:svg=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns=\"http://www.w3.org/2000/svg\"\n"
+"   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n"
+"   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n"
+"   version=\"1.0\"\n"
+"   width=\"264.000000pt\"\n"
+"   height=\"264.000000pt\"\n"
+"   viewBox=\"0 0 264.000000 264.000000\"\n"
+"   preserveAspectRatio=\"xMidYMid meet\"\n"
+"   id=\"svg3978\"\n"
+"   inkscape:version=\"0.48.4 r9939\"\n"
+"   sodipodi:docname=\"addFiles.svg\">\n"
+"  <defs\n"
+"     id=\"defs3990\" />\n"
+"  <sodipodi:namedview\n"
+"     pagecolor=\"#ffffff\"\n"
+"     bordercolor=\"#666666\"\n"
+"     borderopacity=\"1\"\n"
+"     objecttolerance=\"10\"\n"
+"     gridtolerance=\"10\"\n"
+"     guidetolerance=\"10\"\n"
+"     inkscape:pageopacity=\"0\"\n"
+"     inkscape:pageshadow=\"2\"\n"
+"     inkscape:window-width=\"931\"\n"
+"     inkscape:window-height=\"1028\"\n"
+"     id=\"namedview3988\"\n"
+"     showgrid=\"false\"\n"
+"     inkscape:zoom=\"5.7212122\"\n"
+"     inkscape:cx=\"149.07428\"\n"
+"     inkscape:cy=\"165\"\n"
+"     inkscape:window-x=\"67\"\n"
+"     inkscape:window-y=\"24\"\n"
+"     inkscape:window-maximized=\"0\"\n"
+"     inkscape:current-layer=\"svg3978\" />\n"
+"  <metadata\n"
+"     id=\"metadata3980\">\n"
+"Created by potrace 1.11, written by Peter Selinger 2001-2013\n"
+"<rdf:RDF>\n"
+"  <cc:Work\n"
+"     rdf:about=\"\">\n"
+"    <dc:format>image/svg+xml</dc:format>\n"
+"    <dc:type\n"
+"       rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n"
+"    <dc:title></dc:title>\n"
+"  </cc:Work>\n"
+"</rdf:RDF>\n"
+"</metadata>\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3984\"\n"
+"     d=\"m 158.23901,90.069372 c -4.3715,0.315126 -4.23076,0.173021 -40.61054,36.907238 -33.142883,33.46578 -33.353984,33.67894 -34.546911,36.43827 -1.719314,3.9269 -1.149449,6.60238 1.959971,9.68179 3.321419,3.28937 6.283772,3.54907 10.755847,0.8002"
+"2 2.817098,-1.71379 6.054283,-4.84117 34.975153,-34.0438 33.98729,-34.31842 34.72601,-35.13497 36.02039,-39.904929 0.52489,-1.872769 0.0646,-2.750804 -2.93967,-6.148352 -2.75638,-2.870523 -4.13351,-3.812144 -5.61424,-3.730437 z\" />\n"
+"  <path\n"
+"     inkscape:connector-curvature=\"0\"\n"
+"     style=\"fill:#000000;fill-opacity:1;stroke:none\"\n"
+"     id=\"path3986\"\n"
+"     d=\"m 166.9608,166.4669 c -1.13552,-4.87932 -1.52698,-5.33509 -36.47945,-39.81484 C 101.22376,97.790213 97.949068,94.699019 95.10058,93.002887 90.578636,90.282453 87.585847,90.532383 84.234026,93.76962 c -3.137869,3.030605 -3.710333,5.668134 -1."
+"968259,9.54467 1.208744,2.72391 1.422304,2.93458 34.951063,36.00986 37.01688,36.51622 36.80333,36.30555 41.14956,36.41616 1.42502,0.0135 3.17161,-0.97852 5.63198,-3.3548 3.10222,-2.99615 3.45915,-3.75788 2.96243,-5.91861 z\" />\n"
+"</svg>\n";
+
+const char* clearList_svg = (const char*) temp_binary_data_0;
+
+//================== list.svg ==================
+static const unsigned char temp_binary_data_1[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -99,10 +169,10 @@ static const unsigned char temp_binary_data_0[] =
 "50.172726,0.65 51.99686,-0.1 51.69688,-0.1 54.86282,-2.01 1.02198,-0.65 1.56494,-1.91 1.641,-4.14 0.0959,-2.810004 -0.1865,-3.330004 -2.05988,-4.100004 z\" />\n"
 "</svg>\n";
 
-const char* list_svg = (const char*) temp_binary_data_0;
+const char* list_svg = (const char*) temp_binary_data_1;
 
 //================== addFiles.svg ==================
-static const unsigned char temp_binary_data_1[] =
+static const unsigned char temp_binary_data_2[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -168,10 +238,10 @@ static const unsigned char temp_binary_data_1[] =
 " 2.775577,2.18916 3.075558,2.18796 50.172696,2.0016 51.99684,-0.20574 51.69686,-0.20456 54.8628,-6.21745 1.02199,-2.00417 1.56495,-5.90655 1.641,-12.80727 0.0959,-8.70091 -0.1865,-10.29989 -2.05988,-12.69262 z\" />\n"
 "</svg>\n";
 
-const char* addFiles_svg = (const char*) temp_binary_data_1;
+const char* addFiles_svg = (const char*) temp_binary_data_2;
 
 //================== removeSelected.svg ==================
-static const unsigned char temp_binary_data_2[] =
+static const unsigned char temp_binary_data_3[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -232,10 +302,10 @@ static const unsigned char temp_binary_data_2[] =
 " 2.775577,2.18916 3.075558,2.18796 50.172696,2.0016 51.99684,-0.20574 51.69686,-0.20456 54.8628,-6.21745 1.02199,-2.00417 1.56495,-5.90655 1.641,-12.80727 0.0959,-8.70091 -0.1865,-10.29989 -2.05988,-12.69262 z\" />\n"
 "</svg>\n";
 
-const char* removeSelected_svg = (const char*) temp_binary_data_2;
+const char* removeSelected_svg = (const char*) temp_binary_data_3;
 
 //================== loopOnOne.svg ==================
-static const unsigned char temp_binary_data_3[] =
+static const unsigned char temp_binary_data_4[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -306,10 +376,10 @@ static const unsigned char temp_binary_data_3[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loopOnOne_svg = (const char*) temp_binary_data_3;
+const char* loopOnOne_svg = (const char*) temp_binary_data_4;
 
 //================== loop.svg ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_5[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -376,10 +446,10 @@ static const unsigned char temp_binary_data_4[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loop_svg = (const char*) temp_binary_data_4;
+const char* loop_svg = (const char*) temp_binary_data_5;
 
 //================== loopOn.svg ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_6[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -447,10 +517,10 @@ static const unsigned char temp_binary_data_5[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* loopOn_svg = (const char*) temp_binary_data_5;
+const char* loopOn_svg = (const char*) temp_binary_data_6;
 
 //================== audfile.svg ==================
-static const unsigned char temp_binary_data_6[] =
+static const unsigned char temp_binary_data_7[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -473,10 +543,10 @@ static const unsigned char temp_binary_data_6[] =
 "</g>\n"
 "</svg>\n";
 
-const char* audfile_svg = (const char*) temp_binary_data_6;
+const char* audfile_svg = (const char*) temp_binary_data_7;
 
 //================== audfileOn.svg ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_8[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -546,10 +616,10 @@ static const unsigned char temp_binary_data_7[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* audfileOn_svg = (const char*) temp_binary_data_7;
+const char* audfileOn_svg = (const char*) temp_binary_data_8;
 
 //================== back.svg ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_9[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -569,10 +639,10 @@ static const unsigned char temp_binary_data_8[] =
 "</g>\n"
 "</svg>\n";
 
-const char* back_svg = (const char*) temp_binary_data_8;
+const char* back_svg = (const char*) temp_binary_data_9;
 
 //================== backOn.svg ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_10[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -638,10 +708,10 @@ static const unsigned char temp_binary_data_9[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* backOn_svg = (const char*) temp_binary_data_9;
+const char* backOn_svg = (const char*) temp_binary_data_10;
 
 //================== forward.svg ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_11[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -661,10 +731,10 @@ static const unsigned char temp_binary_data_10[] =
 "</g>\n"
 "</svg>\n";
 
-const char* forward_svg = (const char*) temp_binary_data_10;
+const char* forward_svg = (const char*) temp_binary_data_11;
 
 //================== forwardOn.svg ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_12[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -730,10 +800,10 @@ static const unsigned char temp_binary_data_11[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* forwardOn_svg = (const char*) temp_binary_data_11;
+const char* forwardOn_svg = (const char*) temp_binary_data_12;
 
 //================== incback.svg ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_13[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -754,10 +824,10 @@ static const unsigned char temp_binary_data_12[] =
 "</g>\n"
 "</svg>\n";
 
-const char* incback_svg = (const char*) temp_binary_data_12;
+const char* incback_svg = (const char*) temp_binary_data_13;
 
 //================== incbackOn.svg ==================
-static const unsigned char temp_binary_data_13[] =
+static const unsigned char temp_binary_data_14[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -823,10 +893,10 @@ static const unsigned char temp_binary_data_13[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* incbackOn_svg = (const char*) temp_binary_data_13;
+const char* incbackOn_svg = (const char*) temp_binary_data_14;
 
 //================== incforward.svg ==================
-static const unsigned char temp_binary_data_14[] =
+static const unsigned char temp_binary_data_15[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -846,10 +916,10 @@ static const unsigned char temp_binary_data_14[] =
 "</g>\n"
 "</svg>\n";
 
-const char* incforward_svg = (const char*) temp_binary_data_14;
+const char* incforward_svg = (const char*) temp_binary_data_15;
 
 //================== incforwardOn.svg ==================
-static const unsigned char temp_binary_data_15[] =
+static const unsigned char temp_binary_data_16[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -915,10 +985,10 @@ static const unsigned char temp_binary_data_15[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* incforwardOn_svg = (const char*) temp_binary_data_15;
+const char* incforwardOn_svg = (const char*) temp_binary_data_16;
 
 //================== mic.svg ==================
-static const unsigned char temp_binary_data_16[] =
+static const unsigned char temp_binary_data_17[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -951,10 +1021,10 @@ static const unsigned char temp_binary_data_16[] =
 "</g>\n"
 "</svg>\n";
 
-const char* mic_svg = (const char*) temp_binary_data_16;
+const char* mic_svg = (const char*) temp_binary_data_17;
 
 //================== micOn.svg ==================
-static const unsigned char temp_binary_data_17[] =
+static const unsigned char temp_binary_data_18[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1029,10 +1099,10 @@ static const unsigned char temp_binary_data_17[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* micOn_svg = (const char*) temp_binary_data_17;
+const char* micOn_svg = (const char*) temp_binary_data_18;
 
 //================== pause.svg ==================
-static const unsigned char temp_binary_data_18[] =
+static const unsigned char temp_binary_data_19[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1053,10 +1123,10 @@ static const unsigned char temp_binary_data_18[] =
 "</g>\n"
 "</svg>\n";
 
-const char* pause_svg = (const char*) temp_binary_data_18;
+const char* pause_svg = (const char*) temp_binary_data_19;
 
 //================== pauseOn.svg ==================
-static const unsigned char temp_binary_data_19[] =
+static const unsigned char temp_binary_data_20[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1125,10 +1195,10 @@ static const unsigned char temp_binary_data_19[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* pauseOn_svg = (const char*) temp_binary_data_19;
+const char* pauseOn_svg = (const char*) temp_binary_data_20;
 
 //================== play.svg ==================
-static const unsigned char temp_binary_data_20[] =
+static const unsigned char temp_binary_data_21[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1146,10 +1216,10 @@ static const unsigned char temp_binary_data_20[] =
 "</g>\n"
 "</svg>\n";
 
-const char* play_svg = (const char*) temp_binary_data_20;
+const char* play_svg = (const char*) temp_binary_data_21;
 
 //================== playOn.svg ==================
-static const unsigned char temp_binary_data_21[] =
+static const unsigned char temp_binary_data_22[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1214,10 +1284,10 @@ static const unsigned char temp_binary_data_21[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* playOn_svg = (const char*) temp_binary_data_21;
+const char* playOn_svg = (const char*) temp_binary_data_22;
 
 //================== save.svg ==================
-static const unsigned char temp_binary_data_22[] =
+static const unsigned char temp_binary_data_23[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1239,10 +1309,10 @@ static const unsigned char temp_binary_data_22[] =
 "</g>\n"
 "</svg>\n";
 
-const char* save_svg = (const char*) temp_binary_data_22;
+const char* save_svg = (const char*) temp_binary_data_23;
 
 //================== saveOn.svg ==================
-static const unsigned char temp_binary_data_23[] =
+static const unsigned char temp_binary_data_24[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1320,10 +1390,10 @@ static const unsigned char temp_binary_data_23[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* saveOn_svg = (const char*) temp_binary_data_23;
+const char* saveOn_svg = (const char*) temp_binary_data_24;
 
 //================== stop.svg ==================
-static const unsigned char temp_binary_data_24[] =
+static const unsigned char temp_binary_data_25[] =
 "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\"\n"
 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
@@ -1341,10 +1411,10 @@ static const unsigned char temp_binary_data_24[] =
 "</g>\n"
 "</svg>\n";
 
-const char* stop_svg = (const char*) temp_binary_data_24;
+const char* stop_svg = (const char*) temp_binary_data_25;
 
 //================== stopOn.svg ==================
-static const unsigned char temp_binary_data_25[] =
+static const unsigned char temp_binary_data_26[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 "<svg\n"
 "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
@@ -1409,7 +1479,7 @@ static const unsigned char temp_binary_data_25[] =
 "  </g>\n"
 "</svg>\n";
 
-const char* stopOn_svg = (const char*) temp_binary_data_25;
+const char* stopOn_svg = (const char*) temp_binary_data_26;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -1422,6 +1492,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
     switch (hash)
     {
+        case 0x24399cb0:  numBytes = 2764; return clearList_svg;
         case 0x503a1f43:  numBytes = 4792; return list_svg;
         case 0xaa6360fb:  numBytes = 2513; return addFiles_svg;
         case 0x3463c164:  numBytes = 2158; return removeSelected_svg;
@@ -1457,6 +1528,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 
 const char* namedResourceList[] =
 {
+    "clearList_svg",
     "list_svg",
     "addFiles_svg",
     "removeSelected_svg",

@@ -321,9 +321,9 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
                         plWindow->repaint();
                         DBG("FORWARD button pressed");
                         break;
-                    case 7:
+                    /*case 7:
                         DBG("FILE button pressed");
-                        break;
+                        break;*/
                     case 8:
                         DBG("LOOP button pressed");
                         pluginHolder->toggleLooping();
@@ -361,6 +361,9 @@ void StandaloneFilterWindow::buttonClicked (Button* b)
                     break;
                 case 2:
                     plWindow->deleteKeyPressed(0);
+                    break;
+                case 3:
+                    plWindow->clearPlaylist();
                     break;
                 default:
                     break;
@@ -522,7 +525,7 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
    ids.add (separatorBarId);
    ids.add (flexibleSpacerId);
    //ids.add(fileToggle);
-   ids.add(saveImg);
+   //ids.add(saveImg);
    ids.add(playlist);
    ids.add (flexibleSpacerId);
 }
@@ -888,6 +891,7 @@ void StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::g
 {
    ids.add(addFiles);
    ids.add(removeSelected);
+   ids.add(clearList);
 
    // Spacers and Separators
    ids.add (separatorBarId);
@@ -899,6 +903,7 @@ void StandaloneFilterWindow::PlaylistWindow::PlaylistWindowToolbarItemFactory::g
 {
    ids.add(addFiles);
    ids.add(removeSelected);
+   ids.add(clearList);
    ids.add (flexibleSpacerId);
 }
 
@@ -918,6 +923,10 @@ ToolbarItemComponent* StandaloneFilterWindow::PlaylistWindow::PlaylistWindowTool
    case removeSelected:
        binData = "removeSelected_svg";
        buttonText = "removeSelected";
+       break;
+   case clearList:
+       binData = "clearList_svg";
+       buttonText = "clearPlaylist";
        break;
    default:
        break;

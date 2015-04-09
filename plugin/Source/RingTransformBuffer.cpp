@@ -199,9 +199,10 @@ void coefsToAbsMatrix<fftwf_complex>(fftwf_complex* coefs[], ltfatInt Lc[], int 
             //tmpy = M - 2 - tmpy;
             fftwf_complex* coefstmpy = coefs[tmpy];
             fftwf_complex* coefstmpyplus1 = coefs[tmpy + 1];
+
             for (int ii = 0; ii < stripWidth; ++ii)
             {
-                float tmpxPrec = colsRatios[ii] * ii;
+                float tmpxPrec = colsRatios[tmpy] * ii;
                 int tmpx = static_cast<int>(tmpxPrec);
                 tmpxPrec -= tmpx;
                 // tmpx = Lc[tmpy] - 2 - tmpx;
@@ -253,7 +254,7 @@ void coefsToAbsMatrix<float>(float* coefs[], ltfatInt Lc[], int M,
             tmpyPrec -= tmpy;
             for (int ii = 0; ii < stripWidth; ++ii)
             {
-                float tmpxPrec = colsRatios[ii] * ii;
+                float tmpxPrec = colsRatios[tmpy] * ii;
                 int tmpx = static_cast<int>(tmpxPrec);
                 tmpxPrec -= tmpx;
                 float intx1 =  (1.0f - tmpxPrec) * (coefs[tmpy][tmpx]) + tmpxPrec * (coefs[tmpy][tmpx + 1]);
@@ -667,6 +668,7 @@ bool RingBLFilterbankBuffer::getBufferCoefficientsAsAbsMatrix(float * matrix, in
         // Lc is only half here
         cEl = getFilterbankOverlaidCoefficients(activeFb, true);
         Lcact = const_cast<ltfatInt*>(filterbanks[activeFb]->Lchalf);
+        //std::cout << "I am here" << std::endl;
     }
     else
     {

@@ -1,4 +1,10 @@
 function write_filterbank_bin(name,g,a,block_len,fc,append)
+%
+% Example:
+% [g,a,fc] = erbfilters(44100,2048,'bwmul',1/2,'spacing',1/12,'fractional');
+% write_filterbank_bin('newtest',g,a,2048,fc);
+% [g,a,fc] = erbfilters(44100,4096,'bwmul',1/2,'spacing',1/12,'fractional');
+% write_filterbank_bin('newtest',g,a,4096,fc,1);
 
 fcGiven = 1;
 if nargin < 6

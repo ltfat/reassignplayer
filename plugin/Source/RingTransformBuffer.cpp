@@ -817,7 +817,7 @@ void RingReassignedBLFilterbankBuffer::performTransform() noexcept
     filterbankreassign_s(const_cast<const float**>(cs),
     const_cast<const float**>(tgrad),
     const_cast<const float**>(fgrad),
-    blFilt->Lchalf, blFilt->a, blFilt->fc, M, sr, NULL);
+    blFilt->Lchalf, blFilt->a, blFilt->fc, M, sr, REASS_NOTIMEWRAPAROUND, NULL);
 
 }
 

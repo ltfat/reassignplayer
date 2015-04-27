@@ -122,6 +122,18 @@ private:
             JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
     };
 
+    class InfoWindow    : public DialogWindow
+    {
+        public:
+            InfoWindow ();
+
+            void closeButtonPressed () override;
+        private:
+            ScopedPointer<Label> dialogText = new Label("Information",
+            "This project is based on the JUCE C++ Library and uses the following sources:\n\n Microphone icon made by SimpleIcon from www.flaticon.com is licensed under CC BY 3.0\n\n Button icons partially based on Minicons Free Vector Icons Pack, www.webalys.com/minicons");
+            JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InfoWindow)
+    };
+
 public:
     //==============================================================================
     /** Creates a window with a given title and colour.
@@ -157,7 +169,7 @@ public:
     //==============================================================================
     // MenuBarModel related
 
-    enum MENUITEMS { FILE = 0, OPTIONS };
+    enum MENUITEMS { FILE = 0, OPTIONS, INFO };
     void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
     StringArray getMenuBarNames() override;
@@ -171,6 +183,7 @@ public:
     //==============================================================================
     // Playlist Window
     ScopedPointer<PlaylistWindow> plWindow;
+    ScopedPointer<InfoWindow> infoWindow;
 
 private:
     unsigned activeFilterbank;

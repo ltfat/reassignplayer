@@ -83,6 +83,9 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    plWindow->setVisible(true);
    DBG("After playlist");
 
+   infoWindow = new InfoWindow();
+   infoWindow->setVisible(false);
+
    if (PropertySet* props = pluginHolder->settings)
    {
       const int x = props->getIntValue ("windowX", -100);
@@ -557,7 +560,7 @@ void StandaloneFilterWindow::FilterWindowToolbarItemFactory
 StringArray StandaloneFilterWindow
 ::getMenuBarNames()
 {
-   const char * const nameBarNames[] =  {"Open File","Options", nullptr};
+   const char * const nameBarNames[] =  {"Open File","Options","Info",nullptr};
    return StringArray(nameBarNames);
 }
 
@@ -583,6 +586,9 @@ PopupMenu StandaloneFilterWindow
       pm.addItem (3, TRANS("Load a saved state..."));
       pm.addSeparator();
       pm.addItem (4, TRANS("Reset to default state"));
+      break;
+   case INFO:
+      pm.addItem (1, TRANS("Information"));
       break;
    default:
       break;
@@ -719,6 +725,9 @@ void StandaloneFilterWindow
       default:
          break;
       }
+      break;
+   case INFO:
+      infoWindow->setVisible(true);
       break;
    default:
       break;
@@ -937,4 +946,23 @@ ToolbarItemComponent* StandaloneFilterWindow::PlaylistWindow::PlaylistWindowTool
    ToolbarButton* b = new ToolbarButton(itemId,buttonText,iconOff,nullptr);
    b->addListener(listener);
    return b;
+}
+
+StandaloneFilterWindow::InfoWindow::InfoWindow()
+: DialogWindow("Information",Colours::lightgrey,0,true)
+{
+   // Window dimensions
+   setTitleBarButtonsRequired (DocumentWindow::closeButton, false);
+   setTitleBarHeight(20);
+   setSize(250, 200);
+   setResizable(false, false);
+
+   dialogText->setBounds(0,30,getWidth(),getHeight()-40);
+   addAndMakeVisible(dialogText);
+   setVisible(false);
+}
+
+void StandaloneFilterWindow::InfoWindow::closeButtonPressed()
+{
+    this->setVisible(false);
 }

@@ -125,12 +125,11 @@ private:
     class InfoWindow    : public DialogWindow
     {
         public:
-            InfoWindow ();
+            InfoWindow();
 
             void closeButtonPressed () override;
         private:
-            ScopedPointer<Label> dialogText = new Label("Information",
-            "This project is based on the JUCE C++ Library and uses the following sources:\n\n Microphone icon made by SimpleIcon from www.flaticon.com is licensed under CC BY 3.0\n\n Button icons partially based on Minicons Free Vector Icons Pack, www.webalys.com/minicons");
+            ScopedPointer<Label> dialogText;
             JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InfoWindow)
     };
 

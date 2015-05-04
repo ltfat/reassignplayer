@@ -21,6 +21,7 @@
 #include "FilterbankDataHolder.h"
 #include "RingTransformBuffer.h"
 #include "Spectrogram.h"
+#include "PluginBinaryData.h"
 //Because of the memcpy
 #include <cstring>
 
@@ -52,6 +53,7 @@ public:
    };
    //==============================================================================
    PluginAudioProcessor(Array<File> fbData);
+   PluginAudioProcessor();
    ~PluginAudioProcessor();
 
    //==============================================================================
@@ -101,6 +103,7 @@ public:
    bool trySetRingBuffer(RingFFTBuffer* rtb);
 
    FilterbankDataHolder* getFilterbankDataHolder();
+   void setFilterbankDataHolder(FilterbankDataHolder* dataHolder_);
 
    //===============================================================================
    void changeListenerCallback (ChangeBroadcaster *source);
@@ -117,7 +120,7 @@ private:
    int paramActChannel, paramReassignedSwitch;
 
    //
-   RingFFTBuffer* tryCreateRingBufferFromData();
+   RingFFTBuffer* createRingBufferFromData();
 
    //==============================================================================
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)

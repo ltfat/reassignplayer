@@ -33,7 +33,7 @@ public:
         store its settings - the object that is passed-in will be owned by this
         class and deleted automatically when no longer needed. (It can also be null)
     */
-    StandalonePluginHolder (Array<File> fbData, PropertySet* settingsToUse, bool takeOwnershipOfSettings);
+    StandalonePluginHolder ( PropertySet* settingsToUse, bool takeOwnershipOfSettings);
 
     ~StandalonePluginHolder();
 

@@ -12,7 +12,7 @@
 //#include "../../plugin/Source/PluginProcessor.h"
 
 
-//extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
+extern AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 extern AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter(Array<File> fbData_);
 
 //==============================================================================
@@ -42,12 +42,11 @@ extern AudioProcessor* JUCE_CALLTYPE createCustomPluginFilter(Array<File> fbData
 */
 
 
-StandalonePluginHolder::StandalonePluginHolder (Array<File> fbData, PropertySet* settingsToUse,
+StandalonePluginHolder::StandalonePluginHolder (PropertySet* settingsToUse,
       bool takeOwnershipOfSettings)
    : settings (settingsToUse, takeOwnershipOfSettings),
      thread("File preload"),
      currentFile(nullptr),
-     filterbankData(fbData),
      sampleRate(44100),
      samplesPerBlock(512),
      currentSource(0),
@@ -125,7 +124,7 @@ StandalonePluginHolder::~StandalonePluginHolder()
 void StandalonePluginHolder::createPlugin()
 {
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Standalone);
-   pluginProcessor = createCustomPluginFilter(filterbankData);
+   pluginProcessor = createPluginFilter();
    jassert (pluginProcessor != nullptr); // Your createPluginFilter() function must return a valid object!
    AudioProcessor::setTypeOfNextNewPlugin (AudioProcessor::wrapperType_Undefined);
 

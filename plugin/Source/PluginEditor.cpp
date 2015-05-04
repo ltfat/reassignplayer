@@ -43,56 +43,65 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
 
     //[Constructor] You can add your own custom stuff here..
-   reassignToggle = new TextButton("Reassign toggle");
-   reassignToggle->setToggleState(true, sendNotification);
-   reassignToggle->setClickingTogglesState(true);
-   reassignToggle->addListener(this);
+    reassignToggle = new TextButton("Reassign toggle");
+    reassignToggle->setToggleState(true, sendNotification);
+    reassignToggle->setClickingTogglesState(true);
 
-   showSelector = new TextButton("Show Filterbank Selector");
-   showSelector->setToggleState(false, sendNotification);
-   showSelector->addListener(this);
+    {
 
-   channelChooser = new ComboBox();
-   for (int ii = 1; ii <= processor.getNumInputChannels(); ++ii)
-   {
-      channelChooser->addItem(String(ii), ii);
-   }
-   channelChooser->setSelectedId(1, sendNotification);
-   Label* l = new Label("ch", "Channel:");
-   trash.add(l);
-   l->attachToComponent(channelChooser, true);
-   channelChooser->addListener(this);
+        const MessageManagerLock mmLock;
+        reassignToggle->addListener(this);
+    }
+    showSelector = new TextButton("Show Filterbank Selector");
+    showSelector->setToggleState(false, sendNotification);
+    {
+        const MessageManagerLock mmLock;
+        showSelector->addListener(this);
+    }
+    channelChooser = new ComboBox();
+    for (int ii = 1; ii <= processor.getNumInputChannels(); ++ii)
+    {
+        channelChooser->addItem(String(ii), ii);
+    }
+    channelChooser->setSelectedId(1, sendNotification);
+    Label* l = new Label("ch", "Channel:");
+    trash.add(l);
+    l->attachToComponent(channelChooser, true);
+
+    {
+        const MessageManagerLock mmLock;
+        channelChooser->addListener(this);
+    }
+
+    spectrogram->getPopupMenu().addSeparator();
+    spectrogram->getPopupMenu().addSectionHeader("Plugin options");
+    spectrogram->getPopupMenu().addCustomItem(0, channelChooser, 60, 30, false);
+    spectrogram->getPopupMenu().addCustomItem(0, reassignToggle, 60, 30, false);
+    spectrogram->getPopupMenu().addCustomItem(0, showSelector, 60, 30, false);
 
 
-   spectrogram->getPopupMenu().addSeparator();
-   spectrogram->getPopupMenu().addSectionHeader("Plugin options");
-   spectrogram->getPopupMenu().addCustomItem(0, channelChooser, 60, 30, false);
-   spectrogram->getPopupMenu().addCustomItem(0, reassignToggle, 60, 30, false);
-   spectrogram->getPopupMenu().addCustomItem(0, showSelector, 60, 30, false);
+    ogl = new OpenGLContext();
+    ogl->setSwapInterval(0);
+    ogl->attachTo(*spectrogram);
 
+    //ogl->setSwapInterval(1);
+    /* DBG("PluginEditor constructor");
+     settings = nullptr;
+     fileFilter = new JSONFilterbankFileFilter("JSONFilterbankFileFilter");
+     tsThread = new TimeSliceThread("DirectoryContentsList thread");
+     DirectoryContentsList* currDirContents =
+        new DirectoryContentsList(fileFilter,*tsThread);
 
-  ogl = new OpenGLContext();
-  ogl->setSwapInterval(0);
-  ogl->attachTo(*spectrogram);
-
-   //ogl->setSwapInterval(1);
-   /* DBG("PluginEditor constructor");
-    settings = nullptr;
-    fileFilter = new JSONFilterbankFileFilter("JSONFilterbankFileFilter");
-    tsThread = new TimeSliceThread("DirectoryContentsList thread");
-    DirectoryContentsList* currDirContents =
-       new DirectoryContentsList(fileFilter,*tsThread);
-
-    currDirContents->setDirectory(File::getSpecialLocation(
-                                      File::currentApplicationFile).
-                                          getParentDirectory(),false,true);
-    currDirContents->addChangeListener(this);
-    dirContents.add(currDirContents);
-    // Thread is already started in setDirectory
-    //tsThread->startThread();
-    //loadFilters();
-    // DBG("PluginEditor constructor end");
-    */
+     currDirContents->setDirectory(File::getSpecialLocation(
+                                       File::currentApplicationFile).
+                                           getParentDirectory(),false,true);
+     currDirContents->addChangeListener(this);
+     dirContents.add(currDirContents);
+     // Thread is already started in setDirectory
+     //tsThread->startThread();
+     //loadFilters();
+     // DBG("PluginEditor constructor end");
+     */
     //[/Constructor]
 }
 
@@ -107,8 +116,8 @@ PluginEditor::~PluginEditor()
 
 
     //[Destructor]. You can add your own custom destruction code here..
-   // tsThread->stopThread(0);
-   // tsThread = nullptr;
+    // tsThread->stopThread(0);
+    // tsThread = nullptr;
     //[/Destructor]
 }
 
@@ -139,70 +148,91 @@ void PluginEditor::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PluginEditor::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
 {
-   // HeapBlock<float> tmp = HeapBlock<float>();
+    // HeapBlock<float> tmp = HeapBlock<float>();
 
-   //spectrogram->appendStrip(tmp,0,0);
+    //spectrogram->appendStrip(tmp,0,0);
 }
 
 void PluginEditor::loadFilters()
 {
-   if (nullptr != settings)
-   {
-      // find whether there is a filterbankPath entry
-      // and add it to dirContents if it is not there already
-   }
+    if (nullptr != settings)
+    {
+        // find whether there is a filterbankPath entry
+        // and add it to dirContents if it is not there already
+    }
 
-   filterbankFiles.clear(true);
-   for (DirectoryContentsList * d : dirContents)
-   {
+    filterbankFiles.clear(true);
+    for (DirectoryContentsList * d : dirContents)
+    {
 
-      // Block until the dir search is finished
-      while (d->isStillLoading()) {}
+        // Block until the dir search is finished
+        while (d->isStillLoading()) {}
 
-      if (d->getNumFiles() != 0)
-      {
-         for (int ii = 0; ii < d->getNumFiles(); ++ii)
-         {
-            File f = d->getFile(ii);
-            filterbankFiles.add(new File(f));
-            DBG("Filterbank file found!" << f.getFileName());
-         }
-      }
-   }
+        if (d->getNumFiles() != 0)
+        {
+            for (int ii = 0; ii < d->getNumFiles(); ++ii)
+            {
+                File f = d->getFile(ii);
+                filterbankFiles.add(new File(f));
+                DBG("Filterbank file found!" << f.getFileName());
+            }
+        }
+    }
 
 }
 
 void PluginEditor::changeListenerCallback(ChangeBroadcaster *source)
 {
-   // We are now on the main message thread
-   /*  RingTransformBuffer* rbuf = processor.getRingBuffer();
-     if(source == rbuf)
-     {
-        // Consume 1 buffer from FFT buffer
-        const fftwf_complex* fbuf = rbuf->getBuffer();
-        if(nullptr != fbuf)
-        {
-           spectrogram->appendStrip(reinterpret_cast<const std::complex<float>*>(fbuf),rbuf->getBufLen()/3);
-           DBG("Consumed Buffer");
-        }
-     }
-     */
+    // We are now on the main message thread
+    /*  RingTransformBuffer* rbuf = processor.getRingBuffer();
+      if(source == rbuf)
+      {
+         // Consume 1 buffer from FFT buffer
+         const fftwf_complex* fbuf = rbuf->getBuffer();
+         if(nullptr != fbuf)
+         {
+            spectrogram->appendStrip(reinterpret_cast<const std::complex<float>*>(fbuf),rbuf->getBufLen()/3);
+            DBG("Consumed Buffer");
+         }
+      }
+      */
 }
 void PluginEditor::comboBoxChanged (ComboBox* comboBox)
 {
-   if (comboBox == channelChooser)
-   {
-      processor.setParameterNotifyingHost (PluginAudioProcessor::kActChannel, comboBox->getSelectedId() - 1);
-   }
+    if (comboBox == channelChooser)
+    {
+        processor.setParameterNotifyingHost (PluginAudioProcessor::kActChannel, comboBox->getSelectedId() - 1);
+    }
 
 }
 
 void PluginEditor::buttonClicked (Button* button)
 {
-   if ( button == reassignToggle )
+    if ( button == reassignToggle )
         processor.setParameterNotifyingHost (PluginAudioProcessor::kReassignedSwitch, reassignToggle->getToggleState());
-   else if ( button == showSelector )
-      processor.getFilterbankDataHolder()->selectorWindowVisibility(true);
+    else if ( button == showSelector )
+    {
+        FilterbankDataHolder* dataHolder = processor.getFilterbankDataHolder();
+        if (dataHolder)
+        {
+            dataHolder->selectorWindowVisibility(true);
+        }
+        else
+        {
+            FilterbankDataHolder* newDataHolder = nullptr;
+            try
+            {
+                newDataHolder = new FilterbankDataHolder();
+                newDataHolder->addChangeListenerToWindow(&processor);
+            }
+            catch(String e)
+            {
+                return;
+            }
+            processor.setFilterbankDataHolder(newDataHolder);
+        }
+
+    }
 }
 
 

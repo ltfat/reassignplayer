@@ -27,12 +27,12 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
    menuBarComponent = new MenuBarComponent(this);
 
    // Load filter bank data
-   Array<File> fbData = FilterbankDataHolder::FilterbankFileLoader();
+   // Array<File> fbData = FilterbankDataHolder::FilterbankFileLoader();
 
    // Create the wrapped AudioProcessorEditor
    try
    {
-   pluginHolder = new StandalonePluginHolder (fbData, settingsToUse, takeOwnershipOfSettings);
+       pluginHolder = new StandalonePluginHolder (settingsToUse, takeOwnershipOfSettings);
    }
    catch(String& err)
    {
@@ -606,9 +606,10 @@ void StandaloneFilterWindow
       {
       case 1:
          {
-         FileChooser chooser ("Select an audio file to play...",
+         FileChooser chooser (String("Select an audio file to play..."),
                               File::nonexistent,
-                              "*.wav;*.mp3");
+                              String("*.wav;*.mp3"));
+
 
          if (chooser.browseForFileToOpen())
             {
@@ -726,7 +727,7 @@ void StandaloneFilterWindow
          break;
       }
       break;
-   case INFO:
+   case INFO: 
       infoWindow->setVisible(true);
       break;
    default:
@@ -957,8 +958,12 @@ StandaloneFilterWindow::InfoWindow::InfoWindow()
    setSize(250, 200);
    setResizable(false, false);
 
+   dialogText = new Label(String("Information"),
+           String("This project is based on the JUCE C++ Library and uses the following sources:\n\n"
+               "Microphone icon made by SimpleIcon from www.flaticon.com is licensed under CC BY 3.0\n\n"
+               "Button icons partially based on Minicons Free Vector Icons Pack, www.webalys.com/minicons"));
    dialogText->setBounds(0,30,getWidth(),getHeight()-40);
-   addAndMakeVisible(dialogText);
+   Component::addAndMakeVisible(dialogText);
    setVisible(false);
 }
 

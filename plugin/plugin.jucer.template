@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="GXg94c" name="plugin" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="com.yourcompany.plugin" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
-              pluginName="plugin" pluginDesc="plugin" pluginManufacturer="yourcompany"
-              pluginManufacturerCode="Manu" pluginCode="Gxg9" pluginChannelConfigs="{1, 1}, {2, 2}"
-              pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
-              pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
-              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.plugin"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.1">
-  <MAINGROUP id="vMC3sj" name="plugin">
+<JUCERPROJECT id="GXg94c" name="Filterbank Reassignment" projectType="audioplug"
+              version="0.0.1" bundleIdentifier="at.ac.oeaw.kfs.fbreassign"
+              includeBinaryInAppConfig="1" buildVST="1" buildVST3="0" buildAU="1"
+              buildRTAS="0" buildAAX="0" pluginName="Filterbank Reassignment"
+              pluginDesc="Real-time time-frequency reassignment using non-uniform filterbanks"
+              pluginManufacturer="Nicki and Zdenek" pluginManufacturerCode="fbre"
+              pluginCode="Gxg9" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"
+              pluginWantsMidiIn="0" pluginProducesMidiOut="0" pluginSilenceInIsSilenceOut="0"
+              pluginEditorRequiresKeys="0" pluginAUExportPrefix="pluginAU"
+              pluginRTASCategory="" aaxIdentifier="com.yourcompany.plugin"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.1.1"
+              companyName="Austrian Academy of Sciences" companyWebsite="www.kfs.oeaw.ac.at"
+              companyEmail="office@kfs.oeaw.ac.at">
+  <MAINGROUP id="vMC3sj" name="Filterbank Reassignment">
     <GROUP id="{F7222CBA-A03D-435F-46B5-6452A7641465}" name="Source">
+      <FILE id="Ynz9Xn" name="PluginBinaryData.cpp" compile="1" resource="0"
+            file="Source/PluginBinaryData.cpp"/>
+      <FILE id="DgHOLT" name="PluginBinaryData.h" compile="0" resource="0"
+            file="Source/PluginBinaryData.h"/>
+      <FILE id="CvcAzc" name="FilterbankDataHolder.cpp" compile="1" resource="0"
+            file="Source/FilterbankDataHolder.cpp"/>
+      <FILE id="hMyrSV" name="FilterbankDataHolder.h" compile="0" resource="0"
+            file="Source/FilterbankDataHolder.h"/>
       <FILE id="VK4DeV" name="RingTransformBuffer.cpp" compile="1" resource="0"
             file="Source/RingTransformBuffer.cpp"/>
       <FILE id="KCNg0S" name="RingTransformBuffer.h" compile="0" resource="0"
@@ -29,7 +41,9 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK">
+    <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK"
+                extraCompilerFlags="-I/home/susnak/dev/ltfat/src&#10;-g" extraLinkerFlags="-L/home/susnak/dev/ltfat/lib"
+                externalLibraries="ltfatf&#10;ltfat&#10;fftw3f&#10;fftw3&#10;tbb">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="plugin"/>

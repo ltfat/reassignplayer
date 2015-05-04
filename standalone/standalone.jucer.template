@@ -5,6 +5,19 @@
               jucerVersion="3.1.1" defines="STANDALONE">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
+      <FILE id="Q4M0Qr" name="PluginBinaryData.cpp" compile="1" resource="0"
+            file="../plugin/Source/PluginBinaryData.cpp"/>
+      <FILE id="z5SQob" name="PluginBinaryData.h" compile="0" resource="0"
+            file="../plugin/Source/PluginBinaryData.h"/>
+      <FILE id="fLCDd5" name="addFiles.svg" compile="0" resource="1" file="pics/addFiles.svg"/>
+      <FILE id="xdSyCl" name="CustomToolbarButton.cpp" compile="1" resource="0"
+            file="Source/CustomToolbarButton.cpp"/>
+      <FILE id="aVyqG1" name="CustomToolbarButton.h" compile="0" resource="0"
+            file="Source/CustomToolbarButton.h"/>
+      <FILE id="XJPXb9" name="FilterbankDataHolder.cpp" compile="1" resource="0"
+            file="../plugin/Source/FilterbankDataHolder.cpp"/>
+      <FILE id="SU3ROH" name="FilterbankDataHolder.h" compile="0" resource="0"
+            file="../plugin/Source/FilterbankDataHolder.h"/>
       <FILE id="B15udg" name="RingTransformBuffer.cpp" compile="1" resource="0"
             file="../plugin/Source/RingTransformBuffer.cpp"/>
       <FILE id="LFG3TK" name="RingTransformBuffer.h" compile="0" resource="0"
@@ -15,10 +28,13 @@
             file="Source/StandaloneFilterWindow.cpp"/>
       <FILE id="b0F0Fp" name="StandalonePluginHolder.cpp" compile="1" resource="0"
             file="Source/StandalonePluginHolder.cpp"/>
+      <FILE id="VrCmkL" name="list.svg" compile="0" resource="1" file="pics/list.svg"/>
       <FILE id="peaqJH" name="StandalonePluginHolder.h" compile="0" resource="0"
             file="Source/StandalonePluginHolder.h"/>
       <FILE id="mE7ytk" name="AudioSourceProcessor.cpp" compile="1" resource="0"
             file="Source/AudioSourceProcessor.cpp"/>
+      <FILE id="buUPn2" name="loopOnOne.svg" compile="0" resource="1" file="pics/loopOnOne.svg"/>
+      <FILE id="CYjLdq" name="loopOnOne_.svg" compile="0" resource="1" file="pics/loopOnOne_.svg"/>
       <FILE id="Xaoa1a" name="AudioSourceProcessor.h" compile="0" resource="0"
             file="Source/AudioSourceProcessor.h"/>
       <FILE id="CwwYcU" name="loop.svg" compile="0" resource="1" file="pics/loop.svg"/>
@@ -26,6 +42,8 @@
       <FILE id="uEk6PE" name="audfile.svg" compile="0" resource="1" file="pics/audfile.svg"/>
       <FILE id="nySaA7" name="audfileOn.svg" compile="0" resource="1" file="pics/audfileOn.svg"/>
       <FILE id="RlEPsq" name="back.svg" compile="0" resource="1" file="pics/back.svg"/>
+      <FILE id="ksqQTl" name="removeSelected.svg" compile="0" resource="1"
+            file="pics/removeSelected.svg"/>
       <FILE id="LZDfhZ" name="backOn.svg" compile="0" resource="1" file="pics/backOn.svg"/>
       <FILE id="mxiH9o" name="forward.svg" compile="0" resource="1" file="pics/forward.svg"/>
       <FILE id="NqXtBt" name="forwardOn.svg" compile="0" resource="1" file="pics/forwardOn.svg"/>
@@ -128,5 +146,5 @@
     <MODULES id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_JACK="enabled" JUCE_PLUGINHOST_VST="enabled" JUCE_PLUGINHOST_VST3="enabled"
-               JUCE_USE_MP3AUDIOFORMAT="enabled"/>
+               JUCE_USE_MP3AUDIOFORMAT="enabled" JUCE_ALSA="enabled"/>
 </JUCERPROJECT>

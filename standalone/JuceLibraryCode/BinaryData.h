@@ -9,20 +9,17 @@
 
 namespace BinaryData
 {
-    extern const char*   clearList_svg;
-    const int            clearList_svgSize = 2764;
+    extern const char*   addFiles_svg;
+    const int            addFiles_svgSize = 2513;
 
     extern const char*   list_svg;
     const int            list_svgSize = 4792;
 
-    extern const char*   addFiles_svg;
-    const int            addFiles_svgSize = 2513;
-
-    extern const char*   removeSelected_svg;
-    const int            removeSelected_svgSize = 2158;
-
     extern const char*   loopOnOne_svg;
     const int            loopOnOne_svgSize = 2772;
+
+    extern const char*   loopOnOne__svg;
+    const int            loopOnOne__svgSize = 3631;
 
     extern const char*   loop_svg;
     const int            loop_svgSize = 2530;
@@ -38,6 +35,9 @@ namespace BinaryData
 
     extern const char*   back_svg;
     const int            back_svgSize = 873;
+
+    extern const char*   removeSelected_svg;
+    const int            removeSelected_svgSize = 2158;
 
     extern const char*   backOn_svg;
     const int            backOn_svgSize = 2152;

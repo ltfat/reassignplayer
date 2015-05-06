@@ -16,7 +16,7 @@ PluginAudioProcessor::PluginAudioProcessor(Array<File> fbData)
     : fftBuf(nullptr),
       fftBufReplacing(nullptr),
       paramActChannel(0),
-      paramReassignedSwitch(1.0f)
+      paramReassignedSwitch(1)
 {
     DBG("PLuginAudioProcessor constructor");
     dataHolder = new FilterbankDataHolder(fbData);
@@ -27,7 +27,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     : fftBuf(nullptr),
       fftBufReplacing(nullptr),
       paramActChannel(0),
-      paramReassignedSwitch(1.0f)
+      paramReassignedSwitch(1)
 {
     DBG("Noarg PluginAudioProcessor constructor");
 

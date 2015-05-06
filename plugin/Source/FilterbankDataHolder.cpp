@@ -207,7 +207,7 @@ createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
 {
     // Create data stream:
     MemoryInputStream dataStreamPtr(memBlock,0);
-    int64 dataSize = dataStreamPtr.getDataSize(), shouldBeAtLeast;
+    int64 dataSize = dataStreamPtr.getDataSize();
 
     if ( dataSize < byteOffset+8 )
     {

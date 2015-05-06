@@ -80,9 +80,9 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
     spectrogram->getPopupMenu().addCustomItem(0, showSelector, 60, 30, false);
 
 
-    ogl = new OpenGLContext();
-    ogl->setSwapInterval(0);
-    ogl->attachTo(*spectrogram);
+   ogl = new OpenGLContext();
+   ogl->setSwapInterval(0);
+   ogl->attachTo(*spectrogram);
 
     //ogl->setSwapInterval(1);
     /* DBG("PluginEditor constructor");
@@ -201,7 +201,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBox)
 {
     if (comboBox == channelChooser)
     {
-        processor.setParameterNotifyingHost (PluginAudioProcessor::kActChannel, comboBox->getSelectedId() - 1);
+        processor.setParameterNotifyingHost (PluginAudioProcessor::kActChannel, static_cast<float>(comboBox->getSelectedId() - 1));
     }
 
 }

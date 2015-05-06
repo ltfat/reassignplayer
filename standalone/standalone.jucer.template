@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="HMi56V" name="standalone" projectType="guiapp" version="1.0.0"
               bundleIdentifier="com.yourcompany.standalone" includeBinaryInAppConfig="1"
-              jucerVersion="3.1.1" defines="STANDALONE">
+              jucerVersion="3.1.0" defines="STANDALONE">
   <MAINGROUP id="nD9bX5" name="standalone">
     <GROUP id="{94DFCA24-BCC3-F807-30F1-D49C68990A80}" name="Source">
       <FILE id="Q4M0Qr" name="PluginBinaryData.cpp" compile="1" resource="0"
@@ -128,6 +128,34 @@
         <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </CODEBLOCKS>
+    <VS2013 targetFolder="Builds/VisualStudio2013" vstFolder="c:\dev\VST3SDK"
+            vst3Folder="c:\dev\VST3SDK" externalLibraries="libfftw3f-3.lib&#10;libfftw3-3.lib&#10;libltfatfnoblas_dll.a&#10;libltfatnoblas_dll.a"
+            extraDefs="NOMINMAX">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="standalone" headerPath="c:\ltfat\src&#10;c:\ltfat\src\thirdparty&#10;c:\dev\fftw&#10;c:\dev\tbb\include"
+                       libraryPath="c:\ltfat\lib&#10;c:\dev\fftw&#10;c:\dev\tbb\lib\intel64\vc12&#10;"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="2" targetName="standalone" libraryPath="c:\ltfat\lib&#10;c:\dev\fftw&#10;c:\dev\tbb\lib\intel64\vc12"
+                       headerPath="c:\ltfat\src&#10;c:\ltfat\src\thirdparty&#10;c:\dev\fftw&#10;c:\dev\tbb\include"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../juce/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce/modules"/>
+        <MODULEPATH id="juce_core" path="../../juce/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce/modules"/>
+      </MODULEPATHS>
+    </VS2013>
   </EXPORTFORMATS>
   <MODULES>
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
@@ -146,5 +174,5 @@
     <MODULES id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_JACK="enabled" JUCE_PLUGINHOST_VST="enabled" JUCE_PLUGINHOST_VST3="enabled"
-               JUCE_USE_MP3AUDIOFORMAT="enabled" JUCE_ALSA="enabled"/>
+               JUCE_USE_MP3AUDIOFORMAT="enabled" JUCE_ALSA="enabled" JUCE_DIRECTSOUND="enabled"/>
 </JUCERPROJECT>

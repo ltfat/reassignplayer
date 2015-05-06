@@ -76,7 +76,7 @@ public:
     bool setCurrentFileIdx(int newFileIdx, bool forceStart = false);
     bool loadFile(File& file);
     bool addFile(File& file);
-    bool clearFileList();
+    void clearFileList();
     bool removeFile(int fileIndex);
 
     bool playNext();

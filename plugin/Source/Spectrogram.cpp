@@ -52,8 +52,8 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     colourmapLen = ltfat::cmap1Len;
     colourmap = HeapBlock<uint32>(colourmapLen.get());
     memcpy(colourmap.getData(), ltfat::cmap1, ltfat::cmap1Len * sizeof(uint32));
-    image.clear(Rectangle<int>(0, 0, imageWidth, imageHeight), Colour(colourmap[0]));
-    strip.clear(Rectangle<int>(0, 0, stripWidth, imageHeight), Colour(colourmap[0]));
+    image.clear(juce::Rectangle<int>(0, 0, imageWidth, imageHeight), Colour(colourmap[0]));
+    strip.clear(juce::Rectangle<int>(0, 0, stripWidth, imageHeight), Colour(colourmap[0]));
 
     populatePopupMenu();
     startThread();
@@ -99,12 +99,12 @@ void Spectrogram::stripBackendToRepaint()
     // Inplace convert to DB
     MathOp::toDB(stripBackend, totalStripElNo );
     // Inplace limit to range
-    MathOp::toLimitedRange(stripBackend, totalStripElNo, std::max( minDB.get(), initMinDB ),
-                           std::min( maxDB.get(), initMaxDB ));
+    MathOp::toLimitedRange(stripBackend, totalStripElNo, static_cast<float>(std::max( minDB.get(), initMinDB )),
+		static_cast<float>(std::min(maxDB.get(), initMaxDB)));
     // Inplace convert to integer range [0,colourmapLen]
-    MathOp::toRange(stripBackend, totalStripElNo , std::max( minDB.get(), initMinDB ),
-                    std::min( maxDB.get(), initMaxDB ),
-                    colourmapLen.get() - 1);
+	MathOp::toRange(stripBackend, totalStripElNo, static_cast<float>(std::max(minDB.get(), initMinDB)),
+		static_cast<float>(std::min(maxDB.get(), initMaxDB)),
+                    static_cast<float>(colourmapLen.get() - 1));
 
 
     {
@@ -183,10 +183,10 @@ void Spectrogram::paint (Graphics& g)
     int stripPosInPix = stripPosLoc * stripWidth;
     float stripPosRel = ((float)stripPosInPix) / image.getWidth();
 
-    g.drawImage(image, 0, 0, getWidth() * (1 - stripPosRel), getHeight(),
+    g.drawImage(image, 0, 0, static_cast<int>(getWidth() * (1.0f - stripPosRel)), getHeight(),
                 stripPosInPix, 0, image.getWidth() - stripPosInPix, image.getHeight());
 
-    g.drawImage(image, (1 - stripPosRel)*getWidth(), 0, stripPosRel * getWidth(), getHeight(),
+    g.drawImage(image, static_cast<int>((1.0f - stripPosRel)*getWidth()), 0, stripPosRel * getWidth(), getHeight(),
                 0, 0, stripPosInPix, image.getHeight());
 
     double now = Time::getMillisecondCounterHiRes();
@@ -371,8 +371,8 @@ void Spectrogram::MathOp::copyToBackend(const std::complex<float>* c[], int Lc[]
             float tmpxPrec = colsRatios[ii] * ii;
             int tmpx = static_cast<int>(tmpxPrec);
             tmpxPrec -= tmpx;
-            float intx1 =  (1.0f - tmpxPrec) * std::fabs(c[tmpy][tmpx]) + tmpxPrec * std::fabs(c[tmpy][tmpx + 1]);
-            float intx2 =  (1.0f - tmpxPrec) * std::fabs(c[tmpy + 1][tmpx]) + tmpxPrec * std::fabs(c[tmpy + 1][tmpx + 1]);
+            float intx1 =  (1.0f - tmpxPrec) * std::abs(c[tmpy][tmpx]) + tmpxPrec * std::abs(c[tmpy][tmpx + 1]);
+            float intx2 =  (1.0f - tmpxPrec) * std::abs(c[tmpy + 1][tmpx]) + tmpxPrec * std::abs(c[tmpy + 1][tmpx + 1]);
             DATAEL(m, ii) = (1.0f - tmpyPrec) * intx1 + tmpyPrec * intx2;
         }
     }
@@ -384,7 +384,7 @@ void Spectrogram::MathOp::toDB(HeapBlock<float>& in, int inLen)
     float* ptr = in.getData();
     for (int ii = 0; ii < inLen; ++ii)
     {
-        *ptr = 20.0 * std::log10(*ptr **ptr + 1e-10);
+        *ptr = 20.0f * static_cast<float>(std::log10(*ptr **ptr + 1e-10));
         ptr++;
     }
 }

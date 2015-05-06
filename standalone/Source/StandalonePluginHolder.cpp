@@ -178,7 +178,7 @@ bool StandalonePluginHolder::removeFile(int fileIndex)
         return false;
 }
 
-bool StandalonePluginHolder::clearFileList()
+void StandalonePluginHolder::clearFileList()
 {
     listOfFiles.clear(true);
 }
@@ -507,7 +507,7 @@ void StandalonePluginHolder::changeListenerCallback(ChangeBroadcaster*)
 
 bool StandalonePluginHolder::setNextFile()
 {
-    int64 startPosition = oldStreamPosition;
+    
     if ( currentFile == nullptr )
     {
         DBG("Stopping playback");

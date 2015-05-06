@@ -33,8 +33,13 @@ LLast year, the became
 #include <type_traits>
 #include <cstring>
 #include <fstream>
+
+#define USETBB
+#ifdef USETBB
 #include <tbb/tbb.h>
 using namespace tbb;
+#endif
+
 
 namespace SpectrogramPlottableMethods
 {
@@ -93,7 +98,7 @@ protected:
     // Write position in the active buffer
     int pos;
     //
-    const bool transformOnRead;
+    bool transformOnRead;
 private:
     void createBuffers();
     void destroyBuffers();

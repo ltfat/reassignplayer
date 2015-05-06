@@ -32,8 +32,8 @@ public:
 
     const String getName() const { return L"AudioSource wrapper"; }
 
-    const String getInputChannelName(const int channelIndex) const { return String(channelIndex + 1); }
-    const String getOutputChannelName(const int channelIndex) const { return String(channelIndex + 1); }
+    const String getInputChannelName(int channelIndex) const { return String(channelIndex + 1); }
+    const String getOutputChannelName(int channelIndex) const { return String(channelIndex + 1); }
 
     bool isInputChannelStereoPair (int index)	const	{ return false;	}
 	bool isOutputChannelStereoPair (int index)	const	{ return false; }

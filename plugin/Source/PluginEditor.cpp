@@ -43,21 +43,18 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
 
 
     //[Constructor] You can add your own custom stuff here..
+    DBG("PluginEditor constructor begin");
     reassignToggle = new TextButton("Reassign toggle");
     reassignToggle->setToggleState(true, sendNotification);
     reassignToggle->setClickingTogglesState(true);
 
     {
-
         const MessageManagerLock mmLock;
         reassignToggle->addListener(this);
     }
     showSelector = new TextButton("Show Filterbank Selector");
     showSelector->setToggleState(false, sendNotification);
-    {
-        const MessageManagerLock mmLock;
         showSelector->addListener(this);
-    }
     channelChooser = new ComboBox();
     for (int ii = 1; ii <= processor.getNumInputChannels(); ++ii)
     {
@@ -68,10 +65,7 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
     trash.add(l);
     l->attachToComponent(channelChooser, true);
 
-    {
-        const MessageManagerLock mmLock;
         channelChooser->addListener(this);
-    }
 
     spectrogram->getPopupMenu().addSeparator();
     spectrogram->getPopupMenu().addSectionHeader("Plugin options");
@@ -83,6 +77,12 @@ PluginEditor::PluginEditor (PluginAudioProcessor& p)
    ogl = new OpenGLContext();
    ogl->setSwapInterval(0);
    ogl->attachTo(*spectrogram);
+
+   // The following will be successfull as there is no source registered yet
+   spectrogram->setSpectrogramSource( dynamic_cast<SpectrogramPlottable*>( static_cast<PluginAudioProcessor&>(processor).getRingBuffer()));
+
+   DBG("PluginEditor constructor end");
+
 
     //ogl->setSwapInterval(1);
     /* DBG("PluginEditor constructor");
@@ -110,6 +110,7 @@ PluginEditor::~PluginEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     ogl->detach();
     ogl = nullptr;
+    DBG("PluginEditor destructor end");
     //[/Destructor_pre]
 
     spectrogram = nullptr;

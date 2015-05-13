@@ -203,9 +203,15 @@ void PluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     DBG("prepareToPlay in PluginAudioProcessor");
     //Array<File> files;
     //fftBuf = createRingBufferFromData();
-    PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
-    spectrogram = pe->getSpectrogram();
-    spectrogram->setSpectrogramSource(fftBuf);
+    {
+    // const MessageManagerLock mmlock;
+    // This must be done elsewhere as the Editor is created by the host by at demand
+    // We should also not try to store pointer to spectrogram as it
+    // might become invalid when Editor is recreated 
+    //PluginEditor* pe = dynamic_cast<PluginEditor*>(createEditorIfNeeded());
+    //spectrogram = pe->getSpectrogram();
+    //spectrogram->setSpectrogramSource(fftBuf);
+    }
     DBG("prepareToPlay in PluginAudioProcessor end");
 }
 
@@ -214,28 +220,43 @@ void PluginAudioProcessor::releaseResources()
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 
+    // Lock is necessary here as we do not want to end up with
+    // the editor being deleted in the middle of detaching the spectrogram
+    //
+    const MessageManagerLock mmlock;
     // We must first detach spectrogram to be able to safely remove fftBuf
-    spectrogram->aboutToChangeSpectrogramSource();
-    while (spectrogram->trySetSpectrogramSource(nullptr)) {}
+    PluginEditor* pe = dynamic_cast<PluginEditor*>(getActiveEditor());
 
-    if (nullptr != fftBufReplacing.get()) delete fftBufReplacing.get();
+    if(nullptr != pe)
+    {
+        pe->getSpectrogram()->aboutToChangeSpectrogramSource();
+        while (pe->getSpectrogram()->trySetSpectrogramSource(nullptr)) {}
+    }
+    // Delete the buffer
     fftBuf = nullptr;
+    // Delete the replacing buffer if it exists
+    if (nullptr != fftBufReplacing.get()) delete fftBufReplacing.get();
 }
 
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    // Get the initial time
     double startTime = Time::getMillisecondCounterHiRes();
+
     // Clear excesive buffers
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // length of the loaded buffer
     int actBufLen = buffer.getNumSamples();
+    // pointer to the buffer
     const float* srcPtr = buffer.getReadPointer(paramActChannel);
-
+    // Get the replacing buffer
     RingFFTBuffer* repl = fftBufReplacing.get();
 
     if (nullptr == repl)
     {
+        // Working with the same buffer as in the last iteration
         if (nullptr != fftBuf)
             fftBuf->appendSamples(&srcPtr, actBufLen);
     }
@@ -250,11 +271,13 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
             // We assume here that fftBuf was not set in spectrogram either
             fftBuf = repl;
             fftBuf->appendSamples(&srcPtr, actBufLen);
-            spectrogram->setSpectrogramSource(fftBuf);
+
+           // spectrogram->setSpectrogramSource(fftBuf);
             fftBufReplacing = nullptr;
         }
         else
         {
+            /*
             // This is hard(er)
             // 1) Start appending samples to the next buffer
             // 2) Wait until the old buffer is empty and do the switch
@@ -274,10 +297,14 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
                 fftBuf = repl;
                 fftBufReplacing = nullptr;
             }
+            */
         }
     }
 
-    spectrogram->setAudioLoopMs(Time::getMillisecondCounterHiRes() - startTime);
+    // Get the final time
+    double endTime = Time::getMillisecondCounterHiRes();
+
+    //spectrogram->setAudioLoopMs(endTime - startTime);
 
     if (nullptr != fftBuf && typeid(*fftBuf) == typeid(RingReassignedBLFilterbankBuffer) )
         (dynamic_cast<RingReassignedBLFilterbankBuffer*>(fftBuf.get()))->setActivePlotReassigned(paramReassignedSwitch);

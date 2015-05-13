@@ -85,7 +85,11 @@ void Spectrogram::populatePopupMenu()
 
 Spectrogram::~Spectrogram()
 {
+    DBG("Spectrogram desctructor");
     stopThread(1000);
+    stopTimer();
+    while(isTimerRunning()){}
+    ringBuffer = nullptr;
     imageGraphics = nullptr;
     spectrogramThread = nullptr;
 }
@@ -123,9 +127,16 @@ void Spectrogram::stripBackendToRepaint()
     // This is an atomic operation
     stripPos = stripPosLoc;
 
-    // repaint shoild be called from the message thread
-    const MessageManagerLock mmLock;
-    repaint();
+    // repaint should be called from the message thread
+    /*
+     * Using only
+     *  const MessageManagerLock mmLock();
+     *  fails sometimes when constructor and destructor are called
+     *  rapidly.
+     */
+    const MessageManagerLock mmLock(Thread::getCurrentThread());
+    if(mmLock.lockWasGained())
+        repaint();
 }
 
 
@@ -230,6 +241,7 @@ void Spectrogram::timerCallback()
     // We are on the Message thread, just signalise new data is available and exit
     // Atomic
     timerFired = 1;
+    // repaint();
 }
 
 

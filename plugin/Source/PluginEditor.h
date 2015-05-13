@@ -91,33 +91,6 @@ private:
     ScopedPointer<Button> showSelector;
     ScopedPointer<ComboBox> channelChooser;
 
-    // This is a file filter class accepting only files with .json suffix
-    // and containing element g
-    class JSONFilterbankFileFilter: public FileFilter
-    {
-    ScopedPointer<ComboBox> channelChooser;
-       public:
-             JSONFilterbankFileFilter(const String &filterDescription):
-                FileFilter(filterDescription){}
-             ~JSONFilterbankFileFilter() {}
-             bool isFileSuitable(const File &file) const override
-             {
-                if(file.getFileName().endsWith(".json"))
-                {
-                     var v = JSON::parse(file);
-                     if(v==var::null) return false;
-                     var g = v["g"];
-                     if(v==var::null) return false;
-                     return true;
-                }
-                else
-                {
-                   return false;
-                }
-             }
-             bool isDirectorySuitable(const File &file) const override {return false;}
-       private:
-    };
     //[/UserVariables]
 
     //==============================================================================

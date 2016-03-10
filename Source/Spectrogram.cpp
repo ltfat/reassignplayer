@@ -8,14 +8,13 @@
   ==============================================================================
 */
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "Spectrogram.h"
 #include "ltfatColormaps.h"
 
 
 const int Spectrogram::defaultImageWidth = 800;
 const int Spectrogram::defaultImageHeight = 600;
-const int Spectrogram::defaultStripWidth = 5;
+const int Spectrogram::defaultStripWidth = 10;
 const double Spectrogram::defaultMinDB = -70;
 const double Spectrogram::defaultMaxDB = 40;
 
@@ -27,7 +26,6 @@ Spectrogram::Spectrogram():
 }
 
 Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
-    Thread("Spectrogram_thread"),
     timerFired(0),
     repaintTimeMaxMs(0.0),
     audioLoopMs(0.0),
@@ -37,11 +35,10 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     stripWidth(stripWidth_),
     image(Image(Image::ARGB, imageWidth, imageHeight, true )),
     strip(Image(Image::ARGB, stripWidth_, imageHeight, true )),
-    ringBuffer(nullptr),
     minmaxdb(nullptr), speedSlider(nullptr),
     oldMidDB((defaultMinDB + defaultMaxDB) / 2.0),
     minDB(defaultMinDB), maxDB(defaultMaxDB), midDB(oldMidDB),
-    ringBufferIsValid(0)
+    spectrogramSourceIsValid(0)
 {
     setBufferedToImage(true);
     stripBackend.malloc(stripWidth * imageHeight * sizeof(float));
@@ -56,8 +53,8 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     strip.clear(juce::Rectangle<int>(0, 0, stripWidth, imageHeight), Colour(colourmap[0]));
 
     populatePopupMenu();
-    startThread();
-    startTimerHz(60);
+    // startThread();
+    startTimer(1000.0 / 60.0);
 }
 
 void Spectrogram::populatePopupMenu()
@@ -76,8 +73,8 @@ void Spectrogram::populatePopupMenu()
     minmaxdb->setMinValue(minDB.get(), dontSendNotification, true);
     minmaxdb->setValue(midDB.get(), dontSendNotification);
     minmaxdbLabel = new Label("Range", "Range:");
-    minmaxdbLabel->attachToComponent(minmaxdb, true);
-    pm->addCustomItem(1, minmaxdb, 130, 30, false);
+    pm->addCustomItem(1, minmaxdbLabel, 220, 30, false);
+    pm->addCustomItem(2, minmaxdb, 220, 30, false);
 
 
     minmaxdb->addListener(this);
@@ -86,10 +83,12 @@ void Spectrogram::populatePopupMenu()
 Spectrogram::~Spectrogram()
 {
     DBG("Spectrogram desctructor");
-    stopThread(1000);
+    minmaxdbLabel = nullptr;
+    minmaxdb = nullptr;
+    pm = nullptr;
+    // stopThread(1000);
     stopTimer();
-    while(isTimerRunning()){}
-    ringBuffer = nullptr;
+    while (isTimerRunning()) {}
     imageGraphics = nullptr;
     spectrogramThread = nullptr;
 }
@@ -104,10 +103,10 @@ void Spectrogram::stripBackendToRepaint()
     MathOp::toDB(stripBackend, totalStripElNo );
     // Inplace limit to range
     MathOp::toLimitedRange(stripBackend, totalStripElNo, static_cast<float>(std::max( minDB.get(), initMinDB )),
-		static_cast<float>(std::min(maxDB.get(), initMaxDB)));
+                           static_cast<float>(std::min(maxDB.get(), initMaxDB)));
     // Inplace convert to integer range [0,colourmapLen]
-	MathOp::toRange(stripBackend, totalStripElNo, static_cast<float>(std::max(minDB.get(), initMinDB)),
-		static_cast<float>(std::min(maxDB.get(), initMaxDB)),
+    MathOp::toRange(stripBackend, totalStripElNo, static_cast<float>(std::max(minDB.get(), initMinDB)),
+                    static_cast<float>(std::min(maxDB.get(), initMaxDB)),
                     static_cast<float>(colourmapLen.get() - 1));
 
 
@@ -116,16 +115,17 @@ void Spectrogram::stripBackendToRepaint()
         // repaint
         const ScopedLock imageGraphicsLock(objectLock);
         MathOp::imageInColourmap(strip, stripBackend, colourmap);
+
+        int stripPosLoc = stripPos.get() + 1;
+        if (stripPosLoc * stripWidth >= image.getWidth())
+        {
+            stripPosLoc = 0;
+        }
+
+        // This is an atomic operation
+        stripPos = stripPosLoc;
     }
 
-    int stripPosLoc = stripPos.get()+1;
-    if (stripPosLoc * stripWidth >= image.getWidth())
-    {
-        stripPosLoc = 0;
-    }
-
-    // This is an atomic operation
-    stripPos = stripPosLoc;
 
     // repaint should be called from the message thread
     /*
@@ -134,9 +134,9 @@ void Spectrogram::stripBackendToRepaint()
      *  fails sometimes when constructor and destructor are called
      *  rapidly.
      */
-    const MessageManagerLock mmLock(Thread::getCurrentThread());
-    if(mmLock.lockWasGained())
-        repaint();
+    // const MessageManagerLock mmLock(Thread::getCurrentThread());
+    // if (mmLock.lockWasGained())
+    repaint();
 }
 
 
@@ -173,11 +173,11 @@ void Spectrogram::paint (Graphics& g)
     // Ensure we are using the same stripPos during the paint method
     // stripPos is atomic
     int stripPosLoc = stripPos.get();
-    int stripPosLocMinOneInPix = (stripPosLoc-1)*stripWidth;
+    int stripPosLocMinOneInPix = (stripPosLoc - 1) * stripWidth;
 
-    if( stripPosLocMinOneInPix<0)
+    if ( stripPosLocMinOneInPix < 0)
     {
-      stripPosLocMinOneInPix += image.getWidth(); 
+        stripPosLocMinOneInPix += image.getWidth();
     }
 
     {
@@ -200,8 +200,8 @@ void Spectrogram::paint (Graphics& g)
     g.drawImage(image, static_cast<int>((1.0f - stripPosRel)*getWidth()), 0, stripPosRel * getWidth(), getHeight(),
                 0, 0, stripPosInPix, image.getHeight());
 
-    double now = Time::getMillisecondCounterHiRes();
 
+    double now = Time::getMillisecondCounterHiRes();
     const double elapsedMs = now - startTime;
     if (counter > maxCountRefresh)
     {
@@ -219,8 +219,8 @@ void Spectrogram::paint (Graphics& g)
     ga.addFittedText (displayFont,
                       "Repaint : " + String (elapsedMs, 1) + " ms"
                       + "\nMax. repaint : " + String(repaintTimeMaxMs, 1) + " ms"
-                      + "\nAudioloop : " + String(audioLoopMs.get(), 1) + " ms"
-                      + "\nMax. audioloop : " + String(audioLoopMaxMs.get(), 1) + " ms",
+                      + "\nReassignment : " + String(audioLoopMs.get(), 1) + " ms"
+                      + "\nMax. reassignment : " + String(audioLoopMaxMs.get(), 1) + " ms",
                       0, 10.0f, getWidth() - 10.0f, (float) getHeight(), Justification::topRight, 3);
 
     g.setColour (Colours::white.withAlpha (0.3f));
@@ -234,71 +234,64 @@ void Spectrogram::resized()
 {
     // There are no child Components
     // We are currently on the Message thread
-    repaint();
+    // repaint();
 }
+
 void Spectrogram::timerCallback()
+{
+hiResTimerCallback();
+}
+
+
+
+void Spectrogram::hiResTimerCallback()
 {
     // We are on the Message thread, just signalise new data is available and exit
     // Atomic
-    timerFired = 1;
-    // repaint();
+    // timerFired = 1;
+    if (spectrogramSourceIsValid.get() == 1 && nullptr != spectrogramSource.get())
+    {
+        double startTime = Time::getMillisecondCounterHiRes();
+
+        // Check new data
+        bool isValid = spectrogramSource.get()->getBufferCoefficientsAsAbsMatrix(stripBackend,
+                       strip.getWidth(), strip.getHeight());
+
+        double now = Time::getMillisecondCounterHiRes();
+
+        if (isValid)
+        {
+            // New data is available
+            stripBackendToRepaint();
+            audioLoopMs.set(now - startTime);
+        }
+    }
+
 }
 
 
 bool Spectrogram::aboutToChangeSpectrogramSource()
 {
     // Change the value to 0 only if it is 1
-    return ringBufferIsValid.compareAndSetBool(0, 1);
+    return spectrogramSourceIsValid.compareAndSetBool(0, 1);
 }
 
 // No thread safety here. Can only be used for the very first call
 void Spectrogram::setSpectrogramSource(SpectrogramPlottable* buf)
 {
-   ringBuffer = buf;
-   ringBufferIsValid = 1;
+    spectrogramSource.set(buf);
+    spectrogramSourceIsValid.set(1);
 }
 
 // Safely replace ringBuf
-// It is sucessfull only when 
+// It is sucessfull only when
 bool Spectrogram::trySetSpectrogramSource(SpectrogramPlottable* buf)
 {
     // Change ringBuffer only if it is already nullpt   // Change ringBuffer only if it is
     // already nullptrr
-    bool retval =  ringBuffer.compareAndSetBool(buf, nullptr);
-
-    if(retval) ringBufferIsValid = 1;
+    bool retval =  spectrogramSource.compareAndSetBool(buf, nullptr);
+    if (retval) spectrogramSourceIsValid = 1;
     return retval;
-}
-
-void Spectrogram::run()
-{
-    while (!threadShouldExit())
-    {
-        // The current thead is not killed yet
-        if (1 == timerFired.get())
-        {
-            if (ringBufferIsValid.get() == 1 && nullptr != ringBuffer.get())
-            {
-                // Check new data
-                bool isValid = ringBuffer.get()->getBufferCoefficientsAsAbsMatrix(stripBackend,
-                               strip.getWidth(), strip.getHeight());
-                if (isValid)
-                {
-                    // New data is available
-                    stripBackendToRepaint();
-                }
-            }
-            else
-            {
-                ringBuffer = nullptr;
-            }
-
-            // Atomic
-            // It might happen that the timer fires before we get here, but it is not a
-            // problem
-            timerFired = 0;
-        }
-    }
 }
 
 void Spectrogram::mouseDown(const MouseEvent & event)
@@ -306,15 +299,8 @@ void Spectrogram::mouseDown(const MouseEvent & event)
     if ( event.mods == ModifierKeys::rightButtonModifier)
     {
         pm->show();
-        //pm->showMenuAsync(PopupMenu::Options(), this);
     }
 }
-
-void Spectrogram::modalStateFinished(int rValue)
-{
-//  DBG("Popupmenu closed");
-}
-
 
 void Spectrogram::sliderValueChanged(Slider* slider)
 {
@@ -451,7 +437,7 @@ void Spectrogram::MathOp::imageInColourmap(Image& image, HeapBlock<float>& data,
     for (int y = 0; y < height; ++y)
     {
         uint32* rowPtr = reinterpret_cast<uint32*>(idata.getLinePointer(y));
-        float* dataPtr = data.getData() + (height-1 - y) * width;
+        float* dataPtr = data.getData() + (height - 1 - y) * width;
 
         for (int x = 0; x < width; ++x)
         {

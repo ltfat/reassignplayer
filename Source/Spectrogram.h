@@ -12,17 +12,17 @@
 #define SPECTROGRAM_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "RingTransformBuffer.h"
 #include <complex>
+#include "ReassignedBLFilterbank.h"
 
 //==============================================================================
 /*
 */
+
+
 class Spectrogram    : public Component,
-    public Timer,
-    public Slider::Listener,
-    public ModalComponentManager::Callback,
-    public Thread
+    public HighResolutionTimer,
+    public Slider::Listener
 {
 public:
     Spectrogram();
@@ -38,12 +38,10 @@ public:
     void resized();
 
     void sliderValueChanged(Slider* slider) override;
-    //void valueChanged(Value &value) override;
-    void modalStateFinished(int rValue) override;
     void mouseDown(const MouseEvent & event) override;
-    void timerCallback() override;
-    void run() override;
-
+    void hiResTimerCallback() override;
+    void timerCallback();
+    
     void setSpectrogramSource(SpectrogramPlottable* buf);
     // The same as above but it can fail
     bool trySetSpectrogramSource(SpectrogramPlottable* buf);
@@ -57,7 +55,7 @@ public:
 
     void startPlotting()
     {
-        startTimerHz(60);
+        startTimer(1000.0/60.0);
     }
     void stopPlotting()
     {
@@ -103,7 +101,7 @@ private:
     Atomic<int> colourmapLen;
     int stripWidth;
     Atomic<int> stripPos;
-    Atomic<SpectrogramPlottable*> ringBuffer;
+    Atomic<SpectrogramPlottable*> spectrogramSource;
 
     ScopedPointer<Thread> spectrogramThread;
     ScopedPointer<Graphics> imageGraphics;
@@ -121,7 +119,7 @@ private:
 
     CriticalSection objectLock;
 
-    Atomic<int> ringBufferIsValid;
+    Atomic<int> spectrogramSourceIsValid;
 
 
     class MathOp

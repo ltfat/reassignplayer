@@ -1,7 +1,7 @@
 #ifndef FILTERBANKDATAHOLDER_H_INCLUDED
 #define FILTERBANKDATAHOLDER_H_INCLUDED
 
-#include "../../plugin/JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #include "fftw3.h"
 #include "ltfat.h"
@@ -34,9 +34,9 @@ public:
     {
     public:
         static BLFilterbankDef* createDefFromFile(File& file,
-                                                  int64 byteOffset = 0);
+                int64 byteOffset = 0);
         static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
-                                                  int64 byteOffset = 0);
+                int64 byteOffset = 0);
         virtual ~BLFilterbankDef();
 
         const fftwf_complex** G;
@@ -51,15 +51,15 @@ public:
         const int             L;
     private:
         static void getFilterbankBaseData (MemoryInputStream* dataPtr,
-                unsigned* blockLengthPtr,
-                unsigned* mPtr);
+                                           unsigned* blockLengthPtr,
+                                           unsigned* mPtr);
         static void getFilterbankParamData (MemoryInputStream* dataPtr,
-                unsigned M, unsigned* aOne,
-                unsigned a[], float fc[],
-                unsigned foff[], unsigned filtLengths[]);
+                                            unsigned M, unsigned* aOne,
+                                            unsigned a[], float fc[],
+                                            unsigned foff[], unsigned filtLengths[]);
         static void getFilterbankFilterData (MemoryInputStream* dataPtr,
-                unsigned M, unsigned filtLengths[],
-                float** G);
+                                             unsigned M, unsigned filtLengths[],
+                                             float** G);
 
         // Make it non-copyable and non createable
         BLFilterbankDef(const fftwf_complex** G_,
@@ -83,8 +83,8 @@ private:
     void init(Array<File> loadedFilterbankFiles);
 
     class FilterbankSelectWindow : public DialogWindow,
-                                   public ChangeBroadcaster,
-                                   private ButtonListener
+        public ChangeBroadcaster,
+        private ButtonListener
     {
     public:
         FilterbankSelectWindow (String title, Array<unsigned>& blockLengths, int* fbIndexPtr);
@@ -117,4 +117,3 @@ private:
 
 
 #endif // FILTERBANKDATAHOLDER_H_INCLUDED
-

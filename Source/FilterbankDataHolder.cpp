@@ -14,16 +14,16 @@
 // FilterbankDataHolder
 
 FilterbankDataHolder::FilterbankDataHolder():
-numOfFilterbanks(0),
-reassignable(false)
+    numOfFilterbanks(0),
+    reassignable(false)
 {
     Array<File> loadedFilterbankFiles = FilterbankFileLoader();
     init(loadedFilterbankFiles);
 }
 
 FilterbankDataHolder::FilterbankDataHolder(Array<File> loadedFilterbankFiles):
-numOfFilterbanks(0),
-reassignable(false)
+    numOfFilterbanks(0),
+    reassignable(false)
 {
     init(loadedFilterbankFiles);
 }
@@ -32,31 +32,31 @@ reassignable(false)
 
 void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
 {
-        // First validity check: All files are of the same size
+    // First validity check: All files are of the same size
     switch ( loadedFilterbankFiles.size() )
     {
-        case 0:
-            throw(String("Schmorf"));
-            break;
-        case 1:
-            rawFilterbankData.resize(1);
-            break;
-        case 3:
-            if ( loadedFilterbankFiles[0].getSize() !=  loadedFilterbankFiles[1].getSize() ||
-                 loadedFilterbankFiles[0].getSize() !=  loadedFilterbankFiles[2].getSize() )
-            {
-                throw(String("Schmorf (2)"));
-            }
-            rawFilterbankData.resize(3);
-            reassignable = true;
-            break;
-        default:
-            throw(String("Schmorf (3)"));
+    case 0:
+        throw (String("Schmorf"));
+        break;
+    case 1:
+        rawFilterbankData.resize(1);
+        break;
+    case 3:
+        if ( loadedFilterbankFiles[0].getSize() !=  loadedFilterbankFiles[1].getSize() ||
+                loadedFilterbankFiles[0].getSize() !=  loadedFilterbankFiles[2].getSize() )
+        {
+            throw (String("Schmorf (2)"));
+        }
+        rawFilterbankData.resize(3);
+        reassignable = true;
+        break;
+    default:
+        throw (String("Schmorf (3)"));
     }
 
     // Check file existence
 
-    for (int kk=0; kk < loadedFilterbankFiles.size(); ++kk )
+    for (int kk = 0; kk < loadedFilterbankFiles.size(); ++kk )
     {
         if ( !loadedFilterbankFiles[kk].existsAsFile() )
             throw String(String("File ") + loadedFilterbankFiles[kk].getFileName() + String(" not found!"));
@@ -67,7 +67,7 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
 
     loadedFilterbankFiles[0].getSize();
 
-    for (int kk=0; kk < loadedFilterbankFiles.size(); ++kk )
+    for (int kk = 0; kk < loadedFilterbankFiles.size(); ++kk )
     {
         loadedFilterbankFiles[kk].loadFileAsData(rawFilterbankData.getReference(kk));
     }
@@ -80,7 +80,7 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
         baseFilterbankStream->setPosition(currentPosition);
         startingBytes.add(currentPosition);
 
-        if ( currentPosition < loadedFilterbankFiles[0].getSize()-6 )
+        if ( currentPosition < loadedFilterbankFiles[0].getSize() - 6 )
         {
             if (sizeof(unsigned long) > 4) // Handle standard case of 32-bit unsigned
             {
@@ -111,7 +111,7 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
 
     if ( currentPosition != loadedFilterbankFiles[0].getSize() )
     {
-            throw String("File read error (2)");
+        throw String("File read error (2)");
     }
 
     fbIndex = 0;
@@ -206,10 +206,10 @@ FilterbankDataHolder::BLFilterbankDef* FilterbankDataHolder::BLFilterbankDef::
 createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
 {
     // Create data stream:
-    MemoryInputStream dataStreamPtr(memBlock,0);
+    MemoryInputStream dataStreamPtr(memBlock, 0);
     int64 dataSize = dataStreamPtr.getDataSize();
 
-    if ( dataSize < byteOffset+8 )
+    if ( dataSize < byteOffset + 8 )
     {
         throw String("Reading error, stream does not contain the desired filterbank data");
     }
@@ -230,7 +230,7 @@ createDefFromData(MemoryBlock& memBlock, int64 byteOffset)
         dataStreamPtr.read(&binFilterbankLength, 4);
     }
 
-    if (dataSize < byteOffset+binFilterbankLength)
+    if (dataSize < byteOffset + binFilterbankLength)
     {
         throw String("Reading error, stream does not contain the desired filterbank data (2)");
     }
@@ -335,11 +335,11 @@ getFilterbankBaseData(MemoryInputStream* dataStreamPtr, unsigned* blockLengthPtr
 {
     if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
     {
-        unsigned short* tempInt = new unsigned short;
-        dataStreamPtr->read(tempInt, 2);
-        (*blockLengthPtr) = static_cast <unsigned> (*tempInt);
-        dataStreamPtr->read(tempInt, 2);
-        (*mPtr) = static_cast <unsigned> (*tempInt);
+        unsigned short tempInt;
+        dataStreamPtr->read(&tempInt, 2);
+        (*blockLengthPtr) = static_cast <unsigned> (tempInt);
+        dataStreamPtr->read(&tempInt, 2);
+        (*mPtr) = static_cast <unsigned> (tempInt);
     }
     else // Handle case of 16-bit unsigned
     {
@@ -357,10 +357,10 @@ getFilterbankParamData(MemoryInputStream* dataStreamPtr,
     if (sizeof(unsigned) > 2) // Handle standard case of 32-bit unsigned
     {
         unsigned short* tempAry = new unsigned short[M];
-        unsigned short* tempInt = new unsigned short;
+        unsigned short tempInt;
 
-        dataStreamPtr->read(tempInt, 2);
-        (*aOnePtr) = static_cast <unsigned> (*tempInt);
+        dataStreamPtr->read(&tempInt, 2);
+        (*aOnePtr) = static_cast <unsigned> (tempInt);
         dataStreamPtr->read(tempAry, 2 * M);
         for (unsigned kk = 0; kk < M; ++kk)
         {
@@ -378,6 +378,7 @@ getFilterbankParamData(MemoryInputStream* dataStreamPtr,
             filtLengths[kk] = static_cast <unsigned> (tempAry[kk]);
         }
 
+        delete [] tempAry;
     }
     else // Handle case of 16-bit unsigned
     {
@@ -418,6 +419,8 @@ FilterbankDataHolder::BLFilterbankDef::~BLFilterbankDef()
     if (nullptr != realonly) fftwf_free((void*)realonly);
     if (nullptr != a) fftwf_free((void*)a);
     if (nullptr != Lc) fftwf_free((void*)Lc);
+    if (nullptr != Lchalf) fftwf_free((void*)Lchalf);
+    if (nullptr != fc) fftwf_free((void*)fc);
 }
 
 //============================================================================
@@ -425,29 +428,29 @@ FilterbankDataHolder::BLFilterbankDef::~BLFilterbankDef()
 
 FilterbankDataHolder::FilterbankSelectWindow
 ::FilterbankSelectWindow (String title, Array<unsigned>& blockLengths, int* fbIndexPtr)
-: DialogWindow (title, Colours::lightgrey, true, true),
-confirmButton(new TextButton("Ok")),
-activeFilterbank(fbIndexPtr)
+    : DialogWindow (title, Colours::lightgrey, true, true),
+      confirmButton(new TextButton("Ok")),
+      activeFilterbank(fbIndexPtr)
 {
     // Setup window
     setTitleBarHeight(20);
-    dialogText = new Label("","Select filter bank block length...");
+    dialogText = new Label("", "Select filter bank block length...");
 
     for (unsigned kk = 0 ; kk < blockLengths.size(); ++kk)
     {
         ToggleButton* newButton = new ToggleButton( String(std::to_string(blockLengths[kk])) += String(" samples"));
         fbDataButtons.add(newButton);
-        fbDataButtons[kk]->setToggleState ( kk==0, dontSendNotification);
-        fbDataButtons[kk]->setBounds (20, 55+25*kk, 260, 20);
+        fbDataButtons[kk]->setToggleState ( kk == 0, dontSendNotification);
+        fbDataButtons[kk]->setBounds (20, 55 + 25 * kk, 260, 20);
         fbDataButtons[kk]->setRadioGroupId ( 1119, dontSendNotification);
         fbDataButtons[kk]->addListener(this);
         Component::addAndMakeVisible(fbDataButtons[kk]);
     }
 
-    setSize(300,5+(blockLengths.size()+3)*25);
+    setSize(300, 5 + (blockLengths.size() + 3) * 25);
     dialogText->setBounds (20, 30, 260, 20);
     dialogText->setEditable(false);
-    confirmButton->setBounds (90, getHeight()-25, 120, 20);
+    confirmButton->setBounds (90, getHeight() - 25, 120, 20);
     confirmButton->addListener(this);
     Component::addAndMakeVisible(dialogText);
     Component::addAndMakeVisible(confirmButton);
@@ -484,28 +487,25 @@ void FilterbankDataHolder::FilterbankSelectWindow::buttonClicked (Button* b)
 
 Array<File> FilterbankDataHolder::FilterbankFileLoader()
 {
-   Array<File> fbData;
-   String tmpString = String();
-   FileChooser fbDataChooser ("Select filter bank data for analysis...",
+    Array<File> fbData;
+    String tmpString = String();
+    FileChooser fbDataChooser ("Select filter bank data for analysis...",
                                File::nonexistent,
                                "*.lfb");
-   if (fbDataChooser.browseForFileToOpen())
-   {
-       fbData.add(fbDataChooser.getResult());
-       tmpString += fbDataChooser.getResult().getFullPathName();
-       tmpString = tmpString.dropLastCharacters(4);
-       fbData.add(tmpString += String("_fgrad.lfb"));
-       tmpString = tmpString.dropLastCharacters(10);
-       fbData.add(tmpString += String("_tgrad.lfb"));
+    if (fbDataChooser.browseForFileToOpen())
+    {
+        fbData.add(fbDataChooser.getResult());
+        tmpString += fbDataChooser.getResult().getFullPathName();
+        tmpString = tmpString.dropLastCharacters(4);
+        fbData.add(tmpString += String("_fgrad.lfb"));
+        tmpString = tmpString.dropLastCharacters(10);
+        fbData.add(tmpString += String("_tgrad.lfb"));
 
-       if ( (!fbData[1].existsAsFile()) || (!fbData[2].existsAsFile()))
-                fbData.removeLast(2);
-   }
-   else
-   {
-       throw String("Failed to open filter bank data file.");
-   }
+        if ( (!fbData[1].existsAsFile()) || (!fbData[2].existsAsFile()))
+            throw String("Failed to open filter bank data file.");
 
-   return fbData;
+    }
+
+    // This is empty if user pressed Cancel
+    return fbData;
 }
-

@@ -12,14 +12,16 @@
 #define AUDIOHANDLER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#define _USE_MATH_DEFINES 
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include "fftw3.h"
 #include <atomic>
 #include "ReassignedBLFilterbank.h"
 
 
-class AudioHandler : public AudioIODeviceCallback
+class AudioHandler : public AudioIODeviceCallback,
+                     public ChangeListener
+                     //public ChangeBroadcaster
 {
 public:
     AudioHandler();
@@ -36,7 +38,7 @@ public:
 
     void audioDeviceError (const String &errorMessage) override;
 
-    void loadFileIntoTransportAndStart(File f);
+    void loadFileIntoTransportAndStart(File& f, int64 startingPosition = 0);
 
     void setInputIsMic();
     void setInputIsFile();
@@ -52,6 +54,7 @@ public:
     bool playNext();
     bool playPrevious();
     bool removeFile(int fileIndex);
+    void clearFileList();
 
     int getCurrentSource();
 
@@ -62,6 +65,9 @@ public:
     static AudioDeviceManager& getAudioDeviceManager();
 
     void setFilterbank(ReassignedBLFilterbank* filterbank_){filterbank.set(filterbank_);}
+
+    // Change Listener callback
+    void changeListenerCallback(ChangeBroadcaster* source);
 private:
     Atomic<ReassignedBLFilterbank*> filterbank;
     std::atomic_int inputIndex; // 0 - no input, 1 - mic, 2 - file
@@ -85,9 +91,10 @@ private:
 
     bool currentFromPlaylist;
     int currentFileIdx;
-    File currentFile;
+    void setNextFile();
     int loopState;
     OwnedArray<File> listOfFiles;
+    ScopedPointer<File> currentFile;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioHandler)
 };
 

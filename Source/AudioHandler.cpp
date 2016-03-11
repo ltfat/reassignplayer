@@ -44,6 +44,8 @@ AudioHandler::AudioHandler():
 
     AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
     adm.addAudioCallback(this);
+
+    transportSource.addChangeListener(this);
 }
 
 AudioHandler::~AudioHandler()
@@ -124,7 +126,7 @@ void AudioHandler::audioDeviceError (const String &errorMessage)
 
 }
 
-void AudioHandler::loadFileIntoTransportAndStart(File f)
+void AudioHandler::loadFileIntoTransportAndStart(File& f, int64 startingPosition)
 {
     AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
     AudioIODevice* aiod = adm.getCurrentAudioDevice();
@@ -136,20 +138,27 @@ void AudioHandler::loadFileIntoTransportAndStart(File f)
     // The old reader is killed together with formatReaderSource on the previous line
     reader = formatManager.createReaderFor(f);
 
-    if (reader != nullptr)
+    if ( f.existsAsFile() )
     {
-        formatReaderSource = new AudioFormatReaderSource(reader, true);
-        formatReaderSource->setLooping(false);
-        // We want the file to be read at the common sample-rate
-        // Read up to samplesToPreload in advance
-        int samplesToPreload = 10 * reader->bitsPerSample / 8 * aiod->getCurrentBufferSizeSamples();
-        transportSource.setSource(formatReaderSource, samplesToPreload,
-                                  &filePreloadThread, aiod->getCurrentSampleRate());
-        transportSource.start();
-        setInputIsFile();
+        currentFile = new File(f);
+        if (reader != nullptr)
+        {
+            formatReaderSource = new AudioFormatReaderSource(reader, true);
+            formatReaderSource->setLooping(false);
+            // We want the file to be read at the common sample-rate
+            // Read up to samplesToPreload in advance
+            int samplesToPreload = 10 * reader->bitsPerSample / 8 * aiod->getCurrentBufferSizeSamples();
+            transportSource.setSource(formatReaderSource, samplesToPreload,
+                                    &filePreloadThread, aiod->getCurrentSampleRate());
+            if ( startingPosition < transportSource.getTotalLength() )
+                                    transportSource.setNextReadPosition(startingPosition);
+            transportSource.start();
+            setInputIsFile();
+        }
     }
+    else
+        setNextFile();
 }
-
 
 AudioDeviceManager& AudioHandler::getAudioDeviceManager()
 {
@@ -194,7 +203,9 @@ void AudioHandler::showFileChooserDialog()
                            "*.mp3,*.*");
     if (myChooser.browseForFileToOpen())
     {
-        loadFileIntoTransportAndStart(File(myChooser.getResult()));
+        File f (myChooser.getResult());
+        //currentFile = &File(myChooser.getResult());
+        loadFileIntoTransportAndStart(f);
     }
 }
 
@@ -226,6 +237,22 @@ bool AudioHandler::stopPlaying()
         transportSource.setPosition(0);
     }
     return wasP;
+}
+
+bool AudioHandler::playNext()
+{
+    if ( currentFileIdx == listOfFiles.size()-1 && loopState == 1 )
+        return setCurrentFileIdx(0);
+    else
+        return setCurrentFileIdx(currentFileIdx+1);
+}
+
+bool AudioHandler::playPrevious()
+{
+    if ( currentFileIdx == 0  && loopState == 1 )
+        return setCurrentFileIdx(listOfFiles.size()-1);
+    else
+        return setCurrentFileIdx(currentFileIdx-1);
 }
 
 bool AudioHandler::addFile(File& file)
@@ -287,3 +314,65 @@ bool AudioHandler::removeFile(int fileIndex)
     else
         return false;
 }
+
+void AudioHandler::clearFileList()
+{
+    listOfFiles.clear(true);
+}
+
+void AudioHandler::setNextFile()
+{
+
+    if ( currentFile == nullptr )
+    {
+        DBG("Stopping playback");
+    }
+    else if ( loopState == 2 || ( loopState == 1 && listOfFiles.size() == 0 ))
+    {
+        DBG("Replaying current file");
+        DBG(loopState);
+        currentFromPlaylist = false;
+        loadFileIntoTransportAndStart(*currentFile);
+    }
+    else if ( listOfFiles.size() != 0 )
+    {
+        if ( currentFileIdx < listOfFiles.size()-1 )
+        {
+            DBG("Next file in playlist played");
+            DBG(listOfFiles.size());
+            currentFromPlaylist = true;
+            //sendChangeMessage();
+            loadFileIntoTransportAndStart(*listOfFiles[++currentFileIdx]);
+        }
+        else if ( loopState == 1 )
+        {
+            DBG("Playlist exhausted, starting again");
+            DBG(listOfFiles.size());
+            currentFileIdx = 0;
+            currentFromPlaylist = true;
+            //oldStreamPosition = -1;
+            //sendChangeMessage();
+            loadFileIntoTransportAndStart(*listOfFiles[currentFileIdx]);
+        }
+        else if ( loopState == 2 && currentFile != nullptr )
+        {
+            DBG("Replay current playlist file");
+            loadFileIntoTransportAndStart(*currentFile);
+        }
+    }
+    else
+    {
+        DBG("Stopping playback unexpectedly");
+    }
+}
+
+void AudioHandler::changeListenerCallback(ChangeBroadcaster*)
+{
+    if ( transportSource.getNextReadPosition() > transportSource.getTotalLength() + 1)
+    {
+        DBG("stream end");
+        if ( currentFileIdx < listOfFiles.size()-1 || loopState != 0 )
+            setNextFile();
+    }
+}
+

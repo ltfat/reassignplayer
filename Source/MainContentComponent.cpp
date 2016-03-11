@@ -212,7 +212,7 @@ void MainContentComponent::buttonClicked (Button* b)
                     switch (toolbar.getItemId(ii))
                     {
                     case 1:
-                        // pluginHolder->playPrevious();
+                        aHandler->playPrevious();
                         for (int jj = 0; jj < toolbar.getNumItems(); jj++)
                         {
                             switch (toolbar.getItemId(jj))
@@ -310,7 +310,7 @@ void MainContentComponent::buttonClicked (Button* b)
                         DBG("STOP button pressed");
                         break;
                     case 5:
-                        // pluginHolder->playNext();
+                        aHandler->playNext();
                         for (int jj = 0; jj < toolbar.getNumItems(); jj++)
                         {
                             switch (toolbar.getItemId(jj))
@@ -346,7 +346,7 @@ void MainContentComponent::buttonClicked (Button* b)
                             case 8:
                                 c = toolbar.getItemComponent(jj);
                                 DBG("Hey, do it!");
-                                // static_cast<CustomToolbarButton*>(c)->advanceState();
+                                static_cast<CustomToolbarButton*>(c)->advanceState();
                                 break;
                             default:
                                 break;

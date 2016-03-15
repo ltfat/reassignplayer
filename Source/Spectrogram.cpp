@@ -14,7 +14,7 @@
 
 const int Spectrogram::defaultImageWidth = 800;
 const int Spectrogram::defaultImageHeight = 600;
-const int Spectrogram::defaultStripWidth = 10;
+const int Spectrogram::defaultStripWidth = 12;
 const double Spectrogram::defaultMinDB = -70;
 const double Spectrogram::defaultMaxDB = 40;
 
@@ -38,7 +38,8 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     minmaxdb(nullptr), speedSlider(nullptr),
     oldMidDB((defaultMinDB + defaultMaxDB) / 2.0),
     minDB(defaultMinDB), maxDB(defaultMaxDB), midDB(oldMidDB),
-    spectrogramSourceIsValid(0)
+    spectrogramSourceIsValid(0), stripIsValid(0), nextStripIsValid(0),
+    partialStripWidth(4), partialStripCounter(0)
 {
     setBufferedToImage(true);
     stripBackend.malloc(stripWidth * imageHeight * sizeof(float));
@@ -54,7 +55,7 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
 
     populatePopupMenu();
     // startThread();
-    startTimer(1000.0 / 60.0);
+    startPlotting();
 }
 
 void Spectrogram::populatePopupMenu()
@@ -115,19 +116,9 @@ void Spectrogram::stripBackendToRepaint()
         // repaint
         const ScopedLock imageGraphicsLock(objectLock);
         MathOp::imageInColourmap(strip, stripBackend, colourmap);
-
-        int stripPosLoc = stripPos.get() + 1;
-        if (stripPosLoc * stripWidth >= image.getWidth())
-        {
-            stripPosLoc = 0;
-        }
-
-        // This is an atomic operation
-        stripPos = stripPosLoc;
+        stripIsValid.set(1);
     }
 
-
-    // repaint should be called from the message thread
     /*
      * Using only
      *  const MessageManagerLock mmLock();
@@ -136,26 +127,7 @@ void Spectrogram::stripBackendToRepaint()
      */
     // const MessageManagerLock mmLock(Thread::getCurrentThread());
     // if (mmLock.lockWasGained())
-    repaint();
-}
-
-
-
-void Spectrogram::appendStrip(const std::complex<float>* coefs[], int Lc[], int M)
-{
-    // Interpolate to the stripBackend
-    //MathOp::copyToBackend(coefs, Lc, M,
-    //                      stripBackend, strip.getWidth(), strip.getHeight());
-    stripBackendToRepaint();
-}
-
-void Spectrogram::appendStrip(const std::complex<float> coefs[], int M)
-{
-    // Interpolate to the stripBackend
-    //
-    // MathOp::copyToBackend(coefs, M,
-    //                      stripBackend, strip.getWidth(), strip.getHeight());
-    stripBackendToRepaint();
+    // repaint();
 }
 
 void Spectrogram::setStripWidth(int stripWidth_) {}
@@ -170,28 +142,44 @@ void Spectrogram::paint (Graphics& g)
     static int counter = 0;
     double startTime = Time::getMillisecondCounterHiRes();
 
-    // Ensure we are using the same stripPos during the paint method
-    // stripPos is atomic
-    int stripPosLoc = stripPos.get();
-    int stripPosLocMinOneInPix = (stripPosLoc - 1) * stripWidth;
 
-    if ( stripPosLocMinOneInPix < 0)
-    {
-        stripPosLocMinOneInPix += image.getWidth();
-    }
+    // if (nextStripIsValid.compareAndSetBool(0,1))
+    // {
+    //     
+    // }
 
+    if (stripIsValid.get())
     {
         // Lock. Strip are shared between threads
         const ScopedLock imageGraphicsLock(objectLock);
 
+        // Ensure we are using the same stripPos during the paint method
+        // stripPos is atomic
+        int stripPosLocMinOneInPix = stripPos * partialStripWidth;
+
         // Draw strip to the image first
         imageGraphics->drawImage(strip,
-                                 stripPosLocMinOneInPix , 0, stripWidth,       image.getHeight(),
-                                 0                      , 0, strip.getWidth(), strip.getHeight());
+                                 stripPosLocMinOneInPix , 0, partialStripWidth,       image.getHeight(),
+                                 partialStripCounter*partialStripWidth, 0, partialStripWidth, strip.getHeight());
+
+        // This is an atomic operation
+
+        partialStripCounter++;
+        stripPos++;
+        if (stripPos  * partialStripWidth >= image.getWidth())
+        {
+            stripPos = 0;
+        }
+
+        if (partialStripCounter >= stripWidth / partialStripWidth)
+        {
+            partialStripCounter = 0;
+            stripIsValid.set(0);
+        }
     }
 
-    // Draw the strip itself
-    int stripPosInPix = stripPosLoc * stripWidth;
+    // Draw the image
+    int stripPosInPix = stripPos * partialStripWidth;
     float stripPosRel = ((float)stripPosInPix) / image.getWidth();
 
     g.drawImage(image, 0, 0, static_cast<int>(getWidth() * (1.0f - stripPosRel)), getHeight(),
@@ -230,25 +218,11 @@ void Spectrogram::paint (Graphics& g)
     ga.draw (g);
 }
 
-void Spectrogram::resized()
-{
-    // There are no child Components
-    // We are currently on the Message thread
-    // repaint();
-}
-
-void Spectrogram::timerCallback()
-{
-hiResTimerCallback();
-}
-
+void Spectrogram::resized() { }
 
 
 void Spectrogram::hiResTimerCallback()
 {
-    // We are on the Message thread, just signalise new data is available and exit
-    // Atomic
-    // timerFired = 1;
     if (spectrogramSourceIsValid.get() == 1 && nullptr != spectrogramSource.get())
     {
         double startTime = Time::getMillisecondCounterHiRes();
@@ -262,11 +236,13 @@ void Spectrogram::hiResTimerCallback()
         if (isValid)
         {
             // New data is available
-            stripBackendToRepaint();
             audioLoopMs.set(now - startTime);
+            stripBackendToRepaint();
         }
-    }
 
+        // Call repaint independent of whether there is new data or not
+        repaint();
+    }
 }
 
 

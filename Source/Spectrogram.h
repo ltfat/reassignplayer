@@ -29,8 +29,6 @@ public:
     Spectrogram(int imageWidth, int imageHeight, int stripWidth_ = Spectrogram::defaultStripWidth);
     ~Spectrogram();
 
-    void appendStrip(const std::complex<float>* coefs[], int Lc[], int M);
-    void appendStrip(const std::complex<float>  coefs[], int M);
     void setStripWidth(int stripWidth_);
     void setColourMap(HeapBlock<uint32>& colourmap_);
 
@@ -40,7 +38,6 @@ public:
     void sliderValueChanged(Slider* slider) override;
     void mouseDown(const MouseEvent & event) override;
     void hiResTimerCallback() override;
-    void timerCallback();
     
     void setSpectrogramSource(SpectrogramPlottable* buf);
     // The same as above but it can fail
@@ -55,7 +52,7 @@ public:
 
     void startPlotting()
     {
-        startTimer(1000.0/60.0);
+        startTimer(1000.0/100.0);
     }
     void stopPlotting()
     {
@@ -100,7 +97,7 @@ private:
     HeapBlock<uint32> colourmap;
     Atomic<int> colourmapLen;
     int stripWidth;
-    Atomic<int> stripPos;
+    int stripPos;
     Atomic<SpectrogramPlottable*> spectrogramSource;
 
     ScopedPointer<Thread> spectrogramThread;
@@ -120,6 +117,11 @@ private:
     CriticalSection objectLock;
 
     Atomic<int> spectrogramSourceIsValid;
+    Atomic<int> stripIsValid;
+    Atomic<int> nextStripIsValid;
+    int partialStripCounter;
+    int partialStripWidth;
+
 
 
     class MathOp

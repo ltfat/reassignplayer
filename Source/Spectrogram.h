@@ -29,7 +29,6 @@ public:
     Spectrogram(int imageWidth, int imageHeight, int stripWidth_ = Spectrogram::defaultStripWidth);
     ~Spectrogram();
 
-    void setStripWidth(int stripWidth_);
     void setColourMap(HeapBlock<uint32>& colourmap_);
 
     void paint (Graphics&);
@@ -38,7 +37,7 @@ public:
     void sliderValueChanged(Slider* slider) override;
     void mouseDown(const MouseEvent & event) override;
     void hiResTimerCallback() override;
-    
+
     void setSpectrogramSource(SpectrogramPlottable* buf);
     // The same as above but it can fail
     bool trySetSpectrogramSource(SpectrogramPlottable* buf);
@@ -50,9 +49,17 @@ public:
         return *pm;
     };
 
+    void setStripWidth(int stripWidth_)
+    {
+        jassert(stripWidth_ % partialStripWidth == 0 && "stripWidth must be divisible by 5");
+        stripWidth = stripWidth_;
+        stripBackend.malloc(stripWidth * image.getHeight() * sizeof(float));
+        strip = Image(Image::ARGB, stripWidth, image.getHeight(), true );
+    }
+
     void startPlotting()
     {
-        startTimer(1000.0/100.0);
+        startTimer(1000.0 / 60.0);
     }
     void stopPlotting()
     {

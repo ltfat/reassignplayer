@@ -154,6 +154,7 @@ void MainContentComponent::replaceFilterbank(ReassignedBLFilterbank* fb)
 {
     aHandler->setFilterbank(fb);
     spectrogram->stopPlotting();
+    spectrogram->setStripWidth(5*std::floor(fb->getBufLen()/2048.0));
     spectrogram->setSpectrogramSource(fb);
     filterbank = fb;
     spectrogram->startPlotting();

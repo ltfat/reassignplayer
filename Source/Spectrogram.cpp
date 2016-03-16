@@ -14,7 +14,7 @@
 
 const int Spectrogram::defaultImageWidth = 800;
 const int Spectrogram::defaultImageHeight = 600;
-const int Spectrogram::defaultStripWidth = 12;
+const int Spectrogram::defaultStripWidth = 10;
 const double Spectrogram::defaultMinDB = -70;
 const double Spectrogram::defaultMaxDB = 40;
 
@@ -39,7 +39,7 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     oldMidDB((defaultMinDB + defaultMaxDB) / 2.0),
     minDB(defaultMinDB), maxDB(defaultMaxDB), midDB(oldMidDB),
     spectrogramSourceIsValid(0), stripIsValid(0), nextStripIsValid(0),
-    partialStripWidth(4), partialStripCounter(0)
+    partialStripWidth(5), partialStripCounter(0)
 {
     setBufferedToImage(true);
     stripBackend.malloc(stripWidth * imageHeight * sizeof(float));
@@ -117,6 +117,8 @@ void Spectrogram::stripBackendToRepaint()
         const ScopedLock imageGraphicsLock(objectLock);
         MathOp::imageInColourmap(strip, stripBackend, colourmap);
         stripIsValid.set(1);
+        partialStripCounter = 0;
+
     }
 
     /*
@@ -130,7 +132,6 @@ void Spectrogram::stripBackendToRepaint()
     // repaint();
 }
 
-void Spectrogram::setStripWidth(int stripWidth_) {}
 void Spectrogram::setColourMap(HeapBlock<uint32>& colourmap_)
 {
     //colourmap = colourmap_;
@@ -140,13 +141,8 @@ void Spectrogram::setColourMap(HeapBlock<uint32>& colourmap_)
 void Spectrogram::paint (Graphics& g)
 {
     static int counter = 0;
+
     double startTime = Time::getMillisecondCounterHiRes();
-
-
-    // if (nextStripIsValid.compareAndSetBool(0,1))
-    // {
-    //     
-    // }
 
     if (stripIsValid.get())
     {
@@ -157,6 +153,7 @@ void Spectrogram::paint (Graphics& g)
         // stripPos is atomic
         int stripPosLocMinOneInPix = stripPos * partialStripWidth;
 
+        imageGraphics->setImageResamplingQuality(Graphics::ResamplingQuality::lowResamplingQuality);
         // Draw strip to the image first
         imageGraphics->drawImage(strip,
                                  stripPosLocMinOneInPix , 0, partialStripWidth,       image.getHeight(),
@@ -181,6 +178,8 @@ void Spectrogram::paint (Graphics& g)
     // Draw the image
     int stripPosInPix = stripPos * partialStripWidth;
     float stripPosRel = ((float)stripPosInPix) / image.getWidth();
+
+    g.setImageResamplingQuality(Graphics::ResamplingQuality::lowResamplingQuality);
 
     g.drawImage(image, 0, 0, static_cast<int>(getWidth() * (1.0f - stripPosRel)), getHeight(),
                 stripPosInPix, 0, image.getWidth() - stripPosInPix, image.getHeight());
@@ -225,6 +224,9 @@ void Spectrogram::hiResTimerCallback()
 {
     if (spectrogramSourceIsValid.get() == 1 && nullptr != spectrogramSource.get())
     {
+        // Call repaint independent of whether there is new data or not
+        repaint();
+
         double startTime = Time::getMillisecondCounterHiRes();
 
         // Check new data
@@ -240,8 +242,6 @@ void Spectrogram::hiResTimerCallback()
             stripBackendToRepaint();
         }
 
-        // Call repaint independent of whether there is new data or not
-        repaint();
     }
 }
 

@@ -9,6 +9,9 @@
 */
 
 #include "ReassignedBLFilterbank.h"
+#ifdef USETBB
+#include "tbb/tbb.h"
+#endif
 #define ABS(c) std::sqrt((c)[0]*(c)[0] + (c)[1]*(c)[1])
 
 
@@ -172,8 +175,8 @@ ReassignedBLFilterbank::
 makeFromChooser()
 {
     Array<File> loadedFilterbankFiles = FilterbankDataHolder::FilterbankFileLoader();
-    
-    if(loadedFilterbankFiles.size()!=3)
+
+    if (loadedFilterbankFiles.size() != 3)
         return nullptr;
 
     FilterbankDataHolder dataHolder(loadedFilterbankFiles);
@@ -252,6 +255,45 @@ performTransform() noexcept
     }
     fftwf_execute_dft(*plan, bufFFTCoefs, bufFFTCoefs);
 
+#ifdef USETBB
+    parallel_for( blocked_range<size_t>(0, filterbanks.size(), 1), [ = ](const blocked_range<size_t>& rbig)
+    {
+        for (size_t ii = rbig.begin(); ii != rbig.end(); ++ii)
+        {
+            fftwf_complex** C = bufFilterbankCoefs.getUnchecked(ii);
+            FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getUnchecked(ii);
+
+            parallel_for( blocked_range<size_t>(0, blFilt->M, 10), [ = ](const blocked_range<size_t>& r)
+            {
+                for (size_t i = r.begin(); i != r.end(); ++i)
+                {
+                    convsub_fftbl_execute_s(p[ii][i],
+                                            const_cast<const fftwf_complex *>(bufFFTCoefs),
+                                            const_cast<const fftwf_complex *>(blFilt->G[i]),
+                                            blFilt->foff[i], 0, C[i]);
+                }
+
+            });
+
+            // Do the overlays
+            fftwf_complex** overlayfront = bufFilterbankOverlaidCoefs.getUnchecked(ii);
+
+            parallel_for( blocked_range<size_t>(0, blFilt->M, 10), [ = ](const blocked_range<size_t>& r)
+            {
+                for (size_t m = r.begin(); m != r.end(); ++m)
+                {
+                    fftwf_complex* overlayfrontTmp = overlayfront[m];
+                    fftwf_complex* CTmp = C[m];
+                    for (int ii = 0; ii < blFilt->Lchalf[m]; ++ii)
+                    {
+                        overlayfrontTmp[ii][0] += CTmp[ii][0];
+                        overlayfrontTmp[ii][1] += CTmp[ii][1];
+                    }
+                }
+            });
+        }
+    });
+#else
     for (int ii = 0; ii < filterbanks.size(); ++ii)
     {
         fftwf_complex** C = bufFilterbankCoefs.getUnchecked(ii);
@@ -279,6 +321,7 @@ performTransform() noexcept
             }
         }
     }
+#endif
 
     FilterbankDataHolder::BLFilterbankDef* blFilt = filterbanks.getFirst();
     const int M = blFilt->M;

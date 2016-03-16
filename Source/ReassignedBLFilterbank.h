@@ -62,6 +62,8 @@ public:
     {
         doPlotReassigned.set(!doPlotReassigned.get());
     };
+
+    int getBufLen(){return bufLen;}
 private:
     void performTransform() noexcept;
 

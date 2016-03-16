@@ -74,8 +74,8 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/dev/lib/VST3SDK" vst3Folder="~/dev/lib/VST3SDK"
-                externalLibraries="ltfatf&#10;fftw3f" extraLinkerFlags="" extraCompilerFlags=""
-                extraDefs="" cppLanguageStandard="-std=c++11">
+                externalLibraries="ltfatf&#10;fftw3f&#10;tbb" extraLinkerFlags=""
+                extraCompilerFlags="" extraDefs="USETBB" cppLanguageStandard="-std=c++11">
       <CONFIGURATIONS>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
                        targetName="ReassignmentJUCE"/>

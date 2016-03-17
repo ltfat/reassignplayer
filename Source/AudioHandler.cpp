@@ -85,9 +85,9 @@ void AudioHandler::audioDeviceIOCallback (
             memset(outputChannelData[ii], 0, numSamples * sizeof(float));
         }
 
-        if (numOutputChannels > 0 && nullptr != filterbank.get())
+        if (numInputChannels > 0 && nullptr != filterbank.get())  
         {
-            filterbank.get()->appendSamples(outputChannelData[0], numSamples);
+            filterbank.get()->appendSamples(inputChannelData[0], numSamples);
         }
     }
     break;

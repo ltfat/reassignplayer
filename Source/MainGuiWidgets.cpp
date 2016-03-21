@@ -83,6 +83,16 @@ ToolbarItemComponent* MainToolbarItemFactory
             binDataOn = "list_svg";
             buttonText = "show playlist";
             break;
+        case fbfile:
+            binDataOff = "loadFB_svg";
+            binDataOn = "loadFB_svg";
+            buttonText = "load filter bank";
+            break;
+        case switchreass:
+            binDataOff = "reassignOff_svg";
+            binDataOn = "reassignOn_svg";
+            buttonText = "switch reassignment";
+            break;
         default:
             break;
         }
@@ -138,6 +148,8 @@ void MainToolbarItemFactory
     ids.add (flexibleSpacerId);
     //ids.add(fileToggle);
     //ids.add(saveImg);
+    ids.add(switchreass);
+    ids.add(fbfile);
     ids.add(playlist);
     ids.add (flexibleSpacerId);
 }
@@ -155,6 +167,8 @@ void MainToolbarItemFactory
     ids.add(loopToggle);
     ids.add(saveImg);
     ids.add(playlist);
+    ids.add(switchreass);
+    ids.add(fbfile);
 
     // Spacers and Separators
     ids.add (separatorBarId);

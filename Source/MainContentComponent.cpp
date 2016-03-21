@@ -209,6 +209,29 @@ void MainContentComponent::buttonClicked (Button* b)
                         plWindow->setVisible(true);
                     break;
                 }
+                else if (toolbar.getItemId(ii) == 11)
+                {
+                    ReassignedBLFilterbank* replacementFb = nullptr;
+                    try
+                    {
+                        replacementFb = ReassignedBLFilterbank::makeFromChooser();
+                    }
+                    catch (String e)
+                    {
+                        std::cout << e << std::endl;
+                    }
+                    if (replacementFb)
+                        replaceFilterbank(replacementFb);
+                    break;
+                }
+                else if (toolbar.getItemId(ii) == 12)
+                {
+                    filterbank->toggleActivePlotReassigned();
+                    c = toolbar.getItemComponent(ii);
+                    cc = static_cast<ToolbarButton*>(c);
+                    cc->setToggleState(!cc->getToggleState(), dontSendNotification);
+                    break;
+                }
                 else if (aHandler->getCurrentSource() == 2)
                 {
                     switch (toolbar.getItemId(ii))
@@ -570,7 +593,8 @@ void MainContentComponent
             }
             break;
         case 3:
-            filterbank->toggleActivePlotReassigned();
+            // Toolbar Item Component 10 should be the reassignment switch
+            toolbar.getItemComponent(14)->triggerClick();
             break;
         default:
             break;

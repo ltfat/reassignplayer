@@ -39,7 +39,9 @@ private:
         fileToggle,
         loopToggle,
         saveImg,
-        playlist
+        playlist,
+        fbfile,
+        switchreass
     };
     ButtonListener* listener;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainToolbarItemFactory)

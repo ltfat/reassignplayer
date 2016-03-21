@@ -20,8 +20,8 @@
 
 
 class AudioHandler : public AudioIODeviceCallback,
-                     public ChangeListener
-                     //public ChangeBroadcaster
+                     public ChangeListener,
+                     public ChangeBroadcaster
 {
 public:
     AudioHandler();

@@ -85,7 +85,7 @@ void AudioHandler::audioDeviceIOCallback (
             memset(outputChannelData[ii], 0, numSamples * sizeof(float));
         }
 
-        if (numInputChannels > 0 && nullptr != filterbank.get())  
+        if (numInputChannels > 0 && nullptr != filterbank.get())
         {
             filterbank.get()->appendSamples(inputChannelData[0], numSamples);
         }
@@ -373,6 +373,7 @@ void AudioHandler::changeListenerCallback(ChangeBroadcaster*)
         DBG("stream end");
         if ( currentFileIdx < listOfFiles.size()-1 || loopState != 0 )
             setNextFile();
+        sendChangeMessage();
     }
 }
 

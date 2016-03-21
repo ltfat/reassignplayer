@@ -62,6 +62,7 @@ MainContentComponent::MainContentComponent ()
     addAndMakeVisible(fileLabel);
     plWindow = new PlaylistWindow(this, aHandler);
     plWindow->addChangeListener(this);
+    aHandler->addChangeListener(this);
 
     //[/UserPreSize]
 
@@ -239,26 +240,23 @@ void MainContentComponent::buttonClicked (Button* b)
                     case 2:
                         isP = aHandler->startPlaying();
                         plWindow->repaint();
-                        if (1)//(!isP)
+                        for (int jj = 0; jj < toolbar.getNumItems(); jj++)
                         {
-                            for (int jj = 0; jj < toolbar.getNumItems(); jj++)
+                            switch (toolbar.getItemId(jj))
                             {
-                                switch (toolbar.getItemId(jj))
-                                {
-                                case 2:
-                                    c = toolbar.getItemComponent(jj);
-                                    cc = static_cast<ToolbarButton*>(c);
-                                    cc->setToggleState(1, dontSendNotification);
-                                    break;
-                                case 3:
-                                case 4:
-                                    c = toolbar.getItemComponent(jj);
-                                    cc = static_cast<ToolbarButton*>(c);
-                                    cc->setToggleState(0, dontSendNotification);
-                                    break;
-                                default:
-                                    break;
-                                }
+                            case 2:
+                                c = toolbar.getItemComponent(jj);
+                                cc = static_cast<ToolbarButton*>(c);
+                                cc->setToggleState(1, dontSendNotification);
+                                break;
+                            case 3:
+                            case 4:
+                                c = toolbar.getItemComponent(jj);
+                                cc = static_cast<ToolbarButton*>(c);
+                                cc->setToggleState(0, dontSendNotification);
+                                break;
+                            default:
+                                break;
                             }
                         }
                         DBG("PLAY button pressed");
@@ -393,6 +391,10 @@ void MainContentComponent::changeListenerCallback(ChangeBroadcaster* source)
     {
         toolbar.getItemComponent(2)->triggerClick();
     }
+    if (aHandler == source)
+    {
+        plWindow->repaint();
+    }
 }
 
 
@@ -426,10 +428,9 @@ PopupMenu MainContentComponent
     case OPTIONS:
         pm.addItem (1, TRANS("Audio Settings..."));
         pm.addSeparator();
-        pm.addItem (2, TRANS("Save current state..."));
-        pm.addItem (3, TRANS("Load a saved state..."));
+        pm.addItem (2, TRANS("Load filter bank file..."));
         pm.addSeparator();
-        pm.addItem (4, TRANS("Reset to default state"));
+        pm.addItem (3, TRANS("Reassignment ON/OFF"));
         break;
     case INFO:
         pm.addItem (1, TRANS("Information"));
@@ -554,27 +555,21 @@ void MainContentComponent
             aHandler->showAudioDeviceManagerDialog();
             break;
         case 2:
-        {
-            ReassignedBLFilterbank* replacementFb = nullptr;
-            try
             {
-                replacementFb = ReassignedBLFilterbank::makeFromChooser();
+                ReassignedBLFilterbank* replacementFb = nullptr;
+                try
+                {
+                    replacementFb = ReassignedBLFilterbank::makeFromChooser();
+                }
+                catch (String e)
+                {
+                    std::cout << e << std::endl;
+                }
+                if (replacementFb)
+                    replaceFilterbank(replacementFb);
             }
-            catch (String e)
-            {
-                std::cout << e << std::endl;
-            }
-            if (replacementFb)
-                replaceFilterbank(replacementFb);
-        }
-            // pluginHolder->askUserToSaveState();
-        break;
-        case 3:
-            spectrogram->startPlotting();
-            // pluginHolder->askUserToLoadState();
             break;
-        case 4:
-            // resetToDefaultState();
+        case 3:
             filterbank->toggleActivePlotReassigned();
             break;
         default:

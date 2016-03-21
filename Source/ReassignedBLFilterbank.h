@@ -57,6 +57,11 @@ public:
     {
         doPlotReassigned.set(doSet);
     };
+
+    bool getActivePlotReassigned()
+    {
+        return static_cast<bool>(doPlotReassigned.get());
+    };
     
     void toggleActivePlotReassigned()
     {

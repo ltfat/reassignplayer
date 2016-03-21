@@ -61,7 +61,7 @@ MainContentComponent::MainContentComponent ()
     // fileLabel.setColour(Label::backgroundColourId, backgroundColour);
     addAndMakeVisible(fileLabel);
     plWindow = new PlaylistWindow(this, aHandler);
-
+    plWindow->addChangeListener(this);
 
     //[/UserPreSize]
 
@@ -238,7 +238,8 @@ void MainContentComponent::buttonClicked (Button* b)
                         break;
                     case 2:
                         isP = aHandler->startPlaying();
-                        if (!isP)
+                        plWindow->repaint();
+                        if (1)//(!isP)
                         {
                             for (int jj = 0; jj < toolbar.getNumItems(); jj++)
                             {
@@ -385,6 +386,17 @@ void MainContentComponent::buttonClicked (Button* b)
         }
     }
 }
+
+void MainContentComponent::changeListenerCallback(ChangeBroadcaster* source)
+{
+    if (plWindow == source)
+    {
+        toolbar.getItemComponent(2)->triggerClick();
+    }
+}
+
+
+
 
 //============================================================================
 // MenuBarModel related

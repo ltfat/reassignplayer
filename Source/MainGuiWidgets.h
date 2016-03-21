@@ -47,7 +47,8 @@ private:
 
 
 class PlaylistWindow: public DocumentWindow,
-    public ListBoxModel
+                      public ChangeBroadcaster,
+                      public ListBoxModel
 {
 public:
     PlaylistWindow(ButtonListener* listener_, AudioHandler* ah);

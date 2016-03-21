@@ -164,9 +164,9 @@ void MainToolbarItemFactory
 
 // Playlist Window
 
-PlaylistWindow::PlaylistWindow(ButtonListener* listener_, AudioHandler* ah)
+PlaylistWindow::PlaylistWindow(ButtonListener* blistener_, AudioHandler* ah)
     : DocumentWindow("Playlist", Colours::lightgrey, 0, true),
-      aHandler(ah), listener(listener_)
+      aHandler(ah), listener(blistener_)
 {
     // Window dimensions
     setTitleBarButtonsRequired (DocumentWindow::closeButton, false);
@@ -278,12 +278,10 @@ void PlaylistWindow::paintListBoxItem (int rowNumber, Graphics& g, int width, in
 {
     if (rowIsSelected)
         g.fillAll (findColour (TextEditor::highlightColourId));
-    //
-    // if ( rowNumber == pluginHolder->getCurrentFileIdx() )
-    //     g.setColour (Colours::darkblue);
-    // else
-    //     g.setColour (Colours::black);
-
+    if ( rowNumber == aHandler->getCurrentFileIdx() )
+        g.setColour (Colours::darkblue);
+    else
+        g.setColour (Colours::black);
     g.setFont (12.0f);
     g.drawFittedText (playList[rowNumber].toRawUTF8(), 8, 0, this->getWidth() - 16, 20, Justification::centredLeft, 1);
     // 8, 0, width - 16, height, Justification::centredLeft, 2);
@@ -292,8 +290,10 @@ void PlaylistWindow::paintListBoxItem (int rowNumber, Graphics& g, int width, in
 
 void PlaylistWindow::listBoxItemDoubleClicked (int row, const MouseEvent &)
 {
-    aHandler->setCurrentFileIdx(row, true);
-    this->repaint();
+    //aHandler->stopPlaying();
+    aHandler->setCurrentFileIdx(row, false);
+    sendChangeMessage();
+    //this->repaint();
 }
 
 //========================================================================================================================================

@@ -40,6 +40,7 @@
 */
 class MainContentComponent  : public Component,
     private ButtonListener,
+    private ChangeListener,
     private LabelListener,
     private MenuBarModel
 {
@@ -58,6 +59,7 @@ public:
     PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
     StringArray getMenuBarNames() override;
 
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     void buttonClicked (Button* b) override;
     void labelTextChanged (Label* l) override;
 
@@ -72,7 +74,7 @@ private:
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<ReassignedBLFilterbank> filterbank;
     ScopedPointer<OpenGLContext> ogl;
-    
+
     ScopedPointer<FilterbankDataHolder> dataHolder;
 
 

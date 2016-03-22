@@ -32,7 +32,8 @@ void AudioHandler::setInputIsZero()
 
 AudioHandler::AudioHandler():
     filePreloadThread("filePreThread"),
-    filterbank(nullptr)
+    filterbank(nullptr),
+    loopState(0)
 {
     formatManager.registerBasicFormats();
     formatManager.registerFormat(new MP3AudioFormat(), true);

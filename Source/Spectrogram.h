@@ -39,10 +39,6 @@ public:
     void hiResTimerCallback() override;
 
     void setSpectrogramSource(SpectrogramPlottable* buf);
-    // The same as above but it can fail
-    bool trySetSpectrogramSource(SpectrogramPlottable* buf);
-    // When called, stop ascing for samples as soon as possible
-    bool aboutToChangeSpectrogramSource();
 
     PopupMenu& getPopupMenu()
     {
@@ -65,21 +61,6 @@ public:
     {
         stopTimer();
     }
-    void setAudioLoopMs(double ms)
-    {
-        static int counter = 0;
-        audioLoopMs = ms;
-        if (counter > maxCountRefresh)
-        {
-            counter = 0;
-            audioLoopMaxMs = 0.0;
-        }
-        counter++;
-        if (ms > audioLoopMaxMs.get())
-        {
-            audioLoopMaxMs = ms;
-        }
-    }
 
     static const int defaultImageWidth;
     static const int defaultImageHeight;
@@ -90,14 +71,12 @@ private:
     void setImageDimensions(int width, int height);
     void stripBackendToRepaint();
     void populatePopupMenu();
-    Atomic<int> timerFired;
     double repaintTimeMaxMs;
     Atomic<double> audioLoopMs;
     Atomic<double> audioLoopMaxMs;
     int maxCountRefresh;
     Font displayFont ;
 
-    OpenGLImageType imageType;
     Image image;
     Image strip;
     HeapBlock<float> stripBackend;
@@ -107,7 +86,6 @@ private:
     int stripPos;
     Atomic<SpectrogramPlottable*> spectrogramSource;
 
-    ScopedPointer<Thread> spectrogramThread;
     ScopedPointer<Graphics> imageGraphics;
 
     // Right-click popupmenu
@@ -119,8 +97,6 @@ private:
     Atomic<double> minDB, maxDB, midDB;
     double initMinDB, initMaxDB;
 
-    OwnedArray<Component> trash;
-
     CriticalSection objectLock;
 
     Atomic<int> spectrogramSourceIsValid;
@@ -129,16 +105,9 @@ private:
     int partialStripCounter;
     int partialStripWidth;
 
-
-
     class MathOp
     {
     public:
-        static void copyToBackend(const std::complex<float>* coefs[], int Lc[], int M,
-                                  HeapBlock<float>& data, int stripWidth, int stripHeight);
-        static void copyToBackend(const std::complex<float> coefs[], int M,
-                                  HeapBlock<float>& data, int stripWidth, int stripHeight);
-
         static void toDB(HeapBlock<float>& in, int inLen );
         static void toLimitedRange(HeapBlock<float>& in, int inLen, float loDB, float hiDB);
         static void toRange(HeapBlock<float>& in, int inLen, float min, float max, float range);

@@ -26,7 +26,6 @@ Spectrogram::Spectrogram():
 }
 
 Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
-    timerFired(0),
     repaintTimeMaxMs(0.0),
     audioLoopMs(0.0),
     audioLoopMaxMs(0.0),
@@ -54,7 +53,6 @@ Spectrogram::Spectrogram(int imageWidth, int imageHeight, int stripWidth_):
     strip.clear(juce::Rectangle<int>(0, 0, stripWidth, imageHeight), Colour(colourmap[0]));
 
     populatePopupMenu();
-    // startThread();
     startPlotting();
 }
 
@@ -91,7 +89,6 @@ Spectrogram::~Spectrogram()
     stopTimer();
     while (isTimerRunning()) {}
     imageGraphics = nullptr;
-    spectrogramThread = nullptr;
 }
 
 void Spectrogram::stripBackendToRepaint()
@@ -157,7 +154,7 @@ void Spectrogram::paint (Graphics& g)
         // Draw strip to the image first
         imageGraphics->drawImage(strip,
                                  stripPosLocMinOneInPix , 0, partialStripWidth,       image.getHeight(),
-                                 partialStripCounter*partialStripWidth, 0, partialStripWidth, strip.getHeight());
+                                 partialStripCounter * partialStripWidth, 0, partialStripWidth, strip.getHeight());
 
         // This is an atomic operation
 
@@ -203,11 +200,17 @@ void Spectrogram::paint (Graphics& g)
 
 
     GlyphArrangement ga;
+
+    // ga.addFittedText (displayFont,
+    //                   "Repaint : " + String (elapsedMs, 1) + " ms"
+    //                   + "\nMax. repaint : " + String(repaintTimeMaxMs, 1) + " ms"
+    //                   + "\nReassignment : " + String(audioLoopMs.get(), 1) + " ms"
+    //                   + "\nMax. reassignment : " + String(audioLoopMaxMs.get(), 1) + " ms",
+    //                   0, 10.0f, getWidth() - 10.0f, (float) getHeight(), Justification::topRight, 3);
+
     ga.addFittedText (displayFont,
-                      "Repaint : " + String (elapsedMs, 1) + " ms"
-                      + "\nMax. repaint : " + String(repaintTimeMaxMs, 1) + " ms"
-                      + "\nReassignment : " + String(audioLoopMs.get(), 1) + " ms"
-                      + "\nMax. reassignment : " + String(audioLoopMaxMs.get(), 1) + " ms",
+                      "Repaint : " + String (repaintTimeMaxMs, 1) + " ms"
+                      + "\nReassignment : " + String(audioLoopMaxMs.get(), 1) + " ms",
                       0, 10.0f, getWidth() - 10.0f, (float) getHeight(), Justification::topRight, 3);
 
     g.setColour (Colours::white.withAlpha (0.3f));
@@ -237,8 +240,19 @@ void Spectrogram::hiResTimerCallback()
 
         if (isValid)
         {
-            // New data is available
-            audioLoopMs.set(now - startTime);
+            double elapsedMs = now - startTime;
+            static int counter = 0;
+            if (counter > maxCountRefresh)
+            {
+                counter = 0;
+                audioLoopMaxMs = 0.0;
+            }
+            counter++;
+            if (elapsedMs > audioLoopMaxMs.get() )
+            {
+                audioLoopMaxMs.set(elapsedMs);
+            }
+
             stripBackendToRepaint();
         }
 
@@ -246,28 +260,11 @@ void Spectrogram::hiResTimerCallback()
 }
 
 
-bool Spectrogram::aboutToChangeSpectrogramSource()
-{
-    // Change the value to 0 only if it is 1
-    return spectrogramSourceIsValid.compareAndSetBool(0, 1);
-}
-
 // No thread safety here. Can only be used for the very first call
 void Spectrogram::setSpectrogramSource(SpectrogramPlottable* buf)
 {
     spectrogramSource.set(buf);
     spectrogramSourceIsValid.set(1);
-}
-
-// Safely replace ringBuf
-// It is sucessfull only when
-bool Spectrogram::trySetSpectrogramSource(SpectrogramPlottable* buf)
-{
-    // Change ringBuffer only if it is already nullpt   // Change ringBuffer only if it is
-    // already nullptrr
-    bool retval =  spectrogramSource.compareAndSetBool(buf, nullptr);
-    if (retval) spectrogramSourceIsValid = 1;
-    return retval;
 }
 
 void Spectrogram::mouseDown(const MouseEvent & event)
@@ -301,57 +298,6 @@ void Spectrogram::sliderValueChanged(Slider* slider)
     }
 }
 
-
-void Spectrogram::MathOp::copyToBackend(const std::complex<float> c[], int M,
-                                        HeapBlock<float>& data, int stripWidth, int stripHeight)
-{
-#define DATAEL(m,ii) (*(data + stripWidth*m + ii))
-
-    float rowsRatio = static_cast<float>(M - 1) / stripHeight;
-    for (int m = 0; m < stripHeight; ++m)
-    {
-        float tmpyPrec = rowsRatio * m;
-        int tmpy = static_cast<int>(tmpyPrec);
-        tmpyPrec -= tmpy;
-        tmpy = M - 1 - tmpy;
-        for (int ii = 0; ii < stripWidth; ++ii)
-        {
-            DATAEL(m, ii) =  (1.0f - tmpyPrec) * std::abs(c[tmpy]) + tmpyPrec * std::abs(c[tmpy + 1]);
-        }
-    }
-#undef DATAEL
-
-}
-
-// This is supposed to do a 2D interpolation
-void Spectrogram::MathOp::copyToBackend(const std::complex<float>* c[], int Lc[], int M,
-                                        HeapBlock<float>& data, int stripWidth, int stripHeight)
-{
-#define DATAEL(m,ii) (*(data + stripWidth*m + ii))
-    // -1 to avoid getting out of bounds
-    float rowsRatio = static_cast<float>(M - 1) / stripHeight;
-    HeapBlock<float> colsRatios(M);
-    for (int m = 0; m < M; ++m)
-        colsRatios[m] = static_cast<float>(Lc[m] - 1) / stripWidth;
-
-    for (int m = 0; m < stripHeight; ++m)
-    {
-        float tmpyPrec = rowsRatio * m;
-        int tmpy = static_cast<int>(tmpyPrec);
-        tmpyPrec -= tmpy;
-        tmpy = M - 1 - tmpy;
-        for (int ii = 0; ii < stripWidth; ++ii)
-        {
-            float tmpxPrec = colsRatios[ii] * ii;
-            int tmpx = static_cast<int>(tmpxPrec);
-            tmpxPrec -= tmpx;
-            float intx1 =  (1.0f - tmpxPrec) * std::abs(c[tmpy][tmpx]) + tmpxPrec * std::abs(c[tmpy][tmpx + 1]);
-            float intx2 =  (1.0f - tmpxPrec) * std::abs(c[tmpy + 1][tmpx]) + tmpxPrec * std::abs(c[tmpy + 1][tmpx + 1]);
-            DATAEL(m, ii) = (1.0f - tmpyPrec) * intx1 + tmpyPrec * intx2;
-        }
-    }
-#undef DATAEL
-}
 
 void Spectrogram::MathOp::toDB(HeapBlock<float>& in, int inLen)
 {

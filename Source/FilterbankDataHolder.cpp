@@ -115,13 +115,13 @@ void FilterbankDataHolder::init(Array<File> loadedFilterbankFiles)
     }
 
     fbIndex = 0;
-    fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
+    // fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
 
-    if ( numOfFilterbanks > 1)
-    {
-        //fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
-        fbWindow->setVisible(true);
-    }
+    // if ( numOfFilterbanks > 1)
+    // {
+    //     //fbWindow = new FilterbankSelectWindow (loadedFilterbankFiles[0].getFileNameWithoutExtension(), blockLengths, &fbIndex);
+    //     // fbWindow->setVisible(true);
+    // }
 }
 
 // Parameter reading functions etc.

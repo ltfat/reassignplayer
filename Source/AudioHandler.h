@@ -8,37 +8,38 @@
   ==============================================================================
 */
 
-#ifndef AUDIOHANDLER_H_INCLUDED
-#define AUDIOHANDLER_H_INCLUDED
+#pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #define _USE_MATH_DEFINES
-#include <cmath>
-#include "fftw3.h"
-#include <atomic>
 #include "ReassignedBLFilterbank.h"
+#include "fftw3.h"
+#include "juce_audio_devices/juce_audio_devices.h"
+#include "juce_audio_formats/juce_audio_formats.h"
+#include "juce_audio_utils/juce_audio_utils.h"
 
-
-class AudioHandler : public AudioIODeviceCallback,
-                     public ChangeListener,
-                     public ChangeBroadcaster
+class AudioHandler : public juce::AudioIODeviceCallback,
+                     public juce::ChangeListener,
+                     public juce::ChangeBroadcaster
 {
 public:
     AudioHandler();
     ~AudioHandler();
 
-    void audioDeviceIOCallback (const float **inputChannelData,
-                                int numInputChannels,
-                                float **outputChannelData,
-                                int numOutputChannels, int numSamples) override;
+    void audioDeviceIOCallbackWithContext (const float* const* inputChannelData,
+                                                   int numInputChannels,
+                                                   float* const* outputChannelData,
+                                                   int numOutputChannels,
+                                                   int numSamples,
+                                                   const juce::AudioIODeviceCallbackContext& context) override;
 
-    void audioDeviceAboutToStart (AudioIODevice *device) override;
+    void audioDeviceAboutToStart (juce::AudioIODevice* device) override;
 
     void audioDeviceStopped() override;
 
-    void audioDeviceError (const String &errorMessage) override;
+    void audioDeviceError (const juce::String& errorMessage) override;
 
-    void loadFileIntoTransportAndStart(File& f, int64 startingPosition = 0);
+    void loadFileIntoTransportAndStart (juce::File& f,
+        juce::int64 startingPosition = 0);
 
     void setInputIsMic();
     void setInputIsFile();
@@ -47,62 +48,57 @@ public:
     bool startPlaying();
     bool pausePlaying();
     bool stopPlaying();
-    bool addFile(File& file);
+    bool addFile (juce::File& file);
     int getCurrentFileIdx();
-    bool setCurrentFileIdx(int newFileIdx, bool forceStart = false);
+    bool setCurrentFileIdx (int newFileIdx, bool forceStart = false);
     void toggleLooping();
     bool playNext();
     bool playPrevious();
-    bool removeFile(int fileIndex);
+    bool removeFile (int fileIndex);
     void clearFileList();
 
     int getCurrentSource();
 
     void showAudioDeviceManagerDialog();
     void showFileChooserDialog();
-    AudioIODevice* getCurrentAudioDevice();
+    juce::AudioIODevice* getCurrentAudioDevice();
 
-    static AudioDeviceManager& getAudioDeviceManager();
+    static juce::AudioDeviceManager& getAudioDeviceManager();
 
-    void setFilterbank(ReassignedBLFilterbank* filterbank_){filterbank.set(filterbank_);}
+    void setFilterbank (ReassignedBLFilterbank* filterbank_)
+    {
+        filterbank.set (filterbank_);
+    }
 
     // Change Listener callback
-    void changeListenerCallback(ChangeBroadcaster* source);
+    void changeListenerCallback (ChangeBroadcaster* source);
+
 private:
-    Atomic<ReassignedBLFilterbank*> filterbank;
+    juce::Atomic<ReassignedBLFilterbank*> filterbank;
     std::atomic_int inputIndex; // 0 - no input, 1 - mic, 2 - file
 
-    ScopedPointer<AudioSource> inputFileSource;
+    juce::ScopedPointer<juce::AudioSource> inputFileSource;
     // Produces AudioFormatReader
-    AudioFormatManager formatManager;
+    juce::AudioFormatManager formatManager;
     // this is killed together with formatReaderSource
     // reader has the following public attributes:
     // .sampleRate
     // .lengthInSamples
     // .numChannels
-    AudioFormatReader* reader;
+    juce::AudioFormatReader* reader;
     // This is wrapped in AudioProcessorSource
     // Preloads samples
-    AudioTransportSource transportSource;
+    juce::AudioTransportSource transportSource;
     // This is wrapped in AudioTransportSource
-    ScopedPointer<AudioFormatReaderSource> formatReaderSource;
+    juce::ScopedPointer<juce::AudioFormatReaderSource> formatReaderSource;
 
-    TimeSliceThread filePreloadThread;
+    juce::TimeSliceThread filePreloadThread;
 
     bool currentFromPlaylist;
     int currentFileIdx;
     void setNextFile();
     int loopState;
-    OwnedArray<File> listOfFiles;
-    ScopedPointer<File> currentFile;
+    juce::OwnedArray<juce::File> listOfFiles;
+    juce::ScopedPointer<juce::File> currentFile;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioHandler)
 };
-
-
-
-
-
-
-
-
-#endif  // AUDIOHANDLER_H_INCLUDED

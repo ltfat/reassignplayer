@@ -8,28 +8,23 @@
   ==============================================================================
 */
 
-#ifndef MAINGUIWIDGETS_H_INCLUDED
-#define MAINGUIWIDGETS_H_INCLUDED
+#pragma once
 
-#include "JuceHeader.h"
-#include "CustomToolbarButton.h"
 #include "AudioHandler.h"
+#include "CustomToolbarButton.h"
 
-
-class MainToolbarItemFactory: public ToolbarItemFactory
+class MainToolbarItemFactory : public juce::ToolbarItemFactory
 {
 public:
-    MainToolbarItemFactory(ButtonListener* listener_);
+    MainToolbarItemFactory (juce::Button::Listener* listener_);
     ~MainToolbarItemFactory();
 
-    void getAllToolbarItemIds(Array<int> &ids) override;
-    void getDefaultItemSet(Array<int> &ids) override;
-    ToolbarItemComponent* createItem(int itemId) override;
+    void getAllToolbarItemIds (juce::Array<int>& ids) override;
+    void getDefaultItemSet (juce::Array<int>& ids) override;
+    juce::ToolbarItemComponent* createItem (int itemId) override;
 
 private:
-
-    enum ToolbarItemIds
-    {
+    enum ToolbarItemIds {
         back = 1,
         play,
         pause,
@@ -43,101 +38,97 @@ private:
         fbfile,
         switchreass
     };
-    ButtonListener* listener;
+    juce::Button::Listener* listener;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainToolbarItemFactory)
 };
 
-
-class PlaylistWindow: public DocumentWindow,
-                      public ChangeBroadcaster,
-                      public ListBoxModel
+class PlaylistWindow : public juce::DocumentWindow,
+                       public juce::ChangeBroadcaster,
+                       public juce::ListBoxModel
 {
 public:
-    PlaylistWindow(ButtonListener* listener_, AudioHandler* ah);
+    PlaylistWindow (juce::Button::Listener* listener_, AudioHandler* ah);
     ~PlaylistWindow();
 
-    class PlaylistWindowToolbarItemFactory: public ToolbarItemFactory
+    class PlaylistWindowToolbarItemFactory : public juce::ToolbarItemFactory
     {
     public:
-        PlaylistWindowToolbarItemFactory(ButtonListener* listener_);
+        PlaylistWindowToolbarItemFactory (juce::Button::Listener* listener_);
         ~PlaylistWindowToolbarItemFactory();
 
-        void getAllToolbarItemIds(Array<int> &ids) override;
-        void getDefaultItemSet(Array<int> &ids) override;
-        ToolbarItemComponent* createItem(int itemId) override;
-    private:
-        enum ToolbarItemIds
-        {
-            addFiles = 1,
-            removeSelected,
-            clearList
-        };
+        void getAllToolbarItemIds (juce::Array<int>& ids) override;
+        void getDefaultItemSet (juce::Array<int>& ids) override;
+        juce::ToolbarItemComponent* createItem (int itemId) override;
 
-        ButtonListener* listener;
+    private:
+        enum ToolbarItemIds { addFiles = 1,
+            removeSelected,
+            clearList };
+
+        juce::Button::Listener* listener;
         // AudioHandler* aHandler;
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistWindowToolbarItemFactory)
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (
+            PlaylistWindowToolbarItemFactory)
     };
 
-
-    int getNumRows () override;
-    void paintListBoxItem (int rowNumber, Graphics &g,
-                           int width, int height, bool rowIsSelected) override;
+    int getNumRows() override;
+    void paintListBoxItem (int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected) override;
     void deleteKeyPressed (int lastRowSelected) override;
 
-    void substitutePlaylist (Array<File> newList);
-    void addItemsToList (Array<File> newList);
+    void substitutePlaylist (juce::Array<juce::File> newList);
+    void addItemsToList (juce::Array<juce::File> newList);
     /*void addItemsToList (File& newList);*/
 
-    void removeItemsFromList (SparseSet<int> selectedRows);
+    void removeItemsFromList (juce::SparseSet<int> selectedRows);
     void clearPlaylist();
-    void listBoxItemDoubleClicked (int row, const MouseEvent &) override;
+    void listBoxItemDoubleClicked (int row, const juce::MouseEvent&) override;
 
-    //void removeItemsFromList (int index_);
+    // void removeItemsFromList (int index_);
 
     void resized() override;
     void closeButtonPressed() override;
 
-    Toolbar fileControl;
-private:
-    ButtonListener* listener;
-    AudioHandler* aHandler;
-    ScopedPointer<ToolbarItemFactory> plfac;
-    Array<String> playList;
-    ScopedPointer<ListBox> playListBox;
+    juce::Toolbar fileControl;
 
+private:
+    juce::Button::Listener* listener;
+    AudioHandler* aHandler;
+    juce::ScopedPointer<juce::ToolbarItemFactory> plfac;
+    juce::Array<juce::String> playList;
+    juce::ScopedPointer<juce::ListBox> playListBox;
 };
 
-class FilterbankSelectWindow    : public DialogWindow,
-    private ButtonListener
+class FilterbankSelectWindow : public juce::DialogWindow,
+                               private juce::Button::Listener
 {
 public:
-    FilterbankSelectWindow (File fbFile, Array<unsigned long> startingBytes,
-                            Array<unsigned> blockLengths, unsigned* activeFilterbank);
+    FilterbankSelectWindow (juce::File fbFile,
+        juce::Array<unsigned long> startingBytes,
+        juce::Array<unsigned> blockLengths,
+        unsigned* activeFilterbank);
 
-    void closeButtonPressed () override;
-    void buttonClicked (Button* b) override;
+    void closeButtonPressed() override;
+    void buttonClicked (juce::Button* b) override;
+
 private:
-    ScopedPointer<TextButton> confirmButton;
-    ScopedPointer<Label> dialogText;
-    //TextButton cancelButton("Cancel");
+    juce::ScopedPointer<juce::TextButton> confirmButton;
+    juce::ScopedPointer<juce::Label> dialogText;
+    // TextButton cancelButton("Cancel");
     unsigned filterbanksRead;
     unsigned* activeFilterbank;
-    OwnedArray<ToggleButton> fbDataButtons;
+    juce::OwnedArray<juce::ToggleButton> fbDataButtons;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
 };
 
-class InfoWindow    : public DialogWindow
+class InfoWindow : public juce::DialogWindow
 {
 public:
     InfoWindow();
 
-    void closeButtonPressed () override;
+    void closeButtonPressed() override;
+
 private:
-    ScopedPointer<Label> dialogText;
+    juce::ScopedPointer<juce::Label> dialogText;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InfoWindow)
 };
-
-
-
-#endif  // MAINGUIWIDGETS_H_INCLUDED

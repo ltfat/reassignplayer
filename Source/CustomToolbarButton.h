@@ -22,12 +22,11 @@
   ==============================================================================
 */
 
-#ifndef JUCE_CustomToolbarButton_H_INCLUDED
-#define JUCE_CustomToolbarButton_H_INCLUDED
-
-#include "JuceHeader.h"
+#pragma once
 
 //==============================================================================
+#include "juce_gui_basics/juce_gui_basics.h"
+
 /**
     A type of button designed to go on a toolbar.
 
@@ -37,45 +36,41 @@
 
     @see Toolbar, ToolbarItemFactory, ToolbarItemComponent, Drawable, Button
 */
-class CustomToolbarButton   : public ToolbarItemComponent
+class CustomToolbarButton : public juce::ToolbarItemComponent
 {
 public:
     //==============================================================================
     /** Creates a CustomToolbarButton.
 
-        @param itemId       the ID for this toolbar item type. This is passed through to the
+        @param itemId       the ID for this toolbar item type. This is passed
+       through to the ToolbarItemComponent constructor
+        @param labelText    the text to display on the button (if the toolbar is
+       using a style that shows text labels). This is passed through to the
                             ToolbarItemComponent constructor
-        @param labelText    the text to display on the button (if the toolbar is using a style
-                            that shows text labels). This is passed through to the
-                            ToolbarItemComponent constructor
-        @param normalImage  a drawable object that the button should use as its icon. The object
-                            that is passed-in here will be kept by this object and will be
-                            deleted when no longer needed or when this button is deleted.
-        @param toggledOnImage  a drawable object that the button can use as its icon if the button
-                            is in a toggled-on state (see the Button::getToggleState() method). If
-                            nullptr is passed-in here, then the normal image will be used instead,
-                            regardless of the toggle state. The object that is passed-in here will be
-                            owned by this object and will be deleted when no longer needed or when
-                            this button is deleted.
+        @param normalImage  a drawable object that the button should use as its
+       icon. The object that is passed-in here will be kept by this object and
+       will be deleted when no longer needed or when this button is deleted.
+        @param toggledOnImage  a drawable object that the button can use as its
+       icon if the button is in a toggled-on state (see the
+       Button::getToggleState() method). If nullptr is passed-in here, then the
+       normal image will be used instead, regardless of the toggle state. The
+       object that is passed-in here will be owned by this object and will be
+       deleted when no longer needed or when this button is deleted.
     */
-    CustomToolbarButton (int itemId,
-                   const String& labelText,
-                   Array<Drawable*> imagesToUse_);
-                   //Drawable* normalImage,
-                   //Drawable* toggledOnImage);
+    CustomToolbarButton (int itemId, const juce::String& labelText, juce::Array<juce::Drawable*> imagesToUse_);
+    // Drawable* normalImage,
+    // Drawable* toggledOnImage);
 
     /** Destructor. */
     ~CustomToolbarButton();
 
-
     //==============================================================================
     /** @internal */
-    bool getToolbarItemSizes (int toolbarDepth, bool isToolbarVertical, int& preferredSize,
-                              int& minSize, int& maxSize) override;
+    bool getToolbarItemSizes (int toolbarDepth, bool isToolbarVertical, int& preferredSize, int& minSize, int& maxSize) override;
     /** @internal */
-    void paintButtonArea (Graphics&, int width, int height, bool isMouseOver, bool isMouseDown) override;
+    void paintButtonArea (juce::Graphics&, int width, int height, bool isMouseOver, bool isMouseDown) override;
     /** @internal */
-    void contentAreaChanged (const Rectangle<int>&) override;
+    void contentAreaChanged (const juce::Rectangle<int>&) override;
     /** @internal */
     void buttonStateChanged() override;
     /** @internal */
@@ -84,20 +79,18 @@ public:
     void enablementChanged() override;
 
     void advanceState();
+
 private:
     //==============================================================================
-    OwnedArray<Drawable> imagesToUse;
-    //ScopedPointer<Drawable> normalImage, toggledOnImage;
-    Drawable* currentImage;
+    juce::OwnedArray<juce::Drawable> imagesToUse;
+    // ScopedPointer<Drawable> normalImage, toggledOnImage;
+    juce::Drawable* currentImage;
 
     int currentState;
 
     void updateDrawable();
-    Drawable* getImageToUse() const;
-    void setCurrentImage (Drawable*);
+    juce::Drawable* getImageToUse() const;
+    void setCurrentImage (juce::Drawable*);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomToolbarButton)
 };
-
-
-#endif   // JUCE_CustomToolbarButton_H_INCLUDED

@@ -8,27 +8,22 @@
   ==============================================================================
 */
 
-#ifndef OVERLAPFIFO_H_INCLUDED
-#define OVERLAPFIFO_H_INCLUDED
-#include "../JuceLibraryCode/JuceHeader.h"
-#include <cstdlib>
-#include <cstring>
-#include <cassert>
+#pragma once
+#include "juce_core/juce_core.h"
 
-class OverlapFifo {
+class OverlapFifo
+{
 public:
-    OverlapFifo(int intitLen, int hop, int readLen);
+    OverlapFifo (int intitLen, int hop, int readLen);
     ~OverlapFifo();
 
-    void addToFifo(const float* someData, int numItems);
-    bool overlapReadFromFifo(float* someData);
+    void addToFifo (const float* someData, int numItems);
+    bool overlapReadFromFifo (float* someData);
 
 private:
-    AbstractFifo abstractFifo;
+    juce::AbstractFifo abstractFifo;
     float* buffer;
     int bufLen;
     int hop;
     int readLen;
 };
-
-#endif // OVERLAPFIFO_H_INCLUDED

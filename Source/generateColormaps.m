@@ -7,12 +7,12 @@ function generateColormaps(smaps,nVals)
 %         smaps      : Map(s)
 %         nVals      : Number of values
 %
-%   smaps should be a string or a cell array of strings defining a name of
+%   smaps should be a juce::String or a cell array of strings defining a name of
 %   of function which can be called like:
 %
 %      map(nVals)
 %
-%   and returns a 3x nVals matrix of colors. Similarly, 
+%   and returns a 3x nVals matrix of colors. Similarly,
 
 
 if nargin<2
@@ -58,7 +58,7 @@ fprintf(fileID,'#endif');
 
 function [cmaps,cmapnames ] = parseInput(smaps,nVals,cmaps,cmapnames)
 
-if ischar(smaps) 
+if ischar(smaps)
     cmaps{end+1} = feval(smaps,nVals);
     cmapnames{end+1} = smaps;
 elseif isa(smaps,'function_handle')
@@ -86,9 +86,3 @@ out = bitshift(repmat(uint32(255),[size(in,1),1]),24) + ...
       bitshift(uint32(255*in(:,1)),16) + ...
       bitshift(uint32(255*in(:,2)),8) + ...
       uint32(255*in(:,3));
-
-
-
-
-
-

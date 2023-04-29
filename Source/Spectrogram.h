@@ -8,54 +8,47 @@
   ==============================================================================
 */
 
-#ifndef SPECTROGRAM_H_INCLUDED
-#define SPECTROGRAM_H_INCLUDED
+#pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include <complex>
 #include "ReassignedBLFilterbank.h"
+#include <complex>
 
-//==============================================================================
-/*
-*/
-
-
-class Spectrogram    : public Component,
-    public HighResolutionTimer,
-    public Slider::Listener
+class Spectrogram : public juce::Component,
+                    public juce::HighResolutionTimer,
+                    public juce::Slider::Listener
 {
 public:
     Spectrogram();
-    Spectrogram(int imageWidth, int imageHeight, int stripWidth_ = Spectrogram::defaultStripWidth);
+    Spectrogram (int imageWidth, int imageHeight, int stripWidth_ = Spectrogram::defaultStripWidth);
     ~Spectrogram();
 
-    void setColourMap(HeapBlock<uint32>& colourmap_);
+    void setColourMap (juce::HeapBlock<juce::uint32>& colourmap_);
 
-    void paint (Graphics&);
+    void paint (juce::Graphics&);
     void resized();
 
-    void sliderValueChanged(Slider* slider) override;
-    void mouseDown(const MouseEvent & event) override;
+    void sliderValueChanged (juce::Slider* slider) override;
+    void mouseDown (const juce::MouseEvent& event) override;
     void hiResTimerCallback() override;
 
-    void setSpectrogramSource(SpectrogramPlottable* buf);
+    void setSpectrogramSource (SpectrogramPlottable* buf);
 
-    PopupMenu& getPopupMenu()
+    juce::PopupMenu& getPopupMenu()
     {
         return *pm;
     };
 
-    void setStripWidth(int stripWidth_)
+    void setStripWidth (int stripWidth_)
     {
-        jassert(stripWidth_ % partialStripWidth == 0 && "stripWidth must be divisible by 5");
+        jassert (stripWidth_ % partialStripWidth == 0 && "stripWidth must be divisible by 5");
         stripWidth = stripWidth_;
-        stripBackend.malloc(stripWidth * image.getHeight() * sizeof(float));
-        strip = Image(Image::ARGB, stripWidth, image.getHeight(), true );
+        stripBackend.malloc (stripWidth * image.getHeight() * sizeof (float));
+        strip = juce::Image (juce::Image::ARGB, stripWidth, image.getHeight(), true);
     }
 
     void startPlotting()
     {
-        startTimer(1000.0 / 60.0);
+        startTimer (1000.0 / 60.0);
     }
     void stopPlotting()
     {
@@ -67,55 +60,53 @@ public:
     static const int defaultStripWidth;
     static const double defaultMinDB;
     static const double defaultMaxDB;
+
 private:
-    void setImageDimensions(int width, int height);
+    void setImageDimensions (int width, int height);
     void stripBackendToRepaint();
     void populatePopupMenu();
     double repaintTimeMaxMs;
-    Atomic<double> audioLoopMs;
-    Atomic<double> audioLoopMaxMs;
+    juce::Atomic<double> audioLoopMs;
+    juce::Atomic<double> audioLoopMaxMs;
     int maxCountRefresh;
-    Font displayFont ;
+    juce::Font displayFont;
 
-    Image image;
-    Image strip;
-    HeapBlock<float> stripBackend;
-    HeapBlock<uint32> colourmap;
-    Atomic<int> colourmapLen;
+    juce::Image image;
+    juce::Image strip;
+    juce::HeapBlock<float> stripBackend;
+    juce::HeapBlock<juce::uint32> colourmap;
+    juce::Atomic<int> colourmapLen;
     int stripWidth;
     int stripPos;
-    Atomic<SpectrogramPlottable*> spectrogramSource;
+    juce::Atomic<SpectrogramPlottable*> spectrogramSource;
 
-    ScopedPointer<Graphics> imageGraphics;
+    juce::ScopedPointer<juce::Graphics> imageGraphics;
 
     // Right-click popupmenu
-    ScopedPointer<PopupMenu> pm;
-    ScopedPointer<Slider> minmaxdb;
-    ScopedPointer<Label> minmaxdbLabel;
-    ScopedPointer<Slider> speedSlider;
+    juce::ScopedPointer<juce::PopupMenu> pm;
+    juce::ScopedPointer<juce::Slider> minmaxdb;
+    juce::ScopedPointer<juce::Label> minmaxdbLabel;
+    juce::ScopedPointer<juce::Slider> speedSlider;
     double oldMidDB;
-    Atomic<double> minDB, maxDB, midDB;
+    juce::Atomic<double> minDB, maxDB, midDB;
     double initMinDB, initMaxDB;
 
-    CriticalSection objectLock;
+    juce::CriticalSection objectLock;
 
-    Atomic<int> spectrogramSourceIsValid;
-    Atomic<int> stripIsValid;
-    Atomic<int> nextStripIsValid;
+    juce::Atomic<int> spectrogramSourceIsValid;
+    juce::Atomic<int> stripIsValid;
+    juce::Atomic<int> nextStripIsValid;
     int partialStripCounter;
     int partialStripWidth;
 
     class MathOp
     {
     public:
-        static void toDB(HeapBlock<float>& in, int inLen );
-        static void toLimitedRange(HeapBlock<float>& in, int inLen, float loDB, float hiDB);
-        static void toRange(HeapBlock<float>& in, int inLen, float min, float max, float range);
-        static void imageInColourmap(Image& image, HeapBlock<float>& data, HeapBlock<uint32>& cmap);
+        static void toDB (juce::HeapBlock<float>& in, int inLen);
+        static void toLimitedRange (juce::HeapBlock<float>& in, int inLen, float loDB, float hiDB);
+        static void toRange (juce::HeapBlock<float>& in, int inLen, float min, float max, float range);
+        static void imageInColourmap (juce::Image& image, juce::HeapBlock<float>& data, juce::HeapBlock<juce::uint32>& cmap);
     };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Spectrogram)
 };
-
-
-#endif  // SPECTROGRAM_H_INCLUDED

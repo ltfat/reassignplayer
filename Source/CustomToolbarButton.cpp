@@ -23,23 +23,22 @@
 */
 #include "CustomToolbarButton.h"
 
-CustomToolbarButton::CustomToolbarButton (const int iid, const String& buttonText,
-                              Array<Drawable*> imagesToUse_)
-   : ToolbarItemComponent (iid, buttonText, true),
-     currentImage (nullptr),
-     currentState (1)
+CustomToolbarButton::CustomToolbarButton (const int iid, const juce::String& buttonText, juce::Array<juce::Drawable*> imagesToUse_)
+    : ToolbarItemComponent (iid, buttonText, true),
+      currentImage (nullptr),
+      currentState (1)
 {
-   jassert (imagesToUse_.size() != 0);
-   DBG(imagesToUse_.size());
+    jassert (imagesToUse_.size() != 0);
+    DBG (imagesToUse_.size());
 
-   for (int kk = 0; kk < imagesToUse_.size(); ++kk)
-   {
-       DBG(kk);
-       imagesToUse.add(imagesToUse_[kk]);
-   }
+    for (int kk = 0; kk < imagesToUse_.size(); ++kk)
+    {
+        DBG (kk);
+        imagesToUse.add (imagesToUse_[kk]);
+    }
 
-   currentImage = imagesToUse[0];
-   //buttonStateChanged();
+    currentImage = imagesToUse[0];
+    // buttonStateChanged();
 }
 
 CustomToolbarButton::~CustomToolbarButton()
@@ -53,16 +52,16 @@ bool CustomToolbarButton::getToolbarItemSizes (int toolbarDepth, bool /*isToolba
     return true;
 }
 
-void CustomToolbarButton::paintButtonArea (Graphics&, int /*width*/, int /*height*/, bool /*isMouseOver*/, bool /*isMouseDown*/)
+void CustomToolbarButton::paintButtonArea (juce::Graphics&, int /*width*/, int /*height*/, bool /*isMouseOver*/, bool /*isMouseDown*/)
 {
 }
 
-void CustomToolbarButton::contentAreaChanged (const Rectangle<int>&)
+void CustomToolbarButton::contentAreaChanged (const juce::Rectangle<int>&)
 {
     buttonStateChanged();
 }
 
-void CustomToolbarButton::setCurrentImage (Drawable* const newImage)
+void CustomToolbarButton::setCurrentImage (juce::Drawable* const newImage)
 {
     if (newImage != currentImage)
     {
@@ -83,7 +82,7 @@ void CustomToolbarButton::updateDrawable()
     if (currentImage != nullptr)
     {
         currentImage->setInterceptsMouseClicks (false, false);
-        currentImage->setTransformToFit (getContentArea().toFloat(), RectanglePlacement::centred);
+        currentImage->setTransformToFit (getContentArea().toFloat(), juce::RectanglePlacement::centred);
         currentImage->setAlpha (isEnabled() ? 1.0f : 0.5f);
     }
 }
@@ -100,16 +99,16 @@ void CustomToolbarButton::enablementChanged()
     updateDrawable();
 }
 
-Drawable* CustomToolbarButton::getImageToUse() const
+juce::Drawable* CustomToolbarButton::getImageToUse() const
 {
-    if (getStyle() == Toolbar::textOnly)
+    if (getStyle() == juce::Toolbar::textOnly)
         return nullptr;
 
     /*if (getToggleState() && toggledOnImage != nullptr)
         return toggledOnImage;
 
     return normalImage;*/
-    DBG(currentState);
+    DBG (currentState);
     return imagesToUse[currentState];
 }
 
@@ -120,6 +119,6 @@ void CustomToolbarButton::buttonStateChanged()
 
 void CustomToolbarButton::advanceState()
 {
-    currentState = (currentState+1) % imagesToUse.size();
+    currentState = (currentState + 1) % imagesToUse.size();
     buttonStateChanged();
 }

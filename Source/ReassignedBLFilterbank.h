@@ -8,76 +8,72 @@
   ==============================================================================
 */
 
-#ifndef REASSIGNEDBLFILTERBANK_H_INCLUDED
-#define REASSIGNEDBLFILTERBANK_H_INCLUDED
+#pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "ltfat.h"
 #include "fftw3.h"
-#include "OverlapFifo.h"
+#include "ltfat.h"
+
 #include "FilterbankDataHolder.h"
+#include "OverlapFifo.h"
 
 #ifdef USETBB
-#include "tbb/tbb.h"
+    #include "tbb/tbb.h"
 using namespace tbb;
 #endif
 
 namespace SpectrogramPlottableMethods
 {
-template<class T>
-void coefsToAbsMatrix(T* coefs[], ptrdiff_t Lc[], int M,
-                      float* data, int stripWidth, int stripHeight);
+    template <class T>
+    void coefsToAbsMatrix (T* coefs[], ltfat_int Lc[], int M, float* data, int stripWidth, int stripHeight);
 
 }
-
 
 class SpectrogramPlottable
 {
 public:
     SpectrogramPlottable() {};
     virtual ~SpectrogramPlottable() {};
-    virtual bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows) = 0;
+    virtual bool getBufferCoefficientsAsAbsMatrix (float* matrix, int cols, int rows) = 0;
 };
 
-
-
-class ReassignedBLFilterbank: public SpectrogramPlottable
+class ReassignedBLFilterbank : public SpectrogramPlottable
 {
 public:
     static ReassignedBLFilterbank* makeDefault();
     static ReassignedBLFilterbank* makeFromChooser();
-    ReassignedBLFilterbank(FilterbankDataHolder::BLFilterbankDef* filterbankDefs_[3], int bufLen_);
+    ReassignedBLFilterbank (FilterbankDataHolder::BLFilterbankDef* filterbankDefs_[3], int bufLen_);
 
     virtual ~ReassignedBLFilterbank();
-    bool getBufferCoefficientsAsAbsMatrix(float* matrix, int cols, int rows ) override;
+    bool getBufferCoefficientsAsAbsMatrix (float* matrix, int cols, int rows) override;
 
-    void appendSamples(const float* samples, int samplesLen);
+    void appendSamples (const float* samples, int samplesLen);
 
-    void setActivePlotReassigned(bool doSet = true)
+    void setActivePlotReassigned (bool doSet = true)
     {
-        doPlotReassigned.set(doSet);
+        doPlotReassigned.set (doSet);
     };
 
     bool getActivePlotReassigned()
     {
-        return static_cast<bool>(doPlotReassigned.get());
-    };
-    
-    void toggleActivePlotReassigned()
-    {
-        doPlotReassigned.set(!doPlotReassigned.get());
+        return static_cast<bool> (doPlotReassigned.get());
     };
 
-    int getBufLen(){return bufLen;}
+    void toggleActivePlotReassigned()
+    {
+        doPlotReassigned.set (!doPlotReassigned.get());
+    };
+
+    int getBufLen() { return bufLen; }
+
 private:
     void performTransform() noexcept;
 
-    ScopedPointer<OverlapFifo> overlapFifo;
-    Atomic<int> doPlotReassigned;
+    juce::ScopedPointer<OverlapFifo> overlapFifo;
+    juce::Atomic<int> doPlotReassigned;
     // Helper arrays
     float* buf;
     fftwf_complex* bufFFTCoefs;
-    Array<convsub_fftbl_plan_s*> p;
+    juce::Array<ltfat_convsub_fftbl_plan_s*> p;
 
     void createPlans();
     void destroyPlans();
@@ -95,24 +91,14 @@ private:
     {
     public:
         static double pi;
-        static void hann(int L, float * const win);
-        static void hannsqrt(int L, float * const win);
-
+        static void hann (int L, float* const win);
+        static void hannsqrt (int L, float* const win);
     };
 
-    OwnedArray<FilterbankDataHolder::BLFilterbankDef> filterbanks;
-    Array<fftwf_complex**> bufFilterbankOverlaidCoefs;
-    Array<fftwf_complex**> bufFilterbankCoefs;
+    juce::OwnedArray<FilterbankDataHolder::BLFilterbankDef> filterbanks;
+    juce::Array<ltfat_complex_s**> bufFilterbankOverlaidCoefs;
+    juce::Array<ltfat_complex_s**> bufFilterbankCoefs;
     float** tgrad;
     float** fgrad;
     float** cs;
-
 };
-
-
-
-
-
-
-
-#endif  // REASSIGNEDBLFILTERBANK_H_INCLUDED

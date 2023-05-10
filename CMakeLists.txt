@@ -65,29 +65,6 @@ set_target_properties(Assets PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 # See https://forum.juce.com/t/loading-pytorch-model-using-binarydata/39997/2
 set_target_properties(Assets PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
-# Clean up folder organization on Xcode.
-# It tucks the Plugin varieties into a "Targets" folder and generate an Xcode Scheme manually
-# Xcode scheme generation is turned off globally to limit noise from other targets
-# The non-hacky way of doing this is via the global PREDEFINED_TARGETS_FOLDER property
-# However that doesn't seem to be working in Xcode
-# Not all plugin types (au, vst) available on each build type (win, macos, linux)
-foreach (target ${FORMATS} "All")
-    if (TARGET ${PROJECT_NAME}_${target})
-        set_target_properties(${PROJECT_NAME}_${target} PROPERTIES
-                # Tuck the actual plugin targets into a folder where they won't bother us
-                FOLDER "Targets"
-
-                # MacOS only: Sets the default executable that Xcode will open on build
-                # For this exact path to to work, manually build the AudioPluginHost.xcodeproj in the JUCE subdir
-                XCODE_SCHEME_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/JUCE/extras/AudioPluginHost/Builds/MacOSX/build/Debug/AudioPluginHost.app"
-
-                # Let us build the target in Xcode
-                XCODE_GENERATE_SCHEME ON)
-    endif ()
-endforeach ()
-set_target_properties(Assets PROPERTIES FOLDER "Targets")
-
-
 target_compile_definitions("${PROJECT_NAME}"
         PUBLIC
         JUCE_MODAL_LOOPS_PERMITTED=1 # needed for the file chooser
@@ -97,23 +74,17 @@ target_compile_definitions("${PROJECT_NAME}"
         JUCE_VST3_CAN_REPLACE_VST2=0)
 
 
-# this assumes fftw is built in a sister directory
-# via ./configure && make && make install
-# neither homebrew nor cmake is a friendly way to build fftw (headers aren't installed, etc)
+# FFTW is a total pain to install
+# We need the *float* version of fftw installed
+# This is best done via
+#   ./configure --enable-float  && make && make install
+# Note that on MacOS, neither homebrew nor cmake is a friendly way to build fftw (headers aren't installed)
 # add it to our paths so we can find FFTW3Config.cmake
-set(FFTW3_DIR "/Users/sudara/projects/librariesAndExamples/fftw/cmake-build-release")
-
-message("CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
-
-# find fftw and add it as a library
-# uses the FLOAT version of fftw
-# also FFTW is a total pain to install
-# CMake support seems half broken, so use:
-# ./configure --enable-float  && make && make install
 add_library(fftw3f SHARED IMPORTED)
 set_target_properties(fftw3f PROPERTIES IMPORTED_LOCATION /usr/local/lib/libfftw3f.a)
 include_directories(/usr/local/include)
 
+# this assumes libltfat is built in a sister directory
 add_library(libltfat SHARED IMPORTED)
 set_target_properties(libltfat PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/libltfat/build/libltfatf.a)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libltfat/modules/libltfat/include)

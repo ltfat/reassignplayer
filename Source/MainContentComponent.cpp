@@ -64,11 +64,9 @@ void MainContentComponent::replaceFilterbank (ReassignedBLFilterbank* fb)
 {
     fb->setActivePlotReassigned (filterbank->getActivePlotReassigned());
     aHandler->setFilterbank (fb);
-    spectrogram->stopPlotting();
     spectrogram->setStripWidth (5 * std::floor (fb->getBufLen() / 2048.0));
     spectrogram->setSpectrogramSource (fb);
     filterbank = fb;
-    spectrogram->startPlotting();
 }
 
 void MainContentComponent::labelTextChanged (juce::Label* l)

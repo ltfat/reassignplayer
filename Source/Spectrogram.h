@@ -52,6 +52,7 @@ public:
     }
     void stopPlotting()
     {
+        jassert (isTimerRunning());
         stopTimer();
     }
 

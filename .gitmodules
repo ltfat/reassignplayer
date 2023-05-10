@@ -1,7 +1,3 @@
-[submodule "libltfat"]
-	path = libltfat
-	url = https://github.com/ltfat/libltfat.git
-	branch = master
 [submodule "JUCE"]
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE.git

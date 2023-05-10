@@ -1,102 +1,52 @@
-/*
-  ==============================================================================
-
-  This is an automatically generated GUI class created by the Introjucer!
-
-  Be careful when adding custom code to these files, as only the code within
-  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-  and re-saved.
-
-  Created with Introjucer version: 4.1.0
-
-  ------------------------------------------------------------------------------
-
-  The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-  Copyright (c) 2015 - ROLI Ltd.
-
-  ==============================================================================
-*/
-
-#ifndef __JUCE_HEADER_92E596E9AF51CD06__
-#define __JUCE_HEADER_92E596E9AF51CD06__
-
-//[Headers]     -- You can add your own extra header files here --
-#include "JuceHeader.h"
+#pragma once
 #include "AudioHandler.h"
-#include "Spectrogram.h"
-#include "ReassignedBLFilterbank.h"
 #include "MainGuiWidgets.h"
-//[/Headers]
+#include "ReassignedBLFilterbank.h"
+#include "Spectrogram.h"
+#include <juce_gui_extra/juce_gui_extra.h>
+#include <juce_opengl/juce_opengl.h>
 
-
-
-//==============================================================================
-/**
-                                                                    //[Comments]
-    An auto-generated component, created by the Introjucer.
-
-    Describe your class and how it works here!
-                                                                    //[/Comments]
-*/
-class MainContentComponent  : public Component,
-    private ButtonListener,
-    private ChangeListener,
-    private LabelListener,
-    private MenuBarModel
+class MainContentComponent : public juce::Component,
+                             private juce::Button::Listener,
+                             private juce::ChangeListener,
+                             private juce::Label::Listener,
+                             private juce::MenuBarModel
 {
 public:
-    //==============================================================================
-    MainContentComponent ();
-    ~MainContentComponent();
+    MainContentComponent();
+    ~MainContentComponent() override;
 
-    //==============================================================================
-    //[UserMethods]     -- You can add your own custom methods in this section.
-    //==============================================================================
-    // MenuBarModel related
-
-    enum MENUITEMS { FILE = 0, OPTIONS, INFO };
+    enum MENUITEMS { FILE = 0,
+        OPTIONS,
+        INFO };
     void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
-    PopupMenu getMenuForIndex(int topLevelMenuIndex, const String &menuName) override;
-    StringArray getMenuBarNames() override;
+    juce::PopupMenu getMenuForIndex (int topLevelMenuIndex,
+        const juce::String& menuName) override;
+    juce::StringArray getMenuBarNames() override;
 
-    void changeListenerCallback(ChangeBroadcaster* source) override;
-    void buttonClicked (Button* b) override;
-    void labelTextChanged (Label* l) override;
+    void changeListenerCallback (juce::ChangeBroadcaster* source) override;
+    void buttonClicked (juce::Button* b) override;
+    void labelTextChanged (juce::Label* l) override;
 
-    void replaceFilterbank(ReassignedBLFilterbank* fb);
+    void replaceFilterbank (ReassignedBLFilterbank* fb);
     //[/UserMethods]
 
-    void paint (Graphics& g) override;
+    void paint (juce::Graphics& g) override;
     void resized() override;
+
 private:
-    //[UserVariables]   -- You can add your own custom variables in this section.
-    ScopedPointer<AudioHandler> aHandler;
-    ScopedPointer<Spectrogram> spectrogram;
-    ScopedPointer<ReassignedBLFilterbank> filterbank;
-    ScopedPointer<OpenGLContext> ogl;
+    juce::ScopedPointer<AudioHandler> aHandler;
+    juce::ScopedPointer<Spectrogram> spectrogram;
+    juce::ScopedPointer<ReassignedBLFilterbank> filterbank;
+    juce::ScopedPointer<juce::OpenGLContext> ogl;
+    juce::ScopedPointer<FilterbankDataHolder> dataHolder;
 
-    ScopedPointer<FilterbankDataHolder> dataHolder;
+    juce::ScopedPointer<MenuBarModel> menuBarModel;
+    juce::ScopedPointer<juce::MenuBarComponent> menuBarComponent;
+    juce::Toolbar toolbar;
+    juce::ScopedPointer<juce::ToolbarItemFactory> tbfac;
+    juce::Label fileLabel;
 
-
-    // GUI
-    ScopedPointer<MenuBarModel> menuBarModel;
-    ScopedPointer<MenuBarComponent> menuBarComponent;
-    Toolbar toolbar;
-    ScopedPointer<ToolbarItemFactory> tbfac;
-    Label fileLabel;
-
-    ScopedPointer<PlaylistWindow> plWindow;
-
-    //[/UserVariables]
-
-    //==============================================================================
-
-
-    //==============================================================================
+    juce::ScopedPointer<PlaylistWindow> plWindow;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]
-
-#endif   // __JUCE_HEADER_92E596E9AF51CD06__

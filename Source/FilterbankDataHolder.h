@@ -1,111 +1,112 @@
-#ifndef FILTERBANKDATAHOLDER_H_INCLUDED
-#define FILTERBANKDATAHOLDER_H_INCLUDED
-
-#include "JuceHeader.h"
+#pragma once
 
 #include "fftw3.h"
+#include "juce_gui_basics/juce_gui_basics.h"
 #include "ltfat.h"
 
 class FilterbankDataHolder
 {
 public:
     FilterbankDataHolder();
-    FilterbankDataHolder(Array<File> loadedFilterbankFiles);
+    FilterbankDataHolder (juce::Array<juce::File> loadedFilterbankFiles);
 
-    bool getFilterbankData(Array<MemoryBlock> &rawFilterbankData_);
-    int64 getStartingByte(int fbIndex_);
-    long getBlockLength(int fbIndex_);
+    bool getFilterbankData (juce::Array<juce::MemoryBlock>& rawFilterbankData_);
+    juce::int64 getStartingByte (int fbIndex_);
+    long getBlockLength (int fbIndex_);
     /*OwnedArray<MemoryBlock> rawFilterbankData;
     OwnedArray<unsigned long> startingBytes;
     OwnedArray<unsigned> blockLengths;*/
     int getActiveFilterbank();
-    bool setActiveFilterbank(int fbIndex_);
+    bool setActiveFilterbank (int fbIndex_);
 
     bool isReassignable();
-    void selectorWindowVisibility(bool isVisible_);
-    void addChangeListenerToWindow(ChangeListener* listener);
-    void removeChangeListenerFromWindow(ChangeListener* listener);
+    void selectorWindowVisibility (bool isVisible_);
+    void addChangeListenerToWindow (juce::ChangeListener* listener);
+    void removeChangeListenerFromWindow (juce::ChangeListener* listener);
 
     //==============================================================================
     // Filterbank file chooser
-    static Array<File> FilterbankFileLoader();
+    static juce::Array<juce::File> FilterbankFileLoader();
 
     class BLFilterbankDef
     {
     public:
-        static BLFilterbankDef* createDefFromFile(File& file,
-                int64 byteOffset = 0);
-        static BLFilterbankDef* createDefFromData(MemoryBlock& memBlock,
-                int64 byteOffset = 0);
+        static BLFilterbankDef* createDefFromFile (juce::File& file,
+            juce::int64 byteOffset = 0);
+        static BLFilterbankDef* createDefFromData (juce::MemoryBlock& memBlock,
+            juce::int64 byteOffset = 0);
         virtual ~BLFilterbankDef();
 
         const fftwf_complex** G;
-        const int*            Gl;
-        const ltfatInt*       foff;
-        const int*            realonly;
-        const double*         a;
-        const double*         fc;
-        const ltfatInt*       Lc;
-        const ltfatInt*       Lchalf;
-        const int             M;
-        const int             L;
+        const int* Gl;
+        const ltfat_int* foff;
+        const int* realonly;
+        const double* a;
+        const double* fc;
+        const ltfat_int* Lc;
+        ltfat_int* Lchalf;
+        const int M;
+        const int L;
+
     private:
-        static void getFilterbankBaseData (MemoryInputStream* dataPtr,
-                                           unsigned* blockLengthPtr,
-                                           unsigned* mPtr);
-        static void getFilterbankParamData (MemoryInputStream* dataPtr,
-                                            unsigned M, unsigned* aOne,
-                                            unsigned a[], float fc[],
-                                            unsigned foff[], unsigned filtLengths[]);
-        static void getFilterbankFilterData (MemoryInputStream* dataPtr,
-                                             unsigned M, unsigned filtLengths[],
-                                             float** G);
+        static void getFilterbankBaseData (juce::MemoryInputStream* dataPtr,
+            unsigned* blockLengthPtr,
+            unsigned* mPtr);
+        static void getFilterbankParamData (juce::MemoryInputStream* dataPtr,
+            unsigned M,
+            unsigned* aOne,
+            unsigned a[],
+            float fc[],
+            unsigned foff[],
+            unsigned filtLengths[]);
+        static void getFilterbankFilterData (juce::MemoryInputStream* dataPtr,
+            unsigned M,
+            unsigned filtLengths[],
+            float** G);
 
         // Make it non-copyable and non createable
-        BLFilterbankDef(const fftwf_complex** G_,
-                        int*                  Gl_,
-                        ltfatInt*             foff_,
-                        int*                  realonly_,
-                        double*               a_,
-                        double*               fc_,
-                        ltfatInt*             Lc_,
-                        ltfatInt*             Lchalf_,
-                        int                   M_,
-                        int                   L_):
-            G(G_), Gl(Gl_), foff(foff_), realonly(realonly_), a(a_),
-            fc(fc_), Lc(Lc_), Lchalf(Lchalf_), M(M_), L(L_) {}
+        BLFilterbankDef (const fftwf_complex** G_,
+            int* Gl_,
+            ltfat_int* foff_,
+            int* realonly_,
+            double* a_,
+            double* fc_,
+            ltfat_int* Lc_,
+            ltfat_int* Lchalf_,
+            int M_,
+            int L_) : G (G_), Gl (Gl_), foff (foff_), realonly (realonly_), a (a_), fc (fc_), Lc (Lc_), Lchalf (Lchalf_), M (M_), L (L_) {}
 
-        BLFilterbankDef( const BLFilterbankDef& other ); // non construction-copyable
-        BLFilterbankDef& operator=( const BLFilterbankDef& ); // non copyable
+        BLFilterbankDef (const BLFilterbankDef& other); // non construction-copyable
+        BLFilterbankDef& operator= (const BLFilterbankDef&); // non copyable
     };
 
 private:
-    void init(Array<File> loadedFilterbankFiles);
+    void init (juce::Array<juce::File> loadedFilterbankFiles);
 
-    class FilterbankSelectWindow : public DialogWindow,
-        public ChangeBroadcaster,
-        private ButtonListener
+    class FilterbankSelectWindow : public juce::DialogWindow,
+                                   public juce::ChangeBroadcaster,
+                                   private juce::Button::Listener
     {
     public:
-        FilterbankSelectWindow (String title, Array<unsigned>& blockLengths, int* fbIndexPtr);
+        FilterbankSelectWindow (juce::String title, juce::Array<unsigned>& blockLengths, int* fbIndexPtr);
 
-        void closeButtonPressed () override;
-        void buttonClicked (Button* b) override;
+        void closeButtonPressed() override;
+        void buttonClicked (juce::Button* b) override;
 
     private:
-        ScopedPointer<TextButton> confirmButton;
-        ScopedPointer<Label> dialogText;
+        juce::ScopedPointer<juce::TextButton> confirmButton;
+        juce::ScopedPointer<juce::Label> dialogText;
         int* activeFilterbank;
 
-        OwnedArray<ToggleButton> fbDataButtons;
+        juce::OwnedArray<juce::ToggleButton> fbDataButtons;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankSelectWindow)
     };
 
-    Array<MemoryBlock> rawFilterbankData;
-    Array<int64> startingBytes;
-    Array<unsigned> blockLengths;
-    ScopedPointer<FilterbankSelectWindow> fbWindow;
+    juce::Array<juce::MemoryBlock> rawFilterbankData;
+    juce::Array<juce::int64> startingBytes;
+    juce::Array<unsigned> blockLengths;
+    juce::ScopedPointer<FilterbankSelectWindow> fbWindow;
 
     bool reassignable;
     int numOfFilterbanks;
@@ -113,7 +114,3 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterbankDataHolder)
 };
-
-
-
-#endif // FILTERBANKDATAHOLDER_H_INCLUDED

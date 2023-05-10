@@ -10,7 +10,7 @@
 
 #include "AudioHandler.h"
 
-static ScopedPointer<AudioDeviceManager> oneAudioDeviceManager;
+static juce::ScopedPointer<juce::AudioDeviceManager> oneAudioDeviceManager;
 
 int AudioHandler::getCurrentSource()
 {
@@ -19,102 +19,102 @@ int AudioHandler::getCurrentSource()
 
 void AudioHandler::setInputIsMic()
 {
-    inputIndex.store(1);
+    inputIndex.store (1);
 }
 void AudioHandler::setInputIsFile()
 {
-    inputIndex.store(2);
+    inputIndex.store (2);
 }
 void AudioHandler::setInputIsZero()
 {
-    inputIndex.store(0);
+    inputIndex.store (0);
 }
 
-AudioHandler::AudioHandler():
-    filePreloadThread("filePreThread"),
-    filterbank(nullptr),
-    loopState(0)
+AudioHandler::AudioHandler() : filePreloadThread ("filePreThread"),
+                               filterbank (nullptr),
+                               loopState (0)
 {
     formatManager.registerBasicFormats();
-    formatManager.registerFormat(new MP3AudioFormat(), true);
-    formatManager.registerFormat(new OggVorbisAudioFormat(), true);
-    formatManager.registerFormat(new FlacAudioFormat(), true);
 
     filePreloadThread.startThread();
     setInputIsMic();
 
-    AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
-    adm.addAudioCallback(this);
+    juce::AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
+    adm.addAudioCallback (this);
 
-    transportSource.addChangeListener(this);
+    transportSource.addChangeListener (this);
 }
 
 AudioHandler::~AudioHandler()
 {
-    filePreloadThread.stopThread(1000);
+    filePreloadThread.stopThread (1000);
     transportSource.stop();
-    transportSource.setSource(nullptr);
+    transportSource.setSource (nullptr);
 
-    oneAudioDeviceManager->removeAudioCallback(this);
+    oneAudioDeviceManager->removeAudioCallback (this);
     oneAudioDeviceManager->closeAudioDevice();
     oneAudioDeviceManager = nullptr;
 }
 
-void AudioHandler::audioDeviceIOCallback (
-    const float **inputChannelData, int numInputChannels,
-    float **outputChannelData, int numOutputChannels, int numSamples)
+void AudioHandler::audioDeviceIOCallbackWithContext (
+    const float* const* inputChannelData,
+    int numInputChannels,
+    float* const* outputChannelData,
+    int numOutputChannels,
+    int numSamples,
+    const juce::AudioIODeviceCallbackContext& context)
 {
+    DBG ("callback");
     switch (inputIndex.load())
     {
-    case 0: // Zero-out all optput channels
-    {
-        for (int ii = 0; ii < numOutputChannels; ii++)
+        case 0: // Zero-out all optput channels
         {
-            memset(outputChannelData[ii], 0, numSamples * sizeof(float));
+            for (int ii = 0; ii < numOutputChannels; ii++)
+            {
+                memset (outputChannelData[ii], 0, numSamples * sizeof (float));
+            }
         }
-    }
-    break;
-    case 1: // Copy input channels to output channels one to one, zero-out execessive channels
-    {
-        int minNumChannels = std::min(numInputChannels, numOutputChannels);
-        for (int ii = 0; ii < minNumChannels; ii++)
+        break;
+        case 1: // Copy input channels to output channels one to one, zero-out execessive channels
         {
-            memcpy(outputChannelData[ii], inputChannelData[0], numSamples * sizeof(float));
-        }
-        for (int ii = minNumChannels; ii < numOutputChannels; ii++)
-        {
-            memset(outputChannelData[ii], 0, numSamples * sizeof(float));
-        }
+            int minNumChannels = std::min (numInputChannels, numOutputChannels);
+            for (int ii = 0; ii < minNumChannels; ii++)
+            {
+                memcpy (outputChannelData[ii], inputChannelData[0], numSamples * sizeof (float));
+            }
+            for (int ii = minNumChannels; ii < numOutputChannels; ii++)
+            {
+                memset (outputChannelData[ii], 0, numSamples * sizeof (float));
+            }
 
-        if (numInputChannels > 0 && nullptr != filterbank.get())
-        {
-            filterbank.get()->appendSamples(inputChannelData[0], numSamples);
+            if (numInputChannels > 0 && nullptr != filterbank.get())
+            {
+                filterbank.get()->appendSamples (inputChannelData[0], numSamples);
+            }
         }
-    }
-    break;
-    case 2: // Read data from a file
-    {
-        AudioSampleBuffer buf(outputChannelData, numOutputChannels, numSamples);
-        AudioSourceChannelInfo info;
-        info.buffer = &buf;
-        info.startSample = 0;
-        info.numSamples = numSamples;
-
-        transportSource.getNextAudioBlock(info);
-
-        if (numOutputChannels > 0 && nullptr != filterbank.get())
+        break;
+        case 2: // Read data from a file
         {
-            filterbank.get()->appendSamples(outputChannelData[0], numSamples);
-        }
-    }
-    break;
-    }
+            juce::AudioSampleBuffer buf (outputChannelData, numOutputChannels, numSamples);
+            juce::AudioSourceChannelInfo info;
+            info.buffer = &buf;
+            info.startSample = 0;
+            info.numSamples = numSamples;
 
+            transportSource.getNextAudioBlock (info);
+
+            if (numOutputChannels > 0 && nullptr != filterbank.get())
+            {
+                filterbank.get()->appendSamples (outputChannelData[0], numSamples);
+            }
+        }
+        break;
+    }
 }
 
-void AudioHandler::audioDeviceAboutToStart (AudioIODevice *device)
+void AudioHandler::audioDeviceAboutToStart (juce::AudioIODevice* device)
 {
-    transportSource.prepareToPlay(device->getCurrentBufferSizeSamples(), device->getCurrentSampleRate());
+    transportSource.prepareToPlay (device->getCurrentBufferSizeSamples(), device->getCurrentSampleRate());
     // asChanInfo = new AudioSourceChannelInfo();
 }
 
@@ -122,37 +122,35 @@ void AudioHandler::audioDeviceStopped()
 {
 }
 
-void AudioHandler::audioDeviceError (const String &errorMessage)
+void AudioHandler::audioDeviceError (const juce::String& errorMessage)
 {
-
 }
 
-void AudioHandler::loadFileIntoTransportAndStart(File& f, int64 startingPosition)
+void AudioHandler::loadFileIntoTransportAndStart (juce::File& f, juce::int64 startingPosition)
 {
-    AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
-    AudioIODevice* aiod = adm.getCurrentAudioDevice();
+    juce::AudioDeviceManager& adm = AudioHandler::getAudioDeviceManager();
+    juce::AudioIODevice* aiod = adm.getCurrentAudioDevice();
 
     transportSource.stop();
-    transportSource.setSource(nullptr);
+    transportSource.setSource (nullptr);
     formatReaderSource = nullptr;
 
     // The old reader is killed together with formatReaderSource on the previous line
-    reader = formatManager.createReaderFor(f);
+    reader = formatManager.createReaderFor (f);
 
-    if ( f.existsAsFile() )
+    if (f.existsAsFile())
     {
-        currentFile = new File(f);
+        currentFile = new juce::File (f);
         if (reader != nullptr)
         {
-            formatReaderSource = new AudioFormatReaderSource(reader, true);
-            formatReaderSource->setLooping(false);
+            formatReaderSource = new juce::AudioFormatReaderSource (reader, true);
+            formatReaderSource->setLooping (false);
             // We want the file to be read at the common sample-rate
             // Read up to samplesToPreload in advance
             int samplesToPreload = 10 * reader->bitsPerSample / 8 * aiod->getCurrentBufferSizeSamples();
-            transportSource.setSource(formatReaderSource, samplesToPreload,
-                                    &filePreloadThread, aiod->getCurrentSampleRate());
-            if ( startingPosition < transportSource.getTotalLength() )
-                                    transportSource.setNextReadPosition(startingPosition);
+            transportSource.setSource (formatReaderSource, samplesToPreload, &filePreloadThread, aiod->getCurrentSampleRate());
+            if (startingPosition < transportSource.getTotalLength())
+                transportSource.setNextReadPosition (startingPosition);
             transportSource.start();
             setInputIsFile();
         }
@@ -161,11 +159,11 @@ void AudioHandler::loadFileIntoTransportAndStart(File& f, int64 startingPosition
         setNextFile();
 }
 
-AudioDeviceManager& AudioHandler::getAudioDeviceManager()
+juce::AudioDeviceManager& AudioHandler::getAudioDeviceManager()
 {
     if (oneAudioDeviceManager == nullptr)
     {
-        oneAudioDeviceManager = new AudioDeviceManager();
+        oneAudioDeviceManager = new juce::AudioDeviceManager();
         oneAudioDeviceManager->initialiseWithDefaultDevices (0, 2);
         // oneAudioDeviceManager->initialise (2, 2, 0, true, String::empty, 0);
     }
@@ -173,48 +171,54 @@ AudioDeviceManager& AudioHandler::getAudioDeviceManager()
     return *oneAudioDeviceManager;
 }
 
-AudioIODevice* AudioHandler::getCurrentAudioDevice()
+juce::AudioIODevice* AudioHandler::getCurrentAudioDevice()
 {
-   return AudioHandler::getAudioDeviceManager().getCurrentAudioDevice();
+    return AudioHandler::getAudioDeviceManager().getCurrentAudioDevice();
 }
 
 void AudioHandler::showAudioDeviceManagerDialog()
 {
+    juce::DialogWindow::LaunchOptions o;
 
-    DialogWindow::LaunchOptions o;
-
-    o.content.setOwned (new AudioDeviceSelectorComponent (AudioHandler::getAudioDeviceManager(),
-                        0, 2, 0, 2, false, false, true, false));
+    o.content.setOwned (new juce::AudioDeviceSelectorComponent (AudioHandler::getAudioDeviceManager(),
+        0,
+        2,
+        0,
+        2,
+        false,
+        false,
+        true,
+        false));
 
     o.content->setSize (500, 450);
 
-    o.dialogTitle                   = TRANS("Audio Settings");
-    o.dialogBackgroundColour        = Colour (0xfff0f0f0);
-    o.escapeKeyTriggersCloseButton  = true;
-    o.useNativeTitleBar             = true;
-    o.resizable                     = false;
+    o.dialogTitle = TRANS ("Audio Settings");
+    o.dialogBackgroundColour = juce::Colour (0xfff0f0f0);
+    o.escapeKeyTriggersCloseButton = true;
+    o.useNativeTitleBar = true;
+    o.resizable = false;
 
     o.launchAsync();
 }
 
 void AudioHandler::showFileChooserDialog()
 {
-    FileChooser myChooser ("Please select the moose you want to load...",
-                           File::getSpecialLocation (File::userHomeDirectory),
-                           "*.mp3,*.*");
+    juce::FileChooser myChooser ("Please select the moose you want to load...",
+        juce::File::getSpecialLocation (juce::File::userHomeDirectory),
+        "*.mp3,*.*");
     if (myChooser.browseForFileToOpen())
     {
-        File f (myChooser.getResult());
-        //currentFile = &File(myChooser.getResult());
-        loadFileIntoTransportAndStart(f);
+        juce::File f (myChooser.getResult());
+        // currentFile = &File(myChooser.getResult());
+        loadFileIntoTransportAndStart (f);
     }
 }
 
 bool AudioHandler::startPlaying()
 {
     bool wasP = transportSource.isPlaying();
-    if (!wasP)
-        transportSource.start();
+
+    transportSource.start();
 
     return wasP;
 }
@@ -230,40 +234,39 @@ bool AudioHandler::pausePlaying()
 
 bool AudioHandler::stopPlaying()
 {
-
     bool wasP = transportSource.isPlaying();
     if (wasP)
     {
         transportSource.stop();
-        transportSource.setPosition(0);
+        transportSource.setPosition (0);
     }
     return wasP;
 }
 
 bool AudioHandler::playNext()
 {
-    if ( currentFileIdx == listOfFiles.size()-1 && loopState == 1 )
-        return setCurrentFileIdx(0);
+    if (currentFileIdx == listOfFiles.size() - 1 && loopState == 1)
+        return setCurrentFileIdx (0);
     else
-        return setCurrentFileIdx(currentFileIdx+1);
+        return setCurrentFileIdx (currentFileIdx + 1);
 }
 
 bool AudioHandler::playPrevious()
 {
-    if ( currentFileIdx == 0  && loopState == 1 )
-        return setCurrentFileIdx(listOfFiles.size()-1);
+    if (currentFileIdx == 0 && loopState == 1)
+        return setCurrentFileIdx (listOfFiles.size() - 1);
     else
-        return setCurrentFileIdx(currentFileIdx-1);
+        return setCurrentFileIdx (currentFileIdx - 1);
 }
 
-bool AudioHandler::addFile(File& file)
+bool AudioHandler::addFile (juce::File& file)
 {
-    File* newFile = new File(file);
-    listOfFiles.add(newFile);
-    if ( listOfFiles.size() == 1 )
+    juce::File* newFile = new juce::File (file);
+    listOfFiles.add (newFile);
+    if (listOfFiles.size() == 1)
     {
         currentFileIdx = 0;
-        loadFileIntoTransportAndStart(*newFile);
+        loadFileIntoTransportAndStart (*newFile);
         currentFromPlaylist = true;
     }
     return true;
@@ -274,14 +277,14 @@ int AudioHandler::getCurrentFileIdx()
     return currentFileIdx;
 }
 
-bool AudioHandler::setCurrentFileIdx(int newFileIdx, bool forceStart)
+bool AudioHandler::setCurrentFileIdx (int newFileIdx, bool forceStart)
 {
-    if ( newFileIdx > -1 && newFileIdx < listOfFiles.size())
+    if (newFileIdx > -1 && newFileIdx < listOfFiles.size())
     {
-        if ( currentFileIdx != newFileIdx || forceStart )
+        if (currentFileIdx != newFileIdx || forceStart)
         {
             currentFileIdx = newFileIdx;
-            loadFileIntoTransportAndStart(*listOfFiles[currentFileIdx]);
+            loadFileIntoTransportAndStart (*listOfFiles[currentFileIdx]);
             currentFromPlaylist = true;
         }
         return true;
@@ -291,8 +294,8 @@ bool AudioHandler::setCurrentFileIdx(int newFileIdx, bool forceStart)
 
 void AudioHandler::toggleLooping()
 {
-    loopState = (loopState+1) % 3;
-    //if (transportSource != nullptr)
+    loopState = (loopState + 1) % 3;
+    // if (transportSource != nullptr)
     //{
     /*    if (formatReaderSource->isLooping())
             formatReaderSource->setLooping(false);
@@ -301,15 +304,15 @@ void AudioHandler::toggleLooping()
     //}
 }
 
-bool AudioHandler::removeFile(int fileIndex)
+bool AudioHandler::removeFile (int fileIndex)
 {
-    if ( fileIndex < listOfFiles.size())
+    if (fileIndex < listOfFiles.size())
     {
-        listOfFiles.remove(fileIndex,true);
-        if ( currentFileIdx >= fileIndex )
+        listOfFiles.remove (fileIndex, true);
+        if (currentFileIdx >= fileIndex)
             currentFileIdx--;
-        //else if ( currentFileIdx = fileIndex )
-        //    currentFileIdx = -1;
+        // else if ( currentFileIdx = fileIndex )
+        //     currentFileIdx = -1;
         return true;
     }
     else
@@ -318,63 +321,63 @@ bool AudioHandler::removeFile(int fileIndex)
 
 void AudioHandler::clearFileList()
 {
-    listOfFiles.clear(true);
+    listOfFiles.clear (true);
 }
 
 void AudioHandler::setNextFile()
 {
-
-    if ( currentFile == nullptr )
+    if (currentFile == nullptr)
     {
-        DBG("Stopping playback");
+        DBG ("Stopping playback");
     }
-    else if ( loopState == 2 || ( loopState == 1 && listOfFiles.size() == 0 ))
+    else if (loopState == 2 || (loopState == 1 && listOfFiles.size() == 0))
     {
-        DBG("Replaying current file");
-        DBG(loopState);
+        DBG ("Replaying current file");
+        DBG (loopState);
         currentFromPlaylist = false;
-        loadFileIntoTransportAndStart(*currentFile);
+        loadFileIntoTransportAndStart (*currentFile);
     }
-    else if ( listOfFiles.size() != 0 )
+    else if (listOfFiles.size() != 0)
     {
-        if ( currentFileIdx < listOfFiles.size()-1 )
+        if (currentFileIdx < listOfFiles.size() - 1)
         {
-            DBG("Next file in playlist played");
-            DBG(listOfFiles.size());
+            DBG ("Next file in playlist played");
+            DBG (listOfFiles.size());
             currentFromPlaylist = true;
-            //sendChangeMessage();
-            loadFileIntoTransportAndStart(*listOfFiles[++currentFileIdx]);
+            // sendChangeMessage();
+            loadFileIntoTransportAndStart (*listOfFiles[++currentFileIdx]);
         }
-        else if ( loopState == 1 )
+        else if (loopState == 1)
         {
-            DBG("Playlist exhausted, starting again");
-            DBG(listOfFiles.size());
+            DBG ("Playlist exhausted, starting again");
+            DBG (listOfFiles.size());
             currentFileIdx = 0;
             currentFromPlaylist = true;
-            //oldStreamPosition = -1;
-            //sendChangeMessage();
-            loadFileIntoTransportAndStart(*listOfFiles[currentFileIdx]);
+            // oldStreamPosition = -1;
+            // sendChangeMessage();
+            loadFileIntoTransportAndStart (*listOfFiles[currentFileIdx]);
         }
-        else if ( loopState == 2 && currentFile != nullptr )
+        else if (loopState == 2 && currentFile != nullptr)
         {
-            DBG("Replay current playlist file");
-            loadFileIntoTransportAndStart(*currentFile);
+            DBG ("Replay current playlist file");
+            loadFileIntoTransportAndStart (*currentFile);
         }
     }
     else
     {
-        DBG("Stopping playback unexpectedly");
+        DBG ("Stopping playback unexpectedly");
     }
 }
 
-void AudioHandler::changeListenerCallback(ChangeBroadcaster*)
+void AudioHandler::changeListenerCallback (ChangeBroadcaster*)
 {
-    if ( transportSource.getNextReadPosition() > transportSource.getTotalLength() + 1)
+    DBG ("ok so.... changeListenerCallback");
+
+    if (transportSource.getNextReadPosition() > transportSource.getTotalLength() + 1)
     {
-        DBG("stream end");
-        if ( currentFileIdx < listOfFiles.size()-1 || loopState != 0 )
+        DBG ("stream end");
+        if (currentFileIdx < listOfFiles.size() - 1 || loopState != 0)
             setNextFile();
         sendChangeMessage();
     }
 }
-
